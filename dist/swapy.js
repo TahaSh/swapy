@@ -518,7 +518,7 @@ function Qt(n, t, e = !1) {
 function ft(n, t) {
   return Qt(n, t, !0);
 }
-class C {
+class L {
   constructor(t, e, i, s) {
     a(this, "_topLeft"), a(this, "_topRight"), a(this, "_bottomLeft"), a(this, "_bottomRight"), this._topLeft = t, this._topRight = e, this._bottomLeft = i, this._bottomRight = s;
   }
@@ -552,15 +552,15 @@ function G(n) {
   };
   switch (t.length) {
     case 1:
-      return new C(t[0], t[0], t[0], t[0]);
+      return new L(t[0], t[0], t[0], t[0]);
     case 2:
-      return new C(t[0], t[1], t[0], t[1]);
+      return new L(t[0], t[1], t[0], t[1]);
     case 3:
-      return new C(t[0], t[1], t[2], t[1]);
+      return new L(t[0], t[1], t[2], t[1]);
     case 4:
-      return new C(t[0], t[1], t[3], t[2]);
+      return new L(t[0], t[1], t[3], t[2]);
     default:
-      return new C(
+      return new L(
         e,
         e,
         e,
@@ -943,7 +943,7 @@ class yt extends lt {
     return new ge({ ...nt, ...t });
   }
 }
-function L(n) {
+function B(n) {
   return structuredClone(n);
 }
 class ye {
@@ -977,9 +977,9 @@ class ye {
     (t = this._updateCallback) == null || t.call(this);
   }
 }
-class A {
+class T {
   constructor(t, e, i) {
-    a(this, "_animatorProp"), a(this, "_animator"), a(this, "_initialValue"), a(this, "_previousValue"), a(this, "_targetValue"), a(this, "_currentValue"), a(this, "_hasChanged"), a(this, "_view"), a(this, "_animatorFactory"), a(this, "_previousRenderValue"), this._animatorProp = new ye(this), this._animatorFactory = t, this._initialValue = L(e), this._previousValue = L(e), this._targetValue = L(e), this._currentValue = L(e), this._hasChanged = !1, this._previousRenderValue = void 0, this._view = i, this._animator = this._animatorFactory.createInstantAnimator();
+    a(this, "_animatorProp"), a(this, "_animator"), a(this, "_initialValue"), a(this, "_previousValue"), a(this, "_targetValue"), a(this, "_currentValue"), a(this, "_hasChanged"), a(this, "_view"), a(this, "_animatorFactory"), a(this, "_previousRenderValue"), this._animatorProp = new ye(this), this._animatorFactory = t, this._initialValue = B(e), this._previousValue = B(e), this._targetValue = B(e), this._currentValue = B(e), this._hasChanged = !1, this._previousRenderValue = void 0, this._view = i, this._animator = this._animatorFactory.createInstantAnimator();
   }
   get shouldRender() {
     return !0;
@@ -1007,7 +1007,7 @@ class A {
   }
   _setTarget(t, e = !0) {
     var i, s;
-    this._previousValue = L(this._currentValue), this._targetValue = t, e ? ((s = (i = this._animator).reset) == null || s.call(i), this.animator.markAsAnimating()) : this._currentValue = t, this._hasChanged = !0;
+    this._previousValue = B(this._currentValue), this._targetValue = t, e ? ((s = (i = this._animator).reset) == null || s.call(i), this.animator.markAsAnimating()) : this._currentValue = t, this._hasChanged = !0;
   }
   hasChanged() {
     return this._hasChanged;
@@ -1019,7 +1019,7 @@ class A {
   update(t, e) {
   }
 }
-class Ve extends A {
+class Ve extends T {
   constructor() {
     super(...arguments), a(this, "_invertedBorderRadius"), a(this, "_forceStyleUpdateThisFrame", !1), a(this, "_updateWithScale", !1);
   }
@@ -1150,7 +1150,7 @@ class Ve extends A {
     return !1;
   }
 }
-class Pe extends A {
+class Pe extends T {
   setFromElementPropValue(t) {
     this._setTarget(t.value, !0);
   }
@@ -1191,7 +1191,7 @@ class Pe extends A {
     return !1;
   }
 }
-class be extends A {
+class be extends T {
   get x() {
     return this._currentValue.x;
   }
@@ -1238,7 +1238,7 @@ class be extends A {
     return !1;
   }
 }
-class Ee extends A {
+class Ee extends T {
   constructor() {
     super(...arguments), a(this, "_animateLayoutUpdateNextFrame", !1), a(this, "_parentScaleInverse", new l(1, 1));
   }
@@ -1329,10 +1329,10 @@ class Ee extends A {
           );
           return;
         }
-        const b = this._view._parent, N = this._rect.pageOffset, I = this._view.getScroll(), M = {
-          left: this._previousRect.viewportOffset.left + I.x,
-          top: this._previousRect.viewportOffset.top + I.y
-        }, Bt = M.left - N.left, Ft = M.top - N.top;
+        const b = this._view._parent, I = this._rect.pageOffset, C = this._view.getScroll(), M = {
+          left: this._previousRect.viewportOffset.left + C.x,
+          top: this._previousRect.viewportOffset.top + C.y
+        }, Bt = M.left - I.left, Ft = M.top - I.top;
         let ct = 0, dt = 0, gt = 0, pt = 0;
         if (b) {
           const k = b.rect.pageOffset, $ = b.getScroll(), z = {
@@ -1358,9 +1358,9 @@ class Ee extends A {
       let w = 1, y = 1;
       d && (w = d.previousRect.size.width / d.rect.size.width, y = d.previousRect.size.height / d.rect.size.height);
       const x = d ? d.previousRect.viewportOffset.left : 0, U = d ? d.previousRect.viewportOffset.top : 0, _ = c.viewportOffset.left - x, f = c.viewportOffset.top - U, v = _ / w - _, E = f / y - f;
-      let F = c.viewportOffset.left - g.viewportOffset.left - P + v;
+      let A = c.viewportOffset.left - g.viewportOffset.left - P + v;
       const S = c.viewportOffset.top - g.viewportOffset.top - m + E;
-      this._setTarget(new l(F, S), !1);
+      this._setTarget(new l(A, S), !1);
     } else
       this._animateLayoutUpdateNextFrame && (this._setTarget(this._initialValue, !0), this._animateLayoutUpdateNextFrame = !1);
   }
@@ -1387,7 +1387,7 @@ class Ee extends A {
     return !0;
   }
 }
-class Re extends A {
+class Re extends T {
   constructor() {
     super(...arguments), a(this, "_unit", "deg");
   }
@@ -1437,7 +1437,7 @@ class Re extends A {
     return !0;
   }
 }
-class xe extends A {
+class xe extends T {
   constructor() {
     super(...arguments), a(this, "_animateLayoutUpdateNextFrame", !1);
   }
@@ -1511,7 +1511,7 @@ class xe extends A {
     return !0;
   }
 }
-class Ae extends A {
+class Ae extends T {
   get width() {
     return this._view.rect.size.width;
   }
@@ -2580,7 +2580,7 @@ function bt(n) {
     )
   };
 }
-const T = (n) => {
+const N = (n) => {
   const t = n.useEventPlugin(It);
   t.on(Nt, U);
   let e, i, s, r, o = /* @__PURE__ */ new Map(), h, u, c, g, d = !1, P = !0, m;
@@ -2626,7 +2626,11 @@ const T = (n) => {
   });
   function x() {
     if (!m) return;
-    (!h || !u) && (h = m.pointerX - r.position.x, u = m.pointerY - r.position.y), (!c || !g) && (c = r.size.width, g = r.size.height);
+    if (!h || !u) {
+      const A = r.getScroll();
+      h = m.pointerX - r.position.x + A.x, u = m.pointerY - r.position.y + A.y;
+    }
+    (!c || !g) && (c = r.size.width, g = r.size.height);
     const _ = r.size.width / c, f = r.size.height / g, v = h * (_ - 1), E = u * (f - 1);
     r.position.set(
       {
@@ -2645,14 +2649,14 @@ const T = (n) => {
       f.position.setAnimator(v.animator, v.config), f.scale.setAnimator(v.animator, v.config);
     }
     !d && f && !f.intersects(_.pointerX, _.pointerY) || (d = !0, _.isDragging ? (m = _, x(), i.forEach((v) => {
-      var I;
+      var C;
       const E = r.getParent("slot");
       if (!v.intersects(_.pointerX, _.pointerY)) {
         v !== E && v.element.removeAttribute("data-swapy-highlighted");
         return;
       }
-      const F = v.element.dataset.swapySlot, S = (I = v.getChild("item")) == null ? void 0 : I.element.dataset.swapyItem, b = E.element.dataset.swapySlot, N = r.element.dataset.swapyItem;
-      !F || !b || !N || (v.element.dataset.swapyHighlighted = "", o.set(F, N), S ? o.set(b, S) : o.set(b, null), n.emit(Ct, { data: bt(o) }));
+      const A = v.element.dataset.swapySlot, S = (C = v.getChild("item")) == null ? void 0 : C.element.dataset.swapyItem, b = E.element.dataset.swapySlot, I = r.element.dataset.swapyItem;
+      !A || !b || !I || (v.element.dataset.swapyHighlighted = "", o.set(A, I), S ? o.set(b, S) : o.set(b, null), n.emit(Ct, { data: bt(o) }));
     }), s.forEach((v) => {
       v.styles.zIndex = v === r ? "2" : "";
     })) : (i.forEach((v) => {
@@ -2662,11 +2666,11 @@ const T = (n) => {
     }));
   }
 };
-T.pluginName = "Swapy";
-T.scope = "root";
-let B = Ce(), Et = !1;
+N.pluginName = "Swapy";
+N.scope = "root";
+let F = Ce(), Et = !1;
 function Me() {
-  return Et ? (B.updatePlugin(T), B) : (B.addPlugin(T), B.run(), Et = !0, B);
+  return Et ? (F.updatePlugin(N), F) : (F.addPlugin(N), F.run(), Et = !0, F);
 }
 const ke = {
   animation: "dynamic"
@@ -2730,14 +2734,14 @@ class De {
     R(this, "_swapCallback");
     R(this, "_previousMap");
     this._rootEl = t, this._veloxiApp = Me(), this._slotElMap = this._createSlotElMap(), this._itemElMap = this._createItemElMap(), this._veloxiApp.onPluginEvent(
-      T,
+      N,
       Lt,
       ({ data: i }) => {
         this._previousMap = i.map;
       },
       e
     ), this._veloxiApp.onPluginEvent(
-      T,
+      N,
       Ct,
       (i) => {
         var s;
