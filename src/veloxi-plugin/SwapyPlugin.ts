@@ -141,8 +141,15 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   function updateDraggingPosition() {
     if (!draggingEvent) return
     if (!offsetX || !offsetY) {
-      offsetX = draggingEvent.pointerX - draggingItem.position.x
-      offsetY = draggingEvent.pointerY - draggingItem.position.y
+      const draggingItemScrollOffset = draggingItem.getScroll()
+      offsetX =
+        draggingEvent.pointerX -
+        draggingItem.position.x +
+        draggingItemScrollOffset.x
+      offsetY =
+        draggingEvent.pointerY -
+        draggingItem.position.y +
+        draggingItemScrollOffset.y
     }
     if (!initialWidth || !initialHeight) {
       initialWidth = draggingItem.size.width
