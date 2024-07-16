@@ -67,7 +67,6 @@ body,
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none;
   position: relative;
 }
 

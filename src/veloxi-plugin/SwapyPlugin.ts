@@ -120,6 +120,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     const animation = getAnimation()
     items.forEach((item) => {
       item.styles.position = 'relative'
+      item.styles.touchAction = 'none'
       item.position.setAnimator(animation.animator, animation.config)
       item.scale.setAnimator(animation.animator, animation.config)
       item.layoutTransition(true)
