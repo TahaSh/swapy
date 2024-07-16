@@ -116,8 +116,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     root = context.getView('root')!
     slots = context.getViews('slot')
     items = context.getViews('item')
-
     const animation = getAnimation()
+
     items.forEach((item) => {
       item.styles.position = 'relative'
       item.styles.touchAction = 'none'
@@ -134,6 +134,13 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
         handle.position.setAnimator('instant')
         handle.scale.setAnimator('instant')
       }
+    })
+
+    const remainingChildren = context.getViews('root-child')
+    remainingChildren.forEach((child) => {
+      child.position.setAnimator(animation.animator, animation.config)
+      child.scale.setAnimator(animation.animator, animation.config)
+      child.layoutTransition(true)
     })
 
     context.emit(InitEvent, { data: createEventData(slotItemMap) })
