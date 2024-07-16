@@ -1,16 +1,15 @@
-import { createApp } from 'veloxi'
+import { createApp, type VeloxiApp } from 'veloxi'
 import { SwapyConfig, SwapyPlugin, SwapyPluginApi } from './SwapyPlugin'
 
-let app = createApp()
-let installed = false
+let app: VeloxiApp
 function installPlugin() {
-  if (installed) {
+  if (app) {
     app.updatePlugin<SwapyConfig, SwapyPluginApi>(SwapyPlugin)
     return app
   }
+  app = createApp()
   app.addPlugin<SwapyConfig, SwapyPluginApi>(SwapyPlugin)
   app.run()
-  installed = true
   return app
 }
 
