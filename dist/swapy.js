@@ -2611,7 +2611,7 @@ const I = (n) => {
     e = n.getView("root"), i = n.getViews("slot"), s = n.getViews("item");
     const _ = y();
     s.forEach((f) => {
-      f.styles.position = "relative", f.position.setAnimator(_.animator, _.config), f.scale.setAnimator(_.animator, _.config), f.layoutTransition(!0), t.addView(f);
+      f.styles.position = "relative", f.styles.touchAction = "none", f.position.setAnimator(_.animator, _.config), f.scale.setAnimator(_.animator, _.config), f.layoutTransition(!0), t.addView(f);
       const v = f.getParent("slot").element;
       o.set(v.dataset.swapySlot, f.element.dataset.swapyItem);
       const E = f.getChild("handle");
