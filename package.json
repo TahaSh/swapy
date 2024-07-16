@@ -2,7 +2,7 @@
   "name": "swapy",
   "author": "Taha Shashtari (taha@tahazsh.com)",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "main": "./dist/swapy.min.js",
   "module": "./dist/swapy.js",

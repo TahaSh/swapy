@@ -495,11 +495,11 @@ function Zt(n, t) {
   const e = t.x - n.x, i = t.y - n.y;
   return Math.sqrt(e * e + i * i);
 }
-function p(n, t) {
+function _(n, t) {
   const e = n - t;
   return Math.abs(e) <= 0.01;
 }
-function V(n) {
+function y(n) {
   let t = n.match(/^([\d.]+)([a-zA-Z%]*)$/);
   t || (t = "0px".match(/^([\d.]+)([a-zA-Z%]*)$/));
   const e = parseFloat(t[1]), i = t[2];
@@ -511,7 +511,7 @@ function Jt(n, t, e = !1) {
   if (n.length !== t.length)
     return !1;
   for (let i = 0; i < n.length; i++)
-    if (e && !p(n[i].value, t[i].value) || n[i].value !== t[i].value)
+    if (e && !_(n[i].value, t[i].value) || n[i].value !== t[i].value)
       return !1;
   return !0;
 }
@@ -531,7 +531,7 @@ class B {
     };
   }
   equals(t) {
-    return p(this.value.topLeft.value, t.value.topLeft.value) && p(this.value.topRight.value, t.value.topRight.value) && p(this.value.bottomRight.value, t.value.bottomRight.value) && p(this.value.bottomLeft.value, t.value.bottomLeft.value);
+    return _(this.value.topLeft.value, t.value.topLeft.value) && _(this.value.topRight.value, t.value.topRight.value) && _(this.value.bottomRight.value, t.value.bottomRight.value) && _(this.value.bottomLeft.value, t.value.bottomLeft.value);
   }
   toCssPercentageForNewSize(t) {
     const e = this._convertToPercentage(this._topLeft, t), i = this._convertToPercentage(this._topRight, t), s = this._convertToPercentage(this._bottomLeft, t), r = this._convertToPercentage(this._bottomRight, t);
@@ -545,7 +545,7 @@ class B {
   }
 }
 function G(n) {
-  const t = n.split(" ").map((i) => V(i)), e = {
+  const t = n.split(" ").map((i) => y(i)), e = {
     value: 0,
     unit: "",
     valueWithUnit: "0"
@@ -587,15 +587,15 @@ function Qt(n, t) {
   function o(h, u) {
     if (h.unit === "%")
       return {
-        h: V(`${h.value}%`),
-        v: V(`${h.value}%`)
+        h: y(`${h.value}%`),
+        v: y(`${h.value}%`)
       };
     const c = h.value / u.width * 100, g = h.value / u.height * 100;
-    return { h: V(`${c}%`), v: V(`${g}%`) };
+    return { h: y(`${c}%`), v: y(`${g}%`) };
   }
 }
 function wt(n, t) {
-  return p(n.topLeft.value, t.topLeft.value) && p(n.topRight.value, t.topRight.value) && p(n.bottomRight.value, t.bottomRight.value) && p(n.bottomLeft.value, t.bottomLeft.value);
+  return _(n.topLeft.value, t.topLeft.value) && _(n.topRight.value, t.topRight.value) && _(n.bottomRight.value, t.bottomRight.value) && _(n.bottomLeft.value, t.bottomLeft.value);
 }
 class te {
   constructor(t) {
@@ -605,7 +605,7 @@ class te {
     return this._value;
   }
   equals(t) {
-    return p(this.value, t.value);
+    return _(this.value, t.value);
   }
 }
 function ee(n) {
@@ -620,7 +620,7 @@ class ie {
   }
 }
 function se(n, t) {
-  const [e, i] = n.split(" "), s = V(e), r = V(i);
+  const [e, i] = n.split(" "), s = y(e), r = y(i);
   return new ie(
     s.value / t.width,
     r.value / t.height
@@ -733,7 +733,7 @@ class le extends st {
   update({ animatorProp: t, current: e, target: i, dt: s }) {
     const r = (i - e) * this._config.speed;
     let o = e + r * s;
-    return p(o, i) && (o = i, requestAnimationFrame(() => {
+    return _(o, i) && (o = i, requestAnimationFrame(() => {
       t.callCompleteCallback();
     })), t.callUpdateCallback(), o;
   }
@@ -742,7 +742,7 @@ class ue extends st {
   update({ animatorProp: t, current: e, target: i, dt: s }) {
     return i.map((r, o) => {
       const h = e[o], u = r.value === 0 ? h.unit : r.unit, c = (r.value - h.value) * this._config.speed, g = h.value + c * s;
-      let d = V(`${g}${u}`);
+      let d = y(`${g}${u}`);
       return this._shouldFinish(r.value, h.value, c) && (d = r, requestAnimationFrame(() => {
         t.callCompleteCallback();
       })), t.callUpdateCallback(), d;
@@ -808,7 +808,7 @@ class de extends at {
     const r = -(e - i) * this._config.stiffness;
     this._velocity += r, this._velocity *= this._config.damping;
     let o = e + this._velocity * s * this._config.speed;
-    return p(o, i) && (o = i, requestAnimationFrame(() => {
+    return _(o, i) && (o = i, requestAnimationFrame(() => {
       t.callCompleteCallback();
     })), o;
   }
@@ -822,7 +822,7 @@ class ge extends at {
       const h = e[o], u = r.value === 0 ? h.unit : r.unit, c = -(h.value - r.value) * this._config.stiffness;
       this._velocity += c, this._velocity *= this._config.damping;
       const g = h.value + this._velocity * s * this._config.speed;
-      let d = V(`${g}${u}`);
+      let d = y(`${g}${u}`);
       return this._shouldFinish(r.value, h.value) && (d = r, requestAnimationFrame(() => {
         t.callCompleteCallback();
       })), d;
@@ -854,7 +854,7 @@ class _e extends ht {
   update({ animatorProp: t, initial: e, target: i, ts: s }) {
     this._startTime || (this._startTime = s);
     const r = Math.min(1, (s - this._startTime) / this._config.duration);
-    return p(r, 1) ? (requestAnimationFrame(() => {
+    return _(r, 1) ? (requestAnimationFrame(() => {
       t.callCompleteCallback();
     }), i) : l.add(
       e,
@@ -866,11 +866,11 @@ class ve extends ht {
   update({ animatorProp: t, initial: e, target: i, ts: s }) {
     this._startTime || (this._startTime = s);
     const r = Math.min(1, (s - this._startTime) / this._config.duration);
-    return p(r, 1) ? (requestAnimationFrame(() => {
+    return _(r, 1) ? (requestAnimationFrame(() => {
       t.callCompleteCallback();
     }), i) : e.map((o, h) => {
       const u = i[h], c = u.value === 0 ? o.unit : u.unit, g = o.value + this._config.ease(r) * (i[h].value - o.value);
-      return V(`${g}${c}`);
+      return y(`${g}${c}`);
     });
   }
 }
@@ -878,7 +878,7 @@ class me extends ht {
   update({ animatorProp: t, initial: e, target: i, ts: s }) {
     this._startTime || (this._startTime = s);
     const r = Math.min(1, (s - this._startTime) / this._config.duration);
-    return p(r, 1) ? (requestAnimationFrame(() => {
+    return _(r, 1) ? (requestAnimationFrame(() => {
       t.callCompleteCallback();
     }), i) : e + (i - e) * this._config.ease(r);
   }
@@ -1063,7 +1063,7 @@ class ye extends N {
       };
     } else
       i = t;
-    const s = i.topLeft ? V(i.topLeft) : this._currentValue[0], r = i.topRight ? V(i.topRight) : this._currentValue[1], o = i.bottomRight ? V(i.bottomRight) : this._currentValue[2], h = i.bottomLeft ? V(i.bottomLeft) : this._currentValue[3];
+    const s = i.topLeft ? y(i.topLeft) : this._currentValue[0], r = i.topRight ? y(i.topRight) : this._currentValue[1], o = i.bottomRight ? y(i.bottomRight) : this._currentValue[2], h = i.bottomLeft ? y(i.bottomLeft) : this._currentValue[3];
     this._setTarget([s, r, o, h], e);
   }
   reset(t = !0) {
@@ -1094,7 +1094,7 @@ class ye extends N {
     this._updateWithScale && (this._forceStyleUpdateThisFrame = !0);
   }
   _applyScaleInverse() {
-    if (p(this._view.scale.x, 1) && p(this._view.scale.y, 1))
+    if (_(this._view.scale.x, 1) && _(this._view.scale.y, 1))
       return;
     const t = this._rect.size.width * this._view.scale.x, e = this._rect.size.height * this._view.scale.y;
     this._invertedBorderRadius = Qt(
@@ -1164,8 +1164,8 @@ class Ve extends N {
     this._setTarget(1, t);
   }
   update(t, e) {
-    if (p(this._targetValue, this._currentValue)) {
-      this._hasChanged = !p(this._targetValue, this._initialValue);
+    if (_(this._targetValue, this._currentValue)) {
+      this._hasChanged = !_(this._targetValue, this._initialValue);
       return;
     }
     this._currentValue = this._animator.update({
@@ -1225,7 +1225,7 @@ class Pe extends N {
     if (!this._previousRenderValue)
       return !0;
     const t = this.renderValue;
-    return !(p(t.x, this._previousRenderValue.x) && p(t.y, this._previousRenderValue.y));
+    return !(_(t.x, this._previousRenderValue.x) && _(t.y, this._previousRenderValue.y));
   }
   get renderValue() {
     return new l(this.x * 100, this.y * 100);
@@ -1314,8 +1314,8 @@ class be extends N {
     if (s !== 0 || r !== 0 || !Number.isNaN(o) && o !== 1 || !Number.isNaN(h) && h !== 1 ? u = !0 : u = (() => {
       const c = this._view._parents;
       for (let g = 0; g < c.length; g++) {
-        const d = c[g], P = d.previousRect.size.width / d.rect.size.width, m = d.previousRect.size.height / d.rect.size.height;
-        if (P !== 1 || m !== 1)
+        const d = c[g], V = d.previousRect.size.width / d.rect.size.width, m = d.previousRect.size.height / d.rect.size.height;
+        if (V !== 1 || m !== 1)
           return !0;
       }
       return !1;
@@ -1329,21 +1329,21 @@ class be extends N {
           );
           return;
         }
-        const b = this._view._parent, C = this._rect.pageOffset, L = this._view.getScroll(), M = {
+        const P = this._view._parent, C = this._rect.pageOffset, L = this._view.getScroll(), M = {
           left: this._previousRect.viewportOffset.left + L.x,
           top: this._previousRect.viewportOffset.top + L.y
         }, Lt = M.left - C.left, Bt = M.top - C.top;
         let ct = 0, dt = 0, gt = 0, pt = 0;
-        if (b) {
-          const k = b.rect.pageOffset, $ = b.getScroll(), z = {
-            left: b.previousRect.viewportOffset.left + $.x,
-            top: b.previousRect.viewportOffset.top + $.y
+        if (P) {
+          const k = P.rect.pageOffset, $ = P.getScroll(), z = {
+            left: P.previousRect.viewportOffset.left + $.x,
+            top: P.previousRect.viewportOffset.top + $.y
           };
           ct = z.left - k.left, dt = z.top - k.top;
-          const _t = M.top - z.top, vt = M.left - z.left, Ft = b.scale.y * _t;
-          gt = (_t - Ft) / b.scale.y;
-          const St = b.scale.x * vt;
-          pt = (vt - St) / b.scale.x;
+          const _t = M.top - z.top, vt = M.left - z.left, Ft = P.scale.y * _t;
+          gt = (_t - Ft) / P.scale.y;
+          const St = P.scale.x * vt;
+          pt = (vt - St) / P.scale.x;
         }
         this._setTarget(
           new l(Lt - ct + pt, Bt - dt + gt),
@@ -1353,14 +1353,14 @@ class be extends N {
       }
       this._animateLayoutUpdateNextFrame = !0;
       const c = this._previousRect, g = this._rect, d = this._view._parent;
-      let P = 0, m = 0;
-      d && (P = d.previousRect.viewportOffset.left - d.rect.viewportOffset.left), d && (m = d.previousRect.viewportOffset.top - d.rect.viewportOffset.top);
-      let w = 1, y = 1;
-      d && (w = d.previousRect.size.width / d.rect.size.width, y = d.previousRect.size.height / d.rect.size.height);
-      const x = d ? d.previousRect.viewportOffset.left : 0, U = d ? d.previousRect.viewportOffset.top : 0, _ = c.viewportOffset.left - x, f = c.viewportOffset.top - U, v = _ / w - _, E = f / y - f;
-      let A = c.viewportOffset.left - g.viewportOffset.left - P + v;
-      const S = c.viewportOffset.top - g.viewportOffset.top - m + E;
-      this._setTarget(new l(A, S), !1);
+      let V = 0, m = 0;
+      d && (V = d.previousRect.viewportOffset.left - d.rect.viewportOffset.left), d && (m = d.previousRect.viewportOffset.top - d.rect.viewportOffset.top);
+      let f = 1, w = 1;
+      d && (f = d.previousRect.size.width / d.rect.size.width, w = d.previousRect.size.height / d.rect.size.height);
+      const x = d ? d.previousRect.viewportOffset.left : 0, U = d ? d.previousRect.viewportOffset.top : 0, v = c.viewportOffset.left - x, b = c.viewportOffset.top - U, p = v / f - v, A = b / w - b;
+      let E = c.viewportOffset.left - g.viewportOffset.left - V + p;
+      const S = c.viewportOffset.top - g.viewportOffset.top - m + A;
+      this._setTarget(new l(E, S), !1);
     } else
       this._animateLayoutUpdateNextFrame && (this._setTarget(this._initialValue, !0), this._animateLayoutUpdateNextFrame = !1);
   }
@@ -1370,7 +1370,7 @@ class be extends N {
     if (!this._previousRenderValue)
       return !0;
     const t = this.renderValue;
-    return !(p(t.x, this._previousRenderValue.x) && p(t.y, this._previousRenderValue.y));
+    return !(_(t.x, this._previousRenderValue.x) && _(t.y, this._previousRenderValue.y));
   }
   get renderValue() {
     let t = 0, e = 0;
@@ -1424,7 +1424,7 @@ class Ee extends N {
     if (typeof this._previousRenderValue > "u")
       return !0;
     const t = this.renderValue;
-    return !p(t, this._previousRenderValue);
+    return !_(t, this._previousRenderValue);
   }
   get renderValue() {
     return this._currentValue;
@@ -1497,7 +1497,7 @@ class Re extends N {
     if (!this._previousRenderValue)
       return !0;
     const t = this.renderValue;
-    return !(p(t.x, this._previousRenderValue.x) && p(t.y, this._previousRenderValue.y));
+    return !(_(t.x, this._previousRenderValue.x) && _(t.y, this._previousRenderValue.y));
   }
   get renderValue() {
     const t = this._view._parent ? this._view._parent.scale.x : 1, e = this._view._parent ? this._view._parent.scale.y : 1, i = this._currentValue.x / t, s = this._currentValue.y / e;
@@ -1572,7 +1572,7 @@ class xe extends N {
     if (!this._previousRenderValue)
       return !0;
     const t = this.renderValue;
-    return !(p(t.x, this._previousRenderValue.x) && p(t.y, this._previousRenderValue.y));
+    return !(_(t.x, this._previousRenderValue.x) && _(t.y, this._previousRenderValue.y));
   }
   get renderValue() {
     return new l(this._currentValue.x, this._currentValue.y);
@@ -2174,21 +2174,21 @@ class Ne {
       this._plugins.push(g);
       let d = [];
       u !== document.documentElement && d.push(u);
-      const P = u.querySelectorAll(
+      const V = u.querySelectorAll(
         `[data-vel-plugin=${g.pluginName}]`
       );
-      d = [...d, ...P];
-      const m = d.filter((w) => {
-        if (!w.parentElement)
+      d = [...d, ...V];
+      const m = d.filter((f) => {
+        if (!f.parentElement)
           return !0;
-        const y = this._getPluginNameForElement(w.parentElement);
-        return !(y && y.length > 0);
+        const w = this._getPluginNameForElement(f.parentElement);
+        return !(w && w.length > 0);
       });
-      return m.length && m.forEach((w) => {
-        const y = w.dataset.velView;
-        if (!y)
+      return m.length && m.forEach((f) => {
+        const w = f.dataset.velView;
+        if (!w)
           return;
-        const x = this._createNewView(w, y, g);
+        const x = this._createNewView(f, w, g);
         g.notifyAboutViewAdded(x);
       }), g;
     });
@@ -2426,17 +2426,17 @@ class Nt extends et {
     });
   }
   _emitEvent(t, e) {
-    const i = this._viewPointerPositionLog.get(t.id), s = i && i.length >= 2 ? i[i.length - 2] : null, r = this._pointerX - this._initialPointerPerView.get(t.id).x, o = this._pointerY - this._initialPointerPerView.get(t.id).y, h = this._pointerX, u = this._pointerY, c = s ? s.x - this._initialPointerPerView.get(t.id).x : r, g = s ? s.y - this._initialPointerPerView.get(t.id).y : o, d = this._pointerY - this._initialPointer.y, P = this._pointerX - this._initialPointer.x, m = Zt(this._initialPointer, {
+    const i = this._viewPointerPositionLog.get(t.id), s = i && i.length >= 2 ? i[i.length - 2] : null, r = this._pointerX - this._initialPointerPerView.get(t.id).x, o = this._pointerY - this._initialPointerPerView.get(t.id).y, h = this._pointerX, u = this._pointerY, c = s ? s.x - this._initialPointerPerView.get(t.id).x : r, g = s ? s.y - this._initialPointerPerView.get(t.id).y : o, d = this._pointerY - this._initialPointer.y, V = this._pointerX - this._initialPointer.x, m = Zt(this._initialPointer, {
       x: this._pointerX,
       y: this._pointerY
-    }), w = this._targetPerView.get(t.id);
-    if (!w || !t.hasElement(w))
+    }), f = this._targetPerView.get(t.id);
+    if (!f || !t.hasElement(f))
       return;
-    const y = this._pointerDownPerView.get(t.id) === !0;
-    y || this._viewPointerPositionLog.clear();
+    const w = this._pointerDownPerView.get(t.id) === !0;
+    w || this._viewPointerPositionLog.clear();
     const x = {
       view: t,
-      target: w,
+      target: f,
       previousX: c,
       previousY: g,
       x: r,
@@ -2444,9 +2444,9 @@ class Nt extends et {
       pointerX: h,
       pointerY: u,
       distance: m,
-      width: P,
+      width: V,
       height: d,
-      isDragging: y,
+      isDragging: w,
       directions: e
     };
     this.emit(Tt, x);
@@ -2524,9 +2524,9 @@ class Le extends et {
           u.dot(h.down),
           u.dot(h.left),
           u.dot(h.right)
-        ], d = Math.max(...g), P = g.indexOf(d), m = c[P], w = l.sub(o, r).magnitude;
+        ], d = Math.max(...g), V = g.indexOf(d), m = c[V], f = l.sub(o, r).magnitude;
         return {
-          hasSwiped: u.dot(h[m]) * w > 30,
+          hasSwiped: u.dot(h[m]) * f > 30,
           direction: m
         };
       }
@@ -2577,29 +2577,29 @@ function bt(n) {
 const I = (n) => {
   const t = n.useEventPlugin(Nt);
   t.on(Tt, U);
-  let e, i, s, r, o = /* @__PURE__ */ new Map(), h, u, c, g, d = !1, P = !0, m;
+  let e, i, s, r, o = /* @__PURE__ */ new Map(), h, u, c, g, d = !1, V = !0, m;
   n.api({
-    setEnabled(_) {
-      P = _;
+    setEnabled(v) {
+      V = v;
     }
   });
-  function w() {
+  function f() {
     return {
       animation: e.data.configAnimation
     };
   }
-  function y() {
-    const _ = w().animation;
-    return _ === "dynamic" ? {
+  function w() {
+    const v = f().animation;
+    return v === "dynamic" ? {
       animator: "dynamic",
       config: {}
-    } : _ === "spring" ? {
+    } : v === "spring" ? {
       animator: "spring",
       config: {
         damping: 0.7,
         stiffness: 0.62
       }
-    } : _ === "none" ? {
+    } : v === "none" ? {
       animator: "instant",
       config: {}
     } : {
@@ -2609,52 +2609,54 @@ const I = (n) => {
   }
   n.setup(() => {
     e = n.getView("root"), i = n.getViews("slot"), s = n.getViews("item");
-    const _ = y();
-    s.forEach((f) => {
-      f.styles.position = "relative", f.styles.touchAction = "none", f.position.setAnimator(_.animator, _.config), f.scale.setAnimator(_.animator, _.config), f.layoutTransition(!0), t.addView(f);
-      const v = f.getParent("slot").element;
-      o.set(v.dataset.swapySlot, f.element.dataset.swapyItem);
-      const E = f.getChild("handle");
+    const v = w();
+    s.forEach((p) => {
+      p.styles.position = "relative", p.styles.touchAction = "none", p.position.setAnimator(v.animator, v.config), p.scale.setAnimator(v.animator, v.config), p.layoutTransition(!0), t.addView(p);
+      const A = p.getParent("slot").element;
+      o.set(A.dataset.swapySlot, p.element.dataset.swapyItem);
+      const E = p.getChild("handle");
       E && (E.position.setAnimator("instant"), E.scale.setAnimator("instant"));
+    }), n.getViews("root-child").forEach((p) => {
+      p.position.setAnimator(v.animator, v.config), p.scale.setAnimator(v.animator, v.config), p.layoutTransition(!0);
     }), n.emit(Ct, { data: bt(o) });
   });
   function x() {
     if (!m) return;
     if (!h || !u) {
-      const A = r.getScroll();
-      h = m.pointerX - r.position.x + A.x, u = m.pointerY - r.position.y + A.y;
+      const E = r.getScroll();
+      h = m.pointerX - r.position.x + E.x, u = m.pointerY - r.position.y + E.y;
     }
     (!c || !g) && (c = r.size.width, g = r.size.height);
-    const _ = r.size.width / c, f = r.size.height / g, v = h * (_ - 1), E = u * (f - 1);
+    const v = r.size.width / c, b = r.size.height / g, p = h * (v - 1), A = u * (b - 1);
     r.position.set(
       {
-        x: m.x - v,
-        y: m.y - E
+        x: m.x - p,
+        y: m.y - A
       },
       r.scale.x !== 1 || r.scale.y !== 1
     );
   }
-  function U(_) {
-    if (!P) return;
-    r = _.view;
-    const f = r.getChild("handle");
-    if (f) {
-      const v = y();
-      f.position.setAnimator(v.animator, v.config), f.scale.setAnimator(v.animator, v.config);
+  function U(v) {
+    if (!V) return;
+    r = v.view;
+    const b = r.getChild("handle");
+    if (b) {
+      const p = w();
+      b.position.setAnimator(p.animator, p.config), b.scale.setAnimator(p.animator, p.config);
     }
-    !d && f && !f.intersects(_.pointerX, _.pointerY) || (d = !0, _.isDragging ? (m = _, x(), i.forEach((v) => {
+    !d && b && !b.intersects(v.pointerX, v.pointerY) || (d = !0, v.isDragging ? (m = v, x(), i.forEach((p) => {
       var L;
-      const E = r.getParent("slot");
-      if (!v.intersects(_.pointerX, _.pointerY)) {
-        v !== E && v.element.removeAttribute("data-swapy-highlighted");
+      const A = r.getParent("slot");
+      if (!p.intersects(v.pointerX, v.pointerY)) {
+        p !== A && p.element.removeAttribute("data-swapy-highlighted");
         return;
       }
-      const A = v.element.dataset.swapySlot, S = (L = v.getChild("item")) == null ? void 0 : L.element.dataset.swapyItem, b = E.element.dataset.swapySlot, C = r.element.dataset.swapyItem;
-      !A || !b || !C || (v.element.dataset.swapyHighlighted = "", o.set(A, C), S ? o.set(b, S) : o.set(b, null), n.emit(It, { data: bt(o) }));
-    }), s.forEach((v) => {
-      v.styles.zIndex = v === r ? "2" : "";
-    })) : (i.forEach((v) => {
-      v.element.removeAttribute("data-swapy-highlighted");
+      const E = p.element.dataset.swapySlot, S = (L = p.getChild("item")) == null ? void 0 : L.element.dataset.swapyItem, P = A.element.dataset.swapySlot, C = r.element.dataset.swapyItem;
+      !E || !P || !C || (p.element.dataset.swapyHighlighted = "", o.set(E, C), S ? o.set(P, S) : o.set(P, null), n.emit(It, { data: bt(o) }));
+    }), s.forEach((p) => {
+      p.styles.zIndex = p === r ? "2" : "";
+    })) : (i.forEach((p) => {
+      p.element.removeAttribute("data-swapy-highlighted");
     }), r.position.reset(), h = null, u = null, c = null, g = null, d = !1, m = null), requestAnimationFrame(() => {
       x();
     }));
