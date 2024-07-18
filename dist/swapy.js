@@ -1664,7 +1664,7 @@ class Ae {
 }
 class Te {
   constructor(t, e, i, s) {
-    a(this, "id"), a(this, "name"), a(this, "element"), a(this, "styles", {}), a(this, "_viewProps"), a(this, "_previousRect"), a(this, "_onAddCallbacks"), a(this, "_onRemoveCallback"), a(this, "_skipFirstRenderFrame"), a(this, "_layoutTransition"), a(this, "_registry"), a(this, "_layoutId"), a(this, "_elementReader"), a(this, "_temporaryView"), a(this, "_inverseEffect"), a(this, "_renderNextTick"), this.id = xt(), this.name = e, this.element = t, this._elementReader = X(t), this._previousRect = this._elementReader.rect, this._viewProps = new Ae(this), this._skipFirstRenderFrame = !0, this._layoutId = s, this._layoutTransition = !1, this._registry = i, this.element.dataset.velViewId = this.id, this._temporaryView = !1, this._inverseEffect = !1, this.styles = Z(this.styles, () => {
+    a(this, "id"), a(this, "name"), a(this, "element"), a(this, "styles", {}), a(this, "_viewProps"), a(this, "_previousRect"), a(this, "_onAddCallbacks"), a(this, "_onRemoveCallback"), a(this, "_skipFirstRenderFrame"), a(this, "_layoutTransition"), a(this, "_registry"), a(this, "_layoutId"), a(this, "_elementReader"), a(this, "_viewParents"), a(this, "_temporaryView"), a(this, "_inverseEffect"), a(this, "_renderNextTick"), this._registry = i, this.id = xt(), this.name = e, this.element = t, this._elementReader = X(t), this._viewParents = this._getParents(), this._previousRect = this._elementReader.rect, this._viewProps = new Ae(this), this._skipFirstRenderFrame = !0, this._layoutId = s, this._layoutTransition = !1, this.element.dataset.velViewId = this.id, this._temporaryView = !1, this._inverseEffect = !1, this.styles = Z(this.styles, () => {
       this._renderNextTick = !0;
     }), this._renderNextTick = !1;
   }
@@ -1690,15 +1690,12 @@ class Te {
     return Array.from(this.element.children).map((t) => t.dataset.velViewId).filter((t) => t && typeof t == "string").map((t) => this._registry.getViewById(t)).filter((t) => !!t);
   }
   get _parent() {
-    var t;
-    const e = this.element.parentElement;
-    if (!e)
-      return;
-    const i = e.closest("[data-vel-view-id]");
-    if ((t = i == null ? void 0 : i.dataset) != null && t.velViewId)
-      return this._registry.getViewById(i.dataset.velViewId);
+    return this._parents[0];
   }
   get _parents() {
+    return this._viewParents;
+  }
+  _getParents() {
     var t;
     const e = [];
     let i = this.element.parentElement;
