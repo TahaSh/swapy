@@ -94,7 +94,7 @@ function addVeloxiDataAttributes(
 }
 
 function createSwapy(
-  root: Element,
+  root: Element | null,
   userConfig: Config = {} as Config
 ): SwapyApi {
   const config = { ...DEFAULT_CONFIG, ...userConfig }
