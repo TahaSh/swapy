@@ -2703,10 +2703,14 @@ function $e(n, t = {}) {
   }), e;
 }
 function Oe(n, t = {}) {
+  if (!n)
+    throw new Error(
+      "Cannot create a Swapy instance because the element you provided does not exist on the page!"
+    );
   const e = { ...Me, ...t }, i = n;
   if (!ke(i))
     throw new Error(
-      "Cannot create swapy instance because your HTML structure is invalid. Fix all above errors and then try!"
+      "Cannot create a Swapy instance because your HTML structure is invalid. Fix all above errors and then try!"
     );
   const s = $e(i, e), r = new ze(i, s);
   return {

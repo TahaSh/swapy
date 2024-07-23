@@ -4,7 +4,7 @@ declare type Config = {
     animation: AnimationType;
 };
 
-export declare function createSwapy(root: Element, userConfig?: Config): SwapyApi;
+export declare function createSwapy(root: Element | null, userConfig?: Config): SwapyApi;
 
 declare type SwapCallback = (event: SwapEventData) => void;
 
