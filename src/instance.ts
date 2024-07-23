@@ -94,14 +94,19 @@ function addVeloxiDataAttributes(
 }
 
 function createSwapy(
-  root: Element | null,
+  root: Element | null,
   userConfig: Config = {} as Config
 ): SwapyApi {
+  if (!root) {
+    throw new Error(
+      'Cannot create a Swapy instance because the element you provided does not exist on the page!'
+    )
+  }
   const config = { ...DEFAULT_CONFIG, ...userConfig }
   const rootEl = root as HTMLElement
   if (!validate(rootEl)) {
     throw new Error(
-      'Cannot create swapy instance because your HTML structure is invalid. Fix all above errors and then try!'
+      'Cannot create a Swapy instance because your HTML structure is invalid. Fix all above errors and then try!'
     )
   }
   const pluginKey = addVeloxiDataAttributes(rootEl, config)
