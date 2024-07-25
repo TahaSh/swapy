@@ -1,12 +1,12 @@
 import { getUniqueId, mapsAreEqual } from './utils'
-import { installPlugin } from './veloxi-plugin'
 import {
+  installPlugin,
   InitEvent,
   SwapEvent,
   SwapEventData,
   SwapyPlugin,
   SwapyPluginApi
-} from './veloxi-plugin/SwapyPlugin'
+} from './veloxi-plugin'
 
 interface SwapyApi {
   onSwap(callback: SwapCallback): void
@@ -93,7 +93,7 @@ function addVeloxiDataAttributes(
   return pluginKey
 }
 
-function createSwapy(
+export function createSwapy(
   root: Element | null,
   userConfig: Config = {} as Config
 ): SwapyApi {
@@ -205,5 +205,3 @@ class Swapy {
 }
 
 type SwapCallback = (event: SwapEventData) => void
-
-export { createSwapy }

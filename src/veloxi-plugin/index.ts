@@ -2,7 +2,7 @@ import { createApp, type VeloxiApp } from 'veloxi'
 import { SwapyConfig, SwapyPlugin, SwapyPluginApi } from './SwapyPlugin'
 
 let app: VeloxiApp
-function installPlugin() {
+export function installPlugin() {
   if (app) {
     app.updatePlugin<SwapyConfig, SwapyPluginApi>(SwapyPlugin)
     return app
@@ -13,4 +13,4 @@ function installPlugin() {
   return app
 }
 
-export { installPlugin }
+export * from './SwapyPlugin'
