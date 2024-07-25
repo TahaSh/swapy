@@ -12,32 +12,26 @@ const DEFAULT = {
 
 function A() {
   return (
-    <>
-      <div className="item a" data-swapy-item="a">
+    <div className="item a" data-swapy-item="a">
         <div className="handle" data-swapy-handle></div>
         <div>A</div>
-      </div>
-    </>
+    </div>
   )
 }
 
 function C() {
   return (
-    <>
-      <div className="item c" data-swapy-item="c">
+    <div className="item c" data-swapy-item="c">
         <div>C</div>
-      </div>
-    </>
+    </div>
   )
 }
 
 function D() {
   return (
-    <>
-      <div className="item d" data-swapy-item="d">
+    <div className="item d" data-swapy-item="d">
         <div>D</div>
-      </div>
-    </>
+    </div>
   )
 }
 
@@ -63,8 +57,7 @@ function App() {
     })
   }, [])
   return (
-    <>
-      <div className="container">
+    <div className="container">
         <div className="slot a" data-swapy-slot="1">
           {getItemById(slotItems['1'])}
         </div>
@@ -80,7 +73,6 @@ function App() {
           {getItemById(slotItems['4'])}
         </div>
       </div>
-    </>
   )
 }
 
