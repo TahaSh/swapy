@@ -93,7 +93,7 @@ function addVeloxiDataAttributes(
   return pluginKey
 }
 
-function createSwapy(
+export function createSwapy(
   root: Element | null,
   userConfig: Config = {} as Config
 ): SwapyApi {
@@ -205,5 +205,3 @@ class Swapy {
 }
 
 type SwapCallback = (event: SwapEventData) => void
-
-export { createSwapy }
