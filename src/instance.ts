@@ -1,12 +1,12 @@
 import { getUniqueId, mapsAreEqual } from './utils'
-import { installPlugin } from './veloxi-plugin'
 import {
+  installPlugin,
   InitEvent,
   SwapEvent,
   SwapEventData,
   SwapyPlugin,
   SwapyPluginApi
-} from './veloxi-plugin/SwapyPlugin'
+} from './veloxi-plugin'
 
 interface SwapyApi {
   onSwap(callback: SwapCallback): void
