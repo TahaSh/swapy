@@ -66,9 +66,9 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let offsetY: number | null
   let initialWidth: number | null
   let initialHeight: number | null
-  let startedDragging = false
   let enabled = true
   let draggingEvent: DragEvent | null
+  let isContinuousMode: boolean
 
   context.api({
     setEnabled(isEnabled) {
@@ -78,7 +78,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
   function getConfig(): Config {
     return {
-      animation: root.data.configAnimation as AnimationType
+      animation: root.data.configAnimation as AnimationType,
+      continuousMode: typeof root.data.configContinuousMode !== 'undefined'
     }
   }
 
@@ -116,35 +117,54 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     root = context.getView('root')!
     slots = context.getViews('slot')
     items = context.getViews('item')
-    const animation = getAnimation()
+    isContinuousMode = getConfig().continuousMode
 
     items.forEach((item) => {
-      item.styles.position = 'relative'
-      item.styles.touchAction = 'none'
-      item.position.setAnimator(animation.animator, animation.config)
-      item.scale.setAnimator(animation.animator, animation.config)
-      item.layoutTransition(true)
-      dragEventPlugin.addView(item)
-
-      const slot = item.getParent('slot')!.element
-      slotItemMap.set(slot.dataset.swapySlot!, item.element.dataset.swapyItem!)
-
-      const handle = item.getChild('handle')
-      if (handle) {
-        handle.position.setAnimator('instant')
-        handle.scale.setAnimator('instant')
-      }
+      setupItem(item)
     })
 
+    setupRemainingChildren()
+
+    context.emit(InitEvent, { data: createEventData(slotItemMap) })
+  })
+
+  function setupItem(item: View) {
+    const animation = getAnimation()
+    item.styles.position = 'relative'
+    item.styles.touchAction = 'none'
+    item.position.setAnimator(animation.animator, animation.config)
+    item.scale.setAnimator(animation.animator, animation.config)
+    item.layoutTransition(true)
+
+    const handle = item.getChild('handle')
+    if (handle) {
+      dragEventPlugin.addView(handle)
+    } else {
+      dragEventPlugin.addView(item)
+    }
+
+    const slot = item.getParent('slot')!.element
+    slotItemMap.set(slot.dataset.swapySlot!, item.element.dataset.swapyItem!)
+  }
+
+  context.onViewAdded((view) => {
+    if (context.initialized && view.name === 'item') {
+      setupItem(view)
+      setupRemainingChildren()
+      items = context.getViews('item')
+      context.emit(SwapEvent, { data: createEventData(slotItemMap) })
+    }
+  })
+
+  function setupRemainingChildren() {
+    const animation = getAnimation()
     const remainingChildren = context.getViews('root-child')
     remainingChildren.forEach((child) => {
       child.position.setAnimator(animation.animator, animation.config)
       child.scale.setAnimator(animation.animator, animation.config)
       child.layoutTransition(true)
     })
-
-    context.emit(InitEvent, { data: createEventData(slotItemMap) })
-  })
+  }
 
   function updateDraggingPosition() {
     if (!draggingEvent) return
@@ -178,31 +198,23 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
   function onDrag(event: DragEvent) {
     if (!enabled) return
-    draggingItem = event.view
-    const handle = draggingItem.getChild('handle')
-    if (handle) {
-      const animation = getAnimation()
-      handle.position.setAnimator(animation.animator, animation.config)
-      handle.scale.setAnimator(animation.animator, animation.config)
-    }
-    if (
-      !startedDragging &&
-      handle &&
-      !handle.intersects(event.pointerX, event.pointerY)
-    ) {
-      return
-    }
-    startedDragging = true
+    const withHandle = event.view.name === 'handle'
+    draggingItem = withHandle ? event.view.getParent('item')! : event.view
     if (event.isDragging) {
       draggingEvent = event
       updateDraggingPosition()
-
       slots.forEach((slot) => {
         const draggingSlot = draggingItem.getParent('slot')!
         if (!slot.intersects(event.pointerX, event.pointerY)) {
           if (slot !== draggingSlot) {
             slot.element.removeAttribute('data-swapy-highlighted')
           }
+          return
+        }
+        if (typeof slot.element.dataset.swapyHighlighted === 'undefined') {
+          slot.element.dataset.swapyHighlighted = ''
+        }
+        if (!event.stopped && !isContinuousMode) {
           return
         }
         const targetSlotName = slot.element.dataset.swapySlot
@@ -212,7 +224,6 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
         if (!targetSlotName || !draggingSlotName || !draggingItemName) {
           return
         }
-        slot.element.dataset.swapyHighlighted = ''
         slotItemMap.set(targetSlotName, draggingItemName)
         if (targetItemName) {
           slotItemMap.set(draggingSlotName, targetItemName)
@@ -224,17 +235,22 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
       items.forEach((item) => {
         item.styles.zIndex = item === draggingItem ? '2' : ''
+        item.styles.userSelect = 'none'
+        item.styles.webkitUserSelect = 'none'
       })
     } else {
       slots.forEach((slot) => {
         slot.element.removeAttribute('data-swapy-highlighted')
+      })
+      items.forEach((item) => {
+        item.styles.userSelect = ''
+        item.styles.webkitUserSelect = ''
       })
       draggingItem.position.reset()
       offsetX = null
       offsetY = null
       initialWidth = null
       initialHeight = null
-      startedDragging = false
       draggingEvent = null
     }
     requestAnimationFrame(() => {

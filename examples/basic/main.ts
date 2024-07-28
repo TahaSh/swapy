@@ -6,11 +6,13 @@ const container2 = document.querySelector('.container-2')!
 const enableInput = document.querySelector('#enable')! as HTMLInputElement
 
 const swapy = createSwapy(container, {
-  animation: 'dynamic'
+  animation: 'dynamic',
+  continuousMode: false
 })
 
 const swapy2 = createSwapy(container2, {
-  animation: 'spring'
+  animation: 'spring',
+  continuousMode: true
 })
 
 swapy2.onSwap((event) => {

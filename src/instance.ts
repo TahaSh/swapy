@@ -16,10 +16,12 @@ interface SwapyApi {
 export type AnimationType = 'dynamic' | 'spring' | 'none'
 export type Config = {
   animation: AnimationType
+  continuousMode: boolean
 }
 
 const DEFAULT_CONFIG: Config = {
-  animation: 'dynamic'
+  animation: 'dynamic',
+  continuousMode: true
 }
 
 function validate(root: HTMLElement): boolean {
@@ -70,7 +72,9 @@ function addVeloxiDataAttributes(
   root.dataset.velPlugin = 'Swapy'
   root.dataset.velView = 'root'
   root.dataset.velDataConfigAnimation = config.animation
-
+  if (config.continuousMode) {
+    root.dataset.velDataConfigContinuousMode = 'true'
+  }
   const slots = Array.from(
     root.querySelectorAll('[data-swapy-slot]')
   ) as HTMLElement[]
@@ -90,12 +94,55 @@ function addVeloxiDataAttributes(
     }
   })
 
+  const textElements = Array.from(
+    root.querySelectorAll('[data-swapy-text]')
+  ) as HTMLElement[]
+  textElements.forEach((el) => {
+    el.dataset.velLayoutPosition = ''
+  })
+
+  const excludedElements = Array.from(
+    root.querySelectorAll('[data-swapy-exclude]')
+  ) as HTMLElement[]
+  excludedElements.forEach((el) => {
+    el.dataset.velIgnore = ''
+  })
+
   return pluginKey
+}
+
+function resyncItems(root: HTMLElement): boolean {
+  const items = Array.from(
+    root.querySelectorAll('[data-swapy-item]:not([data-vel-view]')
+  ) as HTMLElement[]
+  items.forEach((item) => {
+    item.dataset.velView = 'item'
+    item.dataset.velLayoutId = item.dataset.swapyItem
+    const handle = item.querySelector('[data-swapy-handle]') as HTMLElement
+    if (handle) {
+      handle.dataset.velView = 'handle'
+    }
+
+    const textElements = Array.from(
+      item.querySelectorAll('[data-swapy-text]')
+    ) as HTMLElement[]
+    textElements.forEach((el) => {
+      el.dataset.velLayoutPosition = ''
+    })
+
+    const excludedElements = Array.from(
+      item.querySelectorAll('[data-swapy-exclude]')
+    ) as HTMLElement[]
+    excludedElements.forEach((el) => {
+      el.dataset.velIgnore = ''
+    })
+  })
+  return items.length > 0
 }
 
 function createSwapy(
   root: Element | null,
-  userConfig: Config = {} as Config
+  userConfig: Partial<Config> = {} as Partial<Config>
 ): SwapyApi {
   if (!root) {
     throw new Error(
@@ -158,6 +205,22 @@ class Swapy {
       },
       pluginKey
     )
+    this.setupMutationObserver()
+  }
+
+  private setupMutationObserver() {
+    const observer = new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => mutation.type === 'childList')) {
+        if (resyncItems(this._rootEl)) {
+          this._slotElMap = this._createSlotElMap()
+          this._itemElMap = this._createItemElMap()
+        }
+      }
+    })
+    observer.observe(this._rootEl, {
+      childList: true,
+      subtree: true
+    })
   }
 
   setEnabled(enabledValue: boolean) {
