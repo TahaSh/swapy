@@ -2,9 +2,10 @@ declare type AnimationType = 'dynamic' | 'spring' | 'none';
 
 declare type Config = {
     animation: AnimationType;
+    continuousMode: boolean;
 };
 
-export declare function createSwapy(root: Element | null, userConfig?: Config): SwapyApi;
+export declare function createSwapy(root: Element | null, userConfig?: Partial<Config>): SwapyApi;
 
 declare type SwapCallback = (event: SwapEventData) => void;
 
