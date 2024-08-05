@@ -1,5 +1,6 @@
 import { DragEvent, DragEventPlugin, PluginFactory, View } from 'veloxi'
 import { AnimationType, Config } from '../instance'
+import { mapsAreEqual } from '../utils'
 
 type SwapEventArray = Array<{ slot: string; item: string | null }>
 type SwapEventMap = Map<string, string | null>
@@ -62,6 +63,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let items: View[]
   let draggingItem: View
   let slotItemMap: SwapEventMap = new Map()
+  let previousSlotItemMap: SwapEventMap = new Map()
   let offsetX: number | null
   let offsetY: number | null
   let initialWidth: number | null
@@ -69,6 +71,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let enabled = true
   let draggingEvent: DragEvent | null
   let isContinuousMode: boolean
+  let draggingSlot: View | null
 
   context.api({
     setEnabled(isEnabled) {
@@ -125,6 +128,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
     setupRemainingChildren()
 
+    previousSlotItemMap = new Map(slotItemMap)
     context.emit(InitEvent, { data: createEventData(slotItemMap) })
   })
 
@@ -132,6 +136,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     const animation = getAnimation()
     item.styles.position = 'relative'
     item.styles.touchAction = 'none'
+    item.styles.userSelect = 'none'
+    item.styles.webkitUserSelect = 'none'
     item.position.setAnimator(animation.animator, animation.config)
     item.scale.setAnimator(animation.animator, animation.config)
     item.layoutTransition(true)
@@ -152,6 +158,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       setupItem(view)
       setupRemainingChildren()
       items = context.getViews('item')
+      previousSlotItemMap = new Map(slotItemMap)
       context.emit(SwapEvent, { data: createEventData(slotItemMap) })
     }
   })
@@ -200,11 +207,13 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     if (!enabled) return
     const withHandle = event.view.name === 'handle'
     draggingItem = withHandle ? event.view.getParent('item')! : event.view
+    if (!draggingSlot) {
+      draggingSlot = draggingItem.getParent('slot')!
+    }
     if (event.isDragging) {
       draggingEvent = event
       updateDraggingPosition()
       slots.forEach((slot) => {
-        const draggingSlot = draggingItem.getParent('slot')!
         if (!slot.intersects(event.pointerX, event.pointerY)) {
           if (slot !== draggingSlot) {
             slot.element.removeAttribute('data-swapy-highlighted')
@@ -219,7 +228,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
         }
         const targetSlotName = slot.element.dataset.swapySlot
         const targetItemName = slot.getChild('item')?.element.dataset.swapyItem
-        const draggingSlotName = draggingSlot.element.dataset.swapySlot
+        const draggingSlotName = draggingSlot!.element.dataset.swapySlot
         const draggingItemName = draggingItem.element.dataset.swapyItem
         if (!targetSlotName || !draggingSlotName || !draggingItemName) {
           return
@@ -230,23 +239,22 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
         } else {
           slotItemMap.set(draggingSlotName, null)
         }
-        context.emit(SwapEvent, { data: createEventData(slotItemMap) })
+        if (!mapsAreEqual(slotItemMap, previousSlotItemMap)) {
+          previousSlotItemMap = new Map(slotItemMap)
+          draggingSlot = null
+          context.emit(SwapEvent, { data: createEventData(slotItemMap) })
+        }
       })
 
       items.forEach((item) => {
         item.styles.zIndex = item === draggingItem ? '2' : ''
-        item.styles.userSelect = 'none'
-        item.styles.webkitUserSelect = 'none'
       })
     } else {
       slots.forEach((slot) => {
         slot.element.removeAttribute('data-swapy-highlighted')
       })
-      items.forEach((item) => {
-        item.styles.userSelect = ''
-        item.styles.webkitUserSelect = ''
-      })
       draggingItem.position.reset()
+      draggingSlot = null
       offsetX = null
       offsetY = null
       initialWidth = null

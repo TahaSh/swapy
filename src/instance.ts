@@ -234,6 +234,9 @@ class Swapy {
 
   private _applyOrder(map: Map<string, string | null>) {
     Array.from(map.keys()).forEach((slotName) => {
+      if (map.get(slotName) === this._previousMap?.get(slotName)) {
+        return
+      }
       const itemName = map.get(slotName)
       if (!itemName) return
       const slot = this._slotElMap.get(slotName)
