@@ -14,10 +14,10 @@ const DEFAULT = {
 }
 const slotItems: Record<string, 'a' | 'c' | 'd' | null> = localStorage.getItem('slotItem') ? JSON.parse(localStorage.getItem('slotItem')!) : DEFAULT
 
-const container = ref()
+const container = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  if (container) {
+  if (container.value) {
     const swapy = createSwapy(container.value)
     swapy.onSwap(({ data }) => {
       localStorage.setItem('slotItem', JSON.stringify(data.object))
