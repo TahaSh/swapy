@@ -27,7 +27,7 @@ import { createSwapy } from 'swapy';
 })
 export class App implements AfterViewInit {
   readonly document = inject(DOCUMENT);
-  swapy: any;
+  swapy!: ReturnType<typeof createSwapy>;
 
   ngAfterViewInit(): void {
     this.initSwapy();
@@ -46,7 +46,7 @@ export class App implements AfterViewInit {
   }
 
   private initSwapyEventListener(): void {
-    this.swapy?.onSwap((event: any) => {
+    this.swapy.onSwap((event: any) => {
       console.log(event.data.object);
       console.log(event.data.array);
       console.log(event.data.map);
