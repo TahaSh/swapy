@@ -2568,8 +2568,8 @@ class Mt extends rt {
       this._initialPointer = new u(e, i), this.getViews().forEach((s) => {
         this._pointerDownPerView.set(s.id, s.intersects(e, i)), this._targetPerView.set(s.id, r);
         const o = new u(
-          e - s.position.x,
-          i - s.position.y
+          e - s.position.initialX,
+          i - s.position.initialY
         );
         this._pointerX = e, this._pointerY = i, this._initialPointerPerView.set(s.id, o);
       });
@@ -2792,7 +2792,7 @@ const N = (n) => {
     o.set(E.dataset.swapySlot, g.element.dataset.swapyItem);
   }
   n.onViewAdded((g) => {
-    n.initialized && g.name === "item" && (L(g), S(), r = n.getViews("item"), l = new Map(o), n.emit(tt, { data: K(o) }));
+    n.initialized && g.name === "item" && (L(g), S(), r = n.getViews("item"), l = new Map(o), n.emit(tt, { data: K(o) })), g.name === "slot" && (i = n.getViews("slot"));
   });
   function S() {
     const g = C();
@@ -2891,21 +2891,27 @@ function De(n, t = {}) {
 }
 function qe(n) {
   const t = Array.from(
+    n.querySelectorAll("[data-swapy-slot]:not([data-vel-view])")
+  );
+  t.forEach((i) => {
+    i.dataset.velView = "slot";
+  });
+  const e = Array.from(
     n.querySelectorAll("[data-swapy-item]:not([data-vel-view]")
   );
-  return t.forEach((e) => {
-    e.dataset.velView = "item", e.dataset.velLayoutId = e.dataset.swapyItem;
-    const i = e.querySelector("[data-swapy-handle]");
-    i && (i.dataset.velView = "handle"), Array.from(
-      e.querySelectorAll("[data-swapy-text]")
-    ).forEach((o) => {
-      o.dataset.velLayoutPosition = "";
+  return e.forEach((i) => {
+    i.dataset.velView = "item", i.dataset.velLayoutId = i.dataset.swapyItem;
+    const r = i.querySelector("[data-swapy-handle]");
+    r && (r.dataset.velView = "handle"), Array.from(
+      i.querySelectorAll("[data-swapy-text]")
+    ).forEach((l) => {
+      l.dataset.velLayoutPosition = "";
     }), Array.from(
-      e.querySelectorAll("[data-swapy-exclude]")
-    ).forEach((o) => {
-      o.dataset.velIgnore = "";
+      i.querySelectorAll("[data-swapy-exclude]")
+    ).forEach((l) => {
+      l.dataset.velIgnore = "";
     });
-  }), t.length > 0;
+  }), e.length > 0 || t.length > 0;
 }
 function Ye(n, t = {}) {
   if (!n)
