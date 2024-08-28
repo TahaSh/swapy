@@ -112,6 +112,12 @@ function addVeloxiDataAttributes(
 }
 
 function resyncItems(root: HTMLElement): boolean {
+  const slots = Array.from(
+    root.querySelectorAll('[data-swapy-slot]:not([data-vel-view])')
+  ) as HTMLElement[]
+  slots.forEach((slot) => {
+    slot.dataset.velView = 'slot'
+  })
   const items = Array.from(
     root.querySelectorAll('[data-swapy-item]:not([data-vel-view]')
   ) as HTMLElement[]
@@ -137,7 +143,7 @@ function resyncItems(root: HTMLElement): boolean {
       el.dataset.velIgnore = ''
     })
   })
-  return items.length > 0
+  return items.length > 0 || slots.length > 0
 }
 
 function createSwapy(

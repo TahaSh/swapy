@@ -161,6 +161,9 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       previousSlotItemMap = new Map(slotItemMap)
       context.emit(SwapEvent, { data: createEventData(slotItemMap) })
     }
+    if (view.name === 'slot') {
+      slots = context.getViews('slot')
+    }
   })
 
   function setupRemainingChildren() {
