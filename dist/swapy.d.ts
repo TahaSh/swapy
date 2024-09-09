@@ -12,6 +12,8 @@ declare type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Keys extends ke
     [K in Keys]: T[K];
 } & Partial<Record<Exclude<keyof T, Keys>, never>> : never;
 
+export declare type SlotItemMap = SwapEventArray;
+
 declare type SwapCallback = (event: SwapEventData) => void;
 
 declare type SwapData = RequireOnlyOne<SwapEventDataData, 'map' | 'array' | 'object'>;
@@ -34,6 +36,8 @@ declare interface SwapEventDataData {
 declare type SwapEventMap = Map<string, string | null>;
 
 declare type SwapEventObject = Record<string, string | null>;
+
+export declare type Swapy = SwapyApi;
 
 declare interface SwapyApi {
     onSwap(callback: SwapCallback): void;
