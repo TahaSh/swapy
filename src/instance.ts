@@ -201,11 +201,13 @@ class SwapyInstance {
   private _itemElMap: Map<string, HTMLElement>
   private _swapCallback?: SwapCallback
   private _previousMap?: Map<string, string | null>
+  private _pluginKey: string
   constructor(rootEl: HTMLElement, pluginKey: string, config: Partial<Config>) {
     this._rootEl = rootEl
     this._veloxiApp = installPlugin()
     this._slotElMap = this._createSlotElMap()
     this._itemElMap = this._createItemElMap()
+    this._pluginKey = pluginKey
     this._veloxiApp.onPluginEvent(
       SwapyPlugin,
       InitEvent,
@@ -252,8 +254,13 @@ class SwapyInstance {
   }
 
   setData(swapData: SwapData) {
-    const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>('Swapy')
-    plugin.setData(swapData)
+    try {
+      const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>(
+        'Swapy',
+        this._pluginKey
+      )
+      plugin.setData(swapData)
+    } catch (e) {}
   }
 
   destroy() {
@@ -261,8 +268,13 @@ class SwapyInstance {
   }
 
   setEnabled(enabledValue: boolean) {
-    const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>('Swapy')
-    plugin.setEnabled(enabledValue)
+    try {
+      const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>(
+        'Swapy',
+        this._pluginKey
+      )
+      plugin.setEnabled(enabledValue)
+    } catch (e) {}
   }
 
   setSwapCallback(callback: SwapCallback) {

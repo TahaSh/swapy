@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import './style.css'
-import { createSwapy } from '../../src/index'
+import { createSwapy, SlotItemMap, Swapy } from '../../src/index'
 import { useState } from 'react'
-import { SlotItemMap, Swapy } from '../../src/instance'
 import { useMemo } from 'react'
 import { useRef } from 'react'
 
