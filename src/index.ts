@@ -1,1 +1,1 @@
-export { createSwapy } from './instance'
+export { createSwapy, type Swapy, type SlotItemMap } from './instance'
