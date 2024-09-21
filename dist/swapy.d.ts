@@ -4,9 +4,10 @@ declare type Config = {
     animation: AnimationType;
     continuousMode: boolean;
     manualSwap: boolean;
+    swapMode: SwapMode;
 };
 
-export declare function createSwapy(root: Element | null, userConfig?: Partial<Config>): SwapyApi;
+export declare function createSwapy(root: Element | null, userConfig?: Partial<Config>): Swapy;
 
 declare type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Keys extends keyof T ? {
     [K in Keys]: T[K];
@@ -18,7 +19,9 @@ declare type SwapCallback = (event: SwapEventData) => void;
 
 declare type SwapData = RequireOnlyOne<SwapEventDataData, 'map' | 'array' | 'object'>;
 
-declare type SwapEventArray = Array<{
+declare type SwapEndCallback = (event: SwapEventData) => void;
+
+export declare type SwapEventArray = Array<{
     slotId: string;
     itemId: string | null;
 }>;
@@ -33,14 +36,18 @@ declare interface SwapEventDataData {
     object: SwapEventObject;
 }
 
-declare type SwapEventMap = Map<string, string | null>;
+export declare type SwapEventMap = Map<string, string | null>;
 
-declare type SwapEventObject = Record<string, string | null>;
+export declare type SwapEventObject = Record<string, string | null>;
 
-export declare type Swapy = SwapyApi;
+declare type SwapMode = 'hover' | 'stop' | 'drop';
 
-declare interface SwapyApi {
+declare type SwapStartCallback = () => void;
+
+export declare interface Swapy {
     onSwap(callback: SwapCallback): void;
+    onSwapEnd(callback: SwapEndCallback): void;
+    onSwapStart(callback: SwapStartCallback): void;
     enable(enabled: boolean): void;
     destroy(): void;
     setData(swapData: SwapData): void;
