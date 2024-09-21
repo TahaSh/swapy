@@ -40,6 +40,15 @@ export class SwapEvent {
   }
 }
 
+export class SwapEndEvent {
+  data: SwapEventDataData
+  constructor(props: SwapEventData) {
+    this.data = props.data
+  }
+}
+
+export class SwapStartEvent {}
+
 export class InitEvent {
   data: SwapEventDataData
   constructor(props: SwapEventData) {
@@ -125,6 +134,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let isContinuousMode: boolean
   let isManualSwap: boolean
   let draggingSlot: View | null
+  let startedDragging: boolean = false
 
   context.api({
     setEnabled(isEnabled) {
@@ -293,6 +303,10 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       handleOffsetY = event.view.position.y - draggingItem.position.y
     }
     if (event.isDragging) {
+      if (!startedDragging) {
+        startedDragging = true
+        context.emit(SwapStartEvent, {})
+      }
       draggingEvent = event
       updateDraggingPosition()
       slots.forEach((slot) => {
@@ -351,6 +365,9 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       draggingEvent = null
       handleOffsetX = null
       handleOffsetY = null
+      startedDragging = false
+
+      context.emit(SwapEndEvent, { data: createEventData(slotItemMap) })
     }
     requestAnimationFrame(() => {
       updateDraggingPosition()

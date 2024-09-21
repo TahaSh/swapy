@@ -3,15 +3,23 @@ import { installPlugin } from './veloxi-plugin'
 import {
   InitEvent,
   SwapData,
+  SwapEndEvent,
   SwapEvent,
   SwapEventArray,
   SwapEventData,
+  SwapStartEvent,
   SwapyPlugin,
   SwapyPluginApi
 } from './veloxi-plugin/SwapyPlugin'
 
+type SwapCallback = (event: SwapEventData) => void
+type SwapEndCallback = (event: SwapEventData) => void
+type SwapStartCallback = () => void
+
 interface SwapyApi {
   onSwap(callback: SwapCallback): void
+  onSwapEnd(callback: SwapEndCallback): void
+  onSwapStart(callback: SwapStartCallback): void
   enable(enabled: boolean): void
   destroy(): void
   setData(swapData: SwapData): void
@@ -182,6 +190,12 @@ function createSwapy(
     onSwap(callback) {
       swapy.setSwapCallback(callback)
     },
+    onSwapEnd(callback) {
+      swapy.setSwapEndCallback(callback)
+    },
+    onSwapStart(callback) {
+      swapy.setSwapStartCallback(callback)
+    },
     enable(enabled) {
       swapy.setEnabled(enabled)
     },
@@ -200,6 +214,8 @@ class SwapyInstance {
   private _slotElMap: Map<string, HTMLElement>
   private _itemElMap: Map<string, HTMLElement>
   private _swapCallback?: SwapCallback
+  private _swapEndCallback?: SwapEndCallback
+  private _swapStartCallback?: SwapStartCallback
   private _previousMap?: Map<string, string | null>
   private _pluginKey: string
   constructor(rootEl: HTMLElement, pluginKey: string, config: Partial<Config>) {
@@ -235,6 +251,25 @@ class SwapyInstance {
       },
       pluginKey
     )
+
+    this._veloxiApp.onPluginEvent(
+      SwapyPlugin,
+      SwapEndEvent,
+      (event) => {
+        this._swapEndCallback?.(event)
+      },
+      pluginKey
+    )
+
+    this._veloxiApp.onPluginEvent(
+      SwapyPlugin,
+      SwapStartEvent,
+      () => {
+        this._swapStartCallback?.()
+      },
+      pluginKey
+    )
+
     this.setupMutationObserver()
   }
 
@@ -281,6 +316,14 @@ class SwapyInstance {
     this._swapCallback = callback
   }
 
+  setSwapEndCallback(callback: SwapEndCallback) {
+    this._swapEndCallback = callback
+  }
+
+  setSwapStartCallback(callback: SwapStartCallback) {
+    this._swapStartCallback = callback
+  }
+
   private _applyOrder(map: Map<string, string | null>) {
     Array.from(map.keys()).forEach((slotName) => {
       if (map.get(slotName) === this._previousMap?.get(slotName)) {
@@ -318,7 +361,5 @@ class SwapyInstance {
     }, new Map())
   }
 }
-
-type SwapCallback = (event: SwapEventData) => void
 
 export { createSwapy }

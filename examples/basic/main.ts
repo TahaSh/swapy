@@ -19,11 +19,27 @@ swapy2.onSwap((event) => {
   console.log('swapy2 event', event.data)
 })
 
+swapy2.onSwapStart(() => {
+  console.log('SWAP2 STARTED')
+})
+
+swapy2.onSwapEnd((event) => {
+  console.log('SWAP2 END', event)
+})
+
 swapy.enable(false)
 swapy.onSwap((event) => {
   console.log('event.map', event.data.map)
   console.log('event.object', event.data.object)
   console.log('event.array', event.data.array)
+})
+
+swapy.onSwapStart(() => {
+  console.log('SWAP STARTED')
+})
+
+swapy.onSwapEnd((event) => {
+  console.log('SWAP END', event)
 })
 
 enableInput.addEventListener('input', () => {
