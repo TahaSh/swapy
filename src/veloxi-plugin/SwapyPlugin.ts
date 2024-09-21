@@ -116,6 +116,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let previousSlotItemMap: SwapEventMap = new Map()
   let offsetX: number | null
   let offsetY: number | null
+  let handleOffsetX: number | null = null
+  let handleOffsetY: number | null = null
   let initialWidth: number | null
   let initialHeight: number | null
   let enabled = true
@@ -272,8 +274,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     const newOffsetY = offsetY * (scaleY - 1)
     draggingItem.position.set(
       {
-        x: draggingEvent.x - newOffsetX,
-        y: draggingEvent.y - newOffsetY
+        x: draggingEvent.x - newOffsetX - (handleOffsetX || 0),
+        y: draggingEvent.y - newOffsetY - (handleOffsetY || 0)
       },
       draggingItem.scale.x !== 1 || draggingItem.scale.y !== 1
     )
@@ -285,6 +287,10 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     draggingItem = withHandle ? event.view.getParent('item')! : event.view
     if (!draggingSlot) {
       draggingSlot = draggingItem.getParent('slot')!
+    }
+    if (handleOffsetX === null && handleOffsetY === null) {
+      handleOffsetX = event.view.position.x - draggingItem.position.x
+      handleOffsetY = event.view.position.y - draggingItem.position.y
     }
     if (event.isDragging) {
       draggingEvent = event
@@ -343,6 +349,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       initialWidth = null
       initialHeight = null
       draggingEvent = null
+      handleOffsetX = null
+      handleOffsetY = null
     }
     requestAnimationFrame(() => {
       updateDraggingPosition()
