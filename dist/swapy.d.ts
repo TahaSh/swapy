@@ -1,6 +1,6 @@
-declare type AnimationType = 'dynamic' | 'spring' | 'none';
+export declare type AnimationType = 'dynamic' | 'spring' | 'none';
 
-declare type Config = {
+export declare type Config = {
     animation: AnimationType;
     continuousMode: boolean;
     manualSwap: boolean;
@@ -14,32 +14,32 @@ declare type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Keys extends ke
 
 export declare type SlotItemMap = SwapEventArray;
 
-declare type SwapCallback = (event: SwapEventData) => void;
+export declare type SwapCallback = (event: SwapEventData) => void;
 
-declare type SwapData = RequireOnlyOne<SwapEventDataData, 'map' | 'array' | 'object'>;
+export declare type SwapData = RequireOnlyOne<SwapEventDataData, 'map' | 'array' | 'object'>;
 
-declare type SwapEventArray = Array<{
+export declare type SwapEventArray = Array<{
     slotId: string;
     itemId: string | null;
 }>;
 
-declare interface SwapEventData {
+export declare interface SwapEventData {
     data: SwapEventDataData;
 }
 
-declare interface SwapEventDataData {
+export declare interface SwapEventDataData {
     map: SwapEventMap;
     array: SwapEventArray;
     object: SwapEventObject;
 }
 
-declare type SwapEventMap = Map<string, string | null>;
+export declare type SwapEventMap = Map<string, string | null>;
 
-declare type SwapEventObject = Record<string, string | null>;
+export declare type SwapEventObject = Record<string, string | null>;
 
 export declare type Swapy = SwapyApi;
 
-declare interface SwapyApi {
+export declare interface SwapyApi {
     onSwap(callback: SwapCallback): void;
     enable(enabled: boolean): void;
     destroy(): void;
