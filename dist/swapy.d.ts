@@ -1,4 +1,4 @@
-export declare type AnimationType = 'dynamic' | 'spring' | 'none';
+declare type AnimationType = 'dynamic' | 'spring' | 'none';
 
 export declare type Config = {
     animation: AnimationType;
@@ -16,14 +16,14 @@ export declare type SlotItemMap = SwapEventArray;
 
 export declare type SwapCallback = (event: SwapEventData) => void;
 
-export declare type SwapData = RequireOnlyOne<SwapEventDataData, 'map' | 'array' | 'object'>;
+declare type SwapData = RequireOnlyOne<SwapEventDataData, 'map' | 'array' | 'object'>;
 
 export declare type SwapEventArray = Array<{
     slotId: string;
     itemId: string | null;
 }>;
 
-export declare interface SwapEventData {
+declare interface SwapEventData {
     data: SwapEventDataData;
 }
 

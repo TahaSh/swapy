@@ -6,7 +6,7 @@ export type SwapEventArray = Array<{ slotId: string; itemId: string | null }>
 export type SwapEventMap = Map<string, string | null>
 export type SwapEventObject = Record<string, string | null>
 
-interface SwapEventDataData {
+export interface SwapEventDataData {
   map: SwapEventMap
   array: SwapEventArray
   object: SwapEventObject

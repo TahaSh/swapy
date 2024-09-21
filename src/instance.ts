@@ -10,7 +10,7 @@ import {
   SwapyPluginApi
 } from './veloxi-plugin/SwapyPlugin'
 
-interface SwapyApi {
+export interface SwapyApi {
   onSwap(callback: SwapCallback): void
   enable(enabled: boolean): void
   destroy(): void
@@ -319,6 +319,6 @@ class SwapyInstance {
   }
 }
 
-type SwapCallback = (event: SwapEventData) => void
+export type SwapCallback = (event: SwapEventData) => void
 
 export { createSwapy }
