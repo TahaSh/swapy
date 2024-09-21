@@ -53,7 +53,7 @@ function App() {
   useEffect(() => {
     const container = document.querySelector('.container')!
     const swapy = createSwapy(container, {
-      swapMode: 'drop',
+      swapMode: 'hover',
       continuousMode: false
     })
     swapy.onSwap(({ data }) => {

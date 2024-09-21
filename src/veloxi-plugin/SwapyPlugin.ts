@@ -338,7 +338,10 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
           return
         }
 
-        if ((swapMode === 'stop' || !isContinuousMode) && !event.stopped) {
+        if (
+          (swapMode === 'stop' || (swapMode !== 'drop' && !isContinuousMode)) &&
+          !event.stopped
+        ) {
           return
         }
         const targetSlotName = slot.element.dataset.swapySlot
