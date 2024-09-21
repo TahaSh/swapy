@@ -1,5 +1,5 @@
 import { DragEvent, DragEventPlugin, PluginFactory, View } from 'veloxi'
-import { AnimationType, Config } from '../instance'
+import { AnimationType, Config, SwapMode } from '../instance'
 import { mapsAreEqual } from '../utils'
 
 export type SwapEventArray = Array<{ slotId: string; itemId: string | null }>
@@ -135,6 +135,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let isManualSwap: boolean
   let draggingSlot: View | null
   let startedDragging: boolean = false
+  let triggerSwap = () => {}
 
   context.api({
     setEnabled(isEnabled) {
@@ -151,7 +152,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     return {
       animation: root.data.configAnimation as AnimationType,
       continuousMode: typeof root.data.configContinuousMode !== 'undefined',
-      manualSwap: typeof root.data.configManualSwap !== 'undefined'
+      manualSwap: typeof root.data.configManualSwap !== 'undefined',
+      swapMode: root.data.configSwapMode as SwapMode
     }
   }
 
@@ -182,6 +184,13 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     return {
       animator: 'instant',
       config: {}
+    }
+  }
+
+  function prepareSwap(newSlotItemMap: SwapEventMap) {
+    return () => {
+      slotItemMap = newSlotItemMap
+      previousSlotItemMap = new Map(slotItemMap)
     }
   }
 
@@ -293,6 +302,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
   function onDrag(event: DragEvent) {
     if (!enabled) return
+    const swapMode = getConfig().swapMode
     const withHandle = event.view.name === 'handle'
     draggingItem = withHandle ? event.view.getParent('item')! : event.view
     if (!draggingSlot) {
@@ -302,6 +312,9 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       handleOffsetX = event.view.position.x - draggingItem.position.x
       handleOffsetY = event.view.position.y - draggingItem.position.y
     }
+    const hoveringOverASlot = slots.some((slot) =>
+      slot.intersects(event.pointerX, event.pointerY)
+    )
     if (event.isDragging) {
       if (!startedDragging) {
         startedDragging = true
@@ -316,19 +329,23 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
           }
           return
         }
+
         if (typeof slot.element.dataset.swapyHighlighted === 'undefined') {
           slot.element.dataset.swapyHighlighted = ''
         }
+
         if (!draggingSlot) {
           return
         }
-        if (!event.stopped && !isContinuousMode) {
+
+        if ((swapMode === 'stop' || !isContinuousMode) && !event.stopped) {
           return
         }
         const targetSlotName = slot.element.dataset.swapySlot
         const targetItemName = slot.getChild('item')?.element.dataset.swapyItem
         const draggingSlotName = draggingSlot!.element.dataset.swapySlot
         const draggingItemName = draggingItem.element.dataset.swapyItem
+
         if (!targetSlotName || !draggingSlotName || !draggingItemName) {
           return
         }
@@ -340,12 +357,14 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
           newSlotItemMap.set(draggingSlotName, null)
         }
         if (!mapsAreEqual(newSlotItemMap, previousSlotItemMap)) {
-          if (!isManualSwap) {
-            slotItemMap = newSlotItemMap
-            previousSlotItemMap = new Map(slotItemMap)
+          triggerSwap = prepareSwap(new Map(newSlotItemMap))
+          if (!isManualSwap && swapMode !== 'drop') {
+            triggerSwap()
           }
           draggingSlot = null
-          context.emit(SwapEvent, { data: createEventData(newSlotItemMap) })
+          if (swapMode !== 'drop') {
+            context.emit(SwapEvent, { data: createEventData(newSlotItemMap) })
+          }
         }
       })
 
@@ -366,6 +385,15 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       handleOffsetX = null
       handleOffsetY = null
       startedDragging = false
+
+      if (swapMode === 'drop') {
+        if (!hoveringOverASlot) {
+          triggerSwap = prepareSwap(new Map(slotItemMap))
+        }
+        triggerSwap()
+        context.emit(SwapEvent, { data: createEventData(slotItemMap) })
+      }
+      triggerSwap = () => {}
 
       context.emit(SwapEndEvent, { data: createEventData(slotItemMap) })
     }

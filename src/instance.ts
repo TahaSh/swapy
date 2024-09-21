@@ -28,16 +28,20 @@ export interface Swapy {
 export type SlotItemMap = SwapEventArray
 
 export type AnimationType = 'dynamic' | 'spring' | 'none'
+export type SwapMode = 'hover' | 'stop' | 'drop'
+
 export type Config = {
   animation: AnimationType
   continuousMode: boolean
   manualSwap: boolean
+  swapMode: SwapMode
 }
 
 const DEFAULT_CONFIG: Config = {
   animation: 'dynamic',
   continuousMode: true,
-  manualSwap: false
+  manualSwap: false,
+  swapMode: 'hover'
 }
 
 function validate(root: HTMLElement): boolean {
@@ -88,6 +92,7 @@ function addVeloxiDataAttributes(
   root.dataset.velPlugin = 'Swapy'
   root.dataset.velView = 'root'
   root.dataset.velDataConfigAnimation = config.animation
+  root.dataset.velDataConfigSwapMode = config.swapMode
   if (config.continuousMode) {
     root.dataset.velDataConfigContinuousMode = 'true'
   }

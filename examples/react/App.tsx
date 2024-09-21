@@ -52,9 +52,21 @@ function App() {
 
   useEffect(() => {
     const container = document.querySelector('.container')!
-    const swapy = createSwapy(container)
+    const swapy = createSwapy(container, {
+      swapMode: 'drop',
+      continuousMode: false
+    })
     swapy.onSwap(({ data }) => {
+      console.log('swap', data);
       localStorage.setItem('slotItem', JSON.stringify(data.object))
+    })
+
+    swapy.onSwapEnd(({ data }) => {
+      console.log('end', data);
+    })
+
+    swapy.onSwapStart(() => {
+      console.log('start')
     })
 
     return () => {
