@@ -16,7 +16,7 @@ type SwapCallback = (event: SwapEventData) => void
 type SwapEndCallback = (event: SwapEventData) => void
 type SwapStartCallback = () => void
 
-interface SwapyApi {
+export interface Swapy {
   onSwap(callback: SwapCallback): void
   onSwapEnd(callback: SwapEndCallback): void
   onSwapStart(callback: SwapStartCallback): void
@@ -24,8 +24,6 @@ interface SwapyApi {
   destroy(): void
   setData(swapData: SwapData): void
 }
-
-export type Swapy = SwapyApi
 
 export type SlotItemMap = SwapEventArray
 
@@ -170,7 +168,7 @@ function resyncItems(root: HTMLElement): boolean {
 function createSwapy(
   root: Element | null,
   userConfig: Partial<Config> = {} as Partial<Config>
-): SwapyApi {
+): Swapy {
   if (!root) {
     throw new Error(
       'Cannot create a Swapy instance because the element you provided does not exist on the page!'
