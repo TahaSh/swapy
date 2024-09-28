@@ -143,7 +143,7 @@ function resyncItems(root: HTMLElement): boolean {
     slot.dataset.velView = 'slot'
   })
   const items = Array.from(
-    root.querySelectorAll('[data-swapy-item]:not([data-vel-view]')
+    root.querySelectorAll('[data-swapy-item]:not([data-vel-view])')
   ) as HTMLElement[]
   items.forEach((item) => {
     item.dataset.velView = 'item'
