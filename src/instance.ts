@@ -306,13 +306,15 @@ class SwapyInstance {
   }
 
   setEnabled(enabledValue: boolean) {
-    try {
-      const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>(
-        'Swapy',
-        this._pluginKey
-      )
-      plugin.setEnabled(enabledValue)
-    } catch (e) {}
+    requestAnimationFrame(() => {
+      try {
+        const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>(
+          'Swapy',
+          this._pluginKey
+        )
+        plugin.setEnabled(enabledValue)
+      } catch (e) {}
+    })
   }
 
   setSwapCallback(callback: SwapCallback) {
