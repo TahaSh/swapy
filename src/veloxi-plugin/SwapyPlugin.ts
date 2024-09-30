@@ -301,7 +301,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   }
 
   function onDrag(event: DragEvent) {
-    if (!enabled) return
+    if (!enabled || !event.hasMoved) return
     const swapMode = getConfig().swapMode
     const withHandle = event.view.name === 'handle'
     draggingItem = withHandle ? event.view.getParent('item')! : event.view
