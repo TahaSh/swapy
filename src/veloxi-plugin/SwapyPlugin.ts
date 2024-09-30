@@ -130,11 +130,15 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   const dragEventPlugin = context.useEventPlugin(DragEventPlugin)
   dragEventPlugin.on(DragEvent, onDrag)
 
+  const MAX_SCROLL_SPEED = 20
+  const MAX_SCROLL_THRESHOLD = 100
+
   let root: View
   let scrollContainer: ScrollContainer
   let slots: View[]
   let items: View[]
   let draggingItem: View
+  let slotItemMapOnDragStart: SwapEventMap | null = null
   let slotItemMap: SwapEventMap = new Map()
   let previousSlotItemMap: SwapEventMap = new Map()
   let offsetX: number | null
@@ -152,6 +156,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let hasSwapped: boolean = false
   let triggerSwap = () => {}
   let shouldAutoScrollOnDrag = false
+  let scrollDY = 0
+  let scrollDX = 0
 
   context.api({
     setEnabled(isEnabled) {
@@ -209,7 +215,6 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
   function prepareSwap(newSlotItemMap: SwapEventMap) {
     return () => {
-      hasSwapped = !mapsAreEqual(newSlotItemMap, previousSlotItemMap)
       slotItemMap = newSlotItemMap
       previousSlotItemMap = new Map(slotItemMap)
     }
@@ -326,10 +331,6 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       draggingItem.scale.x !== 1 || draggingItem.scale.y !== 1
     )
   }
-  const MAX_SCROLL_SPEED = 20
-  const MAX_SCROLL_THRESHOLD = 100
-  let scrollDY = 0
-  let scrollDX = 0
 
   context.subscribeToEvents((eventBus: EventBus) => {
     eventBus.subscribeToEvent(Events.PointerMoveEvent, ({ x, y }) => {
@@ -413,6 +414,9 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
         startedDragging = true
         context.emit(SwapStartEvent, {})
       }
+      if (slotItemMapOnDragStart === null) {
+        slotItemMapOnDragStart = new Map(slotItemMap)
+      }
       draggingEvent = event
       updateDraggingPosition()
       slots.forEach((slot) => {
@@ -491,12 +495,15 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       }
       triggerSwap = () => {}
 
+      hasSwapped = !mapsAreEqual(slotItemMap, slotItemMapOnDragStart!)
+
       context.emit(SwapEndEvent, {
         data: createEventData(slotItemMap),
         hasChanged: hasSwapped
       })
 
       hasSwapped = false
+      slotItemMapOnDragStart = null
       scrollContainer.endScrollTracking()
     }
     requestAnimationFrame(() => {
