@@ -1,7 +1,7 @@
-var Wt = Object.defineProperty;
-var qt = (r, t, e) => t in r ? Wt(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var E = (r, t, e) => qt(r, typeof t != "symbol" ? t + "" : t, e);
-function It(r, t) {
+var Kt = Object.defineProperty;
+var Gt = (r, t, e) => t in r ? Kt(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var R = (r, t, e) => Gt(r, typeof t != "symbol" ? t + "" : t, e);
+function dt(r, t) {
   if (r.size !== t.size)
     return !1;
   for (let [e, i] of r)
@@ -9,48 +9,48 @@ function It(r, t) {
       return !1;
   return !0;
 }
-let Ut = 0;
-function Yt() {
-  return Ut++ + "";
+let Zt = 0;
+function Jt() {
+  return Zt++ + "";
 }
-var Ht = Object.defineProperty, Xt = (r, t, e) => t in r ? Ht(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e, o = (r, t, e) => Xt(r, typeof t != "symbol" ? t + "" : t, e);
-class et {
+var Qt = Object.defineProperty, te = (r, t, e) => t in r ? Qt(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e, o = (r, t, e) => te(r, typeof t != "symbol" ? t + "" : t, e);
+class rt {
   constructor(t) {
     o(this, "x"), o(this, "y"), o(this, "target"), this.x = t.x, this.y = t.y, this.target = t.target;
   }
 }
-class Lt extends et {
+class vt extends rt {
 }
-class lt extends et {
+class at extends rt {
 }
-class ht extends et {
+class ot extends rt {
 }
-class ut extends et {
+class lt extends rt {
 }
-class Nt {
+class $t {
   constructor(t) {
     o(this, "pluginId"), o(this, "pluginName"), o(this, "viewName"), o(this, "dataName"), o(this, "dataValue"), this.event = t, this.pluginId = t.pluginId, this.pluginName = t.pluginName, this.viewName = t.viewName, this.dataName = t.dataName, this.dataValue = t.dataValue;
   }
 }
-function jt(r) {
+function ee(r) {
   return r.replace(/(?:^\w|[A-Z]|\b\w)/g, function(t, e) {
     return e === 0 ? t.toLowerCase() : t.toUpperCase();
   }).replace(/\s+/g, "").replace(/-+/g, "");
 }
-function Vt(r) {
+function Ct(r) {
   return r.split("").map((t, e) => t.toUpperCase() === t ? `${e !== 0 ? "-" : ""}${t.toLowerCase()}` : t).join("");
 }
-class Z {
+class et {
   constructor(t) {
     o(this, "node"), this.node = t.node;
   }
 }
-class nt {
+class gt {
   constructor(t) {
     o(this, "node"), this.node = t.node;
   }
 }
-class Kt {
+class ie {
   constructor(t) {
     o(this, "_eventBus"), o(this, "_observer"), this._eventBus = t, this._observer = new MutationObserver(this._handler.bind(this)), this._observer.observe(document.body, {
       childList: !0,
@@ -66,32 +66,32 @@ class Kt {
           return;
         let n = s;
         if (s.dataset.velView || (n = s.querySelector("[data-vel-view][data-vel-plugin]")), !n) return;
-        this._eventBus.emitEvent(Z, { node: n });
+        this._eventBus.emitEvent(et, { node: n });
         const a = n.querySelectorAll("[data-vel-plugin]");
         a.length && a.forEach((l) => {
-          this._eventBus.emitEvent(Z, { node: l });
+          this._eventBus.emitEvent(et, { node: l });
         });
       }), e.removedNodes.forEach((s) => {
         if (!(s instanceof HTMLElement) || typeof s.dataset.velProcessing < "u") return;
         const n = s.querySelectorAll("[data-vel-plugin]");
         n.length && n.forEach((a) => {
-          this._eventBus.emitEvent(nt, { node: a });
-        }), this._eventBus.emitEvent(nt, { node: s });
+          this._eventBus.emitEvent(gt, { node: a });
+        }), this._eventBus.emitEvent(gt, { node: s });
       });
       const i = e.attributeName;
-      if (i === "data-vel-view" && this._eventBus.emitEvent(Z, {
+      if (i === "data-vel-view" && this._eventBus.emitEvent(et, {
         node: e.target
       }), i && /data-vel-data-.+/gi.test(i)) {
         const s = e.target, n = s.dataset.velPluginId || "", a = s.dataset.velPlugin || "", l = s.dataset.velView || "", h = s.getAttribute(i);
         if (h && h !== e.oldValue) {
-          const p = jt(
+          const g = ee(
             i.replace("data-vel-data-", "")
           );
-          this._eventBus.emitEvent(Nt, {
+          this._eventBus.emitEvent($t, {
             pluginId: n,
             pluginName: a,
             viewName: l,
-            dataName: p,
+            dataName: g,
             dataValue: h
           });
         }
@@ -99,12 +99,12 @@ class Kt {
     });
   }
 }
-class Gt {
+class se {
   execute(t) {
     this.call(t);
   }
 }
-class bt extends Gt {
+class Lt extends se {
   constructor(t) {
     super(), o(this, "_handler"), this._handler = t;
   }
@@ -115,7 +115,7 @@ class bt extends Gt {
     this._handler(t);
   }
 }
-class rt {
+class pt {
   constructor() {
     o(this, "_listeners", /* @__PURE__ */ new Map()), o(this, "_keyedListeners", /* @__PURE__ */ new Map());
   }
@@ -125,7 +125,7 @@ class rt {
       return;
     }
     let s = this._listeners.get(t);
-    s || (s = [], this._listeners.set(t, s)), s.push(new bt(e));
+    s || (s = [], this._listeners.set(t, s)), s.push(new Lt(e));
   }
   removeEventListener(t, e, i) {
     if (i) {
@@ -141,7 +141,7 @@ class rt {
     let s = this._keyedListeners.get(t);
     s || (s = /* @__PURE__ */ new Map(), this._keyedListeners.set(t, s));
     let n = s.get(i);
-    n || (n = [], s.set(i, n)), n.push(new bt(e));
+    n || (n = [], s.set(i, n)), n.push(new Lt(e));
   }
   _removeKeyedEventListener(t, e, i) {
     let s = this._keyedListeners.get(t);
@@ -176,14 +176,14 @@ class rt {
   subscribeToPluginReadyEvent(t, e, i = !1) {
     if (i) {
       this.subscribeToEvent(
-        St,
+        Dt,
         this._convertListener(t),
         e
       );
       return;
     }
     this.subscribeToEvent(
-      Ct,
+      Ot,
       this._convertListener(t),
       e
     );
@@ -191,14 +191,14 @@ class rt {
   emitPluginReadyEvent(t, e, i = !1) {
     if (i) {
       this.emitEvent(
-        St,
+        Dt,
         e,
         t
       );
       return;
     }
     this.emitEvent(
-      Ct,
+      Ot,
       e,
       t
     );
@@ -207,13 +207,13 @@ class rt {
     this._listeners.clear();
   }
 }
-let Zt = 0;
-function Mt() {
-  return Zt++ + "";
+let ne = 0;
+function zt() {
+  return ne++ + "";
 }
-class Bt {
+class Wt {
   constructor(t, e, i, s, n, a, l) {
-    o(this, "_registry"), o(this, "_eventBus"), o(this, "_appEventBus"), o(this, "_internalEventBus"), o(this, "_initialized", !1), o(this, "_config"), o(this, "_pluginFactory"), o(this, "_pluginName"), o(this, "_id"), o(this, "_pluginKey"), o(this, "_layoutIdViewMapWaitingToEnter"), o(this, "_apiData"), o(this, "_isReady", !1), this._id = Mt(), this._pluginFactory = t, this._pluginName = e, this._registry = i, this._eventBus = s, this._appEventBus = n, this._internalEventBus = new rt(), this._config = a, this._layoutIdViewMapWaitingToEnter = /* @__PURE__ */ new Map(), this._pluginKey = l, this._apiData = {}, this._appEventBus.subscribeToPluginReadyEvent(
+    o(this, "_registry"), o(this, "_eventBus"), o(this, "_appEventBus"), o(this, "_internalEventBus"), o(this, "_initialized", !1), o(this, "_config"), o(this, "_pluginFactory"), o(this, "_pluginName"), o(this, "_id"), o(this, "_pluginKey"), o(this, "_layoutIdViewMapWaitingToEnter"), o(this, "_apiData"), o(this, "_isReady", !1), this._id = zt(), this._pluginFactory = t, this._pluginName = e, this._registry = i, this._eventBus = s, this._appEventBus = n, this._internalEventBus = new pt(), this._config = a, this._layoutIdViewMapWaitingToEnter = /* @__PURE__ */ new Map(), this._pluginKey = l, this._apiData = {}, this._appEventBus.subscribeToPluginReadyEvent(
       () => {
         this._isReady = !0;
       },
@@ -345,7 +345,7 @@ class Bt {
   subscribeToEvents(t) {
   }
 }
-class Jt extends Bt {
+class re extends Wt {
   isRenderable() {
     return !0;
   }
@@ -364,12 +364,12 @@ class Jt extends Bt {
     t.setPluginId(this.id), super.addView(t);
   }
 }
-class ct extends Bt {
+class ft extends Wt {
   isRenderable() {
     return !1;
   }
 }
-class Qt {
+class ae {
   constructor(t) {
     o(this, "_plugin"), this._plugin = t;
   }
@@ -422,8 +422,8 @@ class Qt {
     this._plugin.subscribeToEvents = t;
   }
 }
-function st(r, t, e, i, s, n) {
-  if (te(r))
+function ct(r, t, e, i, s, n) {
+  if (oe(r))
     return new r(
       r,
       r.pluginName,
@@ -433,7 +433,7 @@ function st(r, t, e, i, s, n) {
       s,
       n
     );
-  const a = new Jt(
+  const a = new re(
     r,
     r.pluginName,
     t,
@@ -441,10 +441,10 @@ function st(r, t, e, i, s, n) {
     i,
     s,
     n
-  ), l = new Qt(a);
+  ), l = new ae(a);
   return r(l), a;
 }
-function te(r) {
+function oe(r) {
   var t;
   return ((t = r.prototype) == null ? void 0 : t.constructor.toString().indexOf("class ")) === 0;
 }
@@ -490,7 +490,7 @@ class u {
     return new u(t.x + e.x, t.y + e.y);
   }
 }
-class ee {
+class le {
   constructor(t) {
     o(this, "_element"), o(this, "_callback"), this._element = t, this._observe();
   }
@@ -543,10 +543,10 @@ class ee {
     this._callback = t;
   }
 }
-function ie(r) {
-  return new ee(r);
+function he(r) {
+  return new le(r);
 }
-function se(r, t) {
+function ue(r, t) {
   const e = t.x - r.x, i = t.y - r.y;
   return Math.sqrt(e * e + i * i);
 }
@@ -554,13 +554,13 @@ function _(r, t) {
   const e = r - t;
   return Math.abs(e) <= 0.01;
 }
-function b(r) {
+function x(r) {
   let t = r.match(/^([\d.]+)([a-zA-Z%]*)$/);
   t || (t = "0px".match(/^([\d.]+)([a-zA-Z%]*)$/));
   const e = parseFloat(t[1]), i = t[2];
   return { value: e, unit: i, valueWithUnit: r };
 }
-function ne(r, t, e = !1) {
+function ce(r, t, e = !1) {
   if (r === t) return !0;
   if (r.length !== t.length) return !1;
   for (let i = 0; i < r.length; i++)
@@ -568,10 +568,10 @@ function ne(r, t, e = !1) {
       return !1;
   return !0;
 }
-function Pt(r, t) {
-  return ne(r, t, !0);
+function It(r, t) {
+  return ce(r, t, !0);
 }
-class U {
+class G {
   constructor(t, e, i, s) {
     o(this, "_topLeft"), o(this, "_topRight"), o(this, "_bottomLeft"), o(this, "_bottomRight"), this._topLeft = t, this._topRight = e, this._bottomLeft = i, this._bottomRight = s;
   }
@@ -597,23 +597,23 @@ class U {
     return { h: `${i}%`, v: `${s}%` };
   }
 }
-function at(r) {
-  const t = r.split(" ").map((i) => b(i)), e = {
+function _t(r) {
+  const t = r.split(" ").map((i) => x(i)), e = {
     value: 0,
     unit: "",
     valueWithUnit: "0"
   };
   switch (t.length) {
     case 1:
-      return new U(t[0], t[0], t[0], t[0]);
+      return new G(t[0], t[0], t[0], t[0]);
     case 2:
-      return new U(t[0], t[1], t[0], t[1]);
+      return new G(t[0], t[1], t[0], t[1]);
     case 3:
-      return new U(t[0], t[1], t[2], t[1]);
+      return new G(t[0], t[1], t[2], t[1]);
     case 4:
-      return new U(t[0], t[1], t[3], t[2]);
+      return new G(t[0], t[1], t[3], t[2]);
     default:
-      return new U(
+      return new G(
         e,
         e,
         e,
@@ -621,7 +621,7 @@ function at(r) {
       );
   }
 }
-function re(r, t) {
+function de(r, t) {
   const e = a(r.topLeft, t), i = a(r.topRight, t), s = a(r.bottomLeft, t), n = a(r.bottomRight, t);
   return {
     v: {
@@ -640,17 +640,17 @@ function re(r, t) {
   function a(l, h) {
     if (l.unit === "%")
       return {
-        h: b(`${l.value}%`),
-        v: b(`${l.value}%`)
+        h: x(`${l.value}%`),
+        v: x(`${l.value}%`)
       };
-    const p = l.value / h.width * 100, c = l.value / h.height * 100;
-    return { h: b(`${p}%`), v: b(`${c}%`) };
+    const g = l.value / h.width * 100, d = l.value / h.height * 100;
+    return { h: x(`${g}%`), v: x(`${d}%`) };
   }
 }
-function Et(r, t) {
+function Nt(r, t) {
   return _(r.topLeft.value, t.topLeft.value) && _(r.topRight.value, t.topRight.value) && _(r.bottomRight.value, t.bottomRight.value) && _(r.bottomLeft.value, t.bottomLeft.value);
 }
-class ae {
+class ge {
   constructor(t) {
     o(this, "_value"), this._value = t;
   }
@@ -661,10 +661,10 @@ class ae {
     return _(this.value, t.value);
   }
 }
-function oe(r) {
-  return new ae(parseFloat(r));
+function pe(r) {
+  return new ge(parseFloat(r));
 }
-class le {
+class _e {
   constructor(t, e) {
     o(this, "_x"), o(this, "_y"), this._x = t, this._y = e;
   }
@@ -672,15 +672,15 @@ class le {
     return new u(this._x, this._y);
   }
 }
-function he(r, t) {
-  const [e, i] = r.split(" "), s = b(e), n = b(i);
-  return new le(
+function me(r, t) {
+  const [e, i] = r.split(" "), s = x(e), n = x(i);
+  return new _e(
     s.value / t.width,
     n.value / t.height
   );
 }
-function Rt(r, t) {
-  const e = ue(r), i = r.offsetWidth, s = r.offsetHeight;
+function Mt(r, t) {
+  const e = ve(r), i = r.offsetWidth, s = r.offsetHeight;
   return {
     viewportOffset: {
       left: Math.round(e.left),
@@ -698,7 +698,7 @@ function Rt(r, t) {
     }
   };
 }
-function ue(r) {
+function ve(r) {
   const t = r.getBoundingClientRect();
   return {
     left: t.left,
@@ -709,13 +709,13 @@ function ue(r) {
     height: t.height
   };
 }
-function xt(r) {
+function Bt(r) {
   let t = r, e = 0, i = 0;
   for (; t; )
     e += t.offsetTop, i += t.offsetLeft, t = t.offsetParent;
   return { top: e, left: i };
 }
-class ce {
+class fe {
   constructor(t) {
     o(this, "_currentPageRect"), o(this, "_view"), o(this, "_element"), o(this, "_offsetLeft"), o(this, "_offsetTop"), o(this, "_width"), o(this, "_height"), o(this, "_parentWidth"), o(this, "_parentHeight"), o(this, "_parentEl"), o(this, "_isSvg"), o(this, "_invalid"), this._invalid = !0, this._view = t, this._element = t.element, this._isSvg = !!this._element.closest("svg"), this._offsetLeft = 0, this._offsetTop = 0, this._width = 0, this._height = 0, this._parentWidth = 0, this._parentHeight = 0, this._offsetLeft = 0, this._parentEl = this._element.parentElement, window.addEventListener("resize", () => {
       this.invalidate();
@@ -726,37 +726,37 @@ class ce {
   }
   read(t) {
     if (this._isSvg)
-      return this._currentPageRect || (this._currentPageRect = xt(this._element)), this._currentPageRect;
+      return this._currentPageRect || (this._currentPageRect = Bt(this._element)), this._currentPageRect;
     const e = this._element.parentElement, i = this._element.offsetLeft, s = this._element.offsetTop, n = t.width, a = t.height, l = (e == null ? void 0 : e.offsetWidth) || 0, h = (e == null ? void 0 : e.offsetHeight) || 0;
     return (this._offsetLeft !== i || this._offsetTop !== s || !_(this._width, n) || !_(this._height, a)) && this._view._children.forEach(
-      (p) => p.elementReader.invalidatePageRect()
-    ), !this._invalid && this._currentPageRect && this._offsetLeft === i && this._offsetTop === s && _(this._width, n) && _(this._height, a) && _(this._parentWidth, l) && _(this._parentHeight, h) && this._parentEl === e ? this._currentPageRect : (this._offsetLeft = i, this._offsetTop = s, this._width = n, this._height = a, this._parentWidth = l, this._parentHeight = h, this._parentEl = e, this._currentPageRect = xt(this._element), this._invalid = !1, this._currentPageRect);
+      (g) => g.elementReader.invalidatePageRect()
+    ), !this._invalid && this._currentPageRect && this._offsetLeft === i && this._offsetTop === s && _(this._width, n) && _(this._height, a) && _(this._parentWidth, l) && _(this._parentHeight, h) && this._parentEl === e ? this._currentPageRect : (this._offsetLeft = i, this._offsetTop = s, this._width = n, this._height = a, this._parentWidth = l, this._parentHeight = h, this._parentEl = e, this._currentPageRect = Bt(this._element), this._invalid = !1, this._currentPageRect);
   }
 }
-function de(r) {
-  return new ce(r);
+function we(r) {
+  return new fe(r);
 }
-class pe {
+class ye {
   constructor(t) {
-    o(this, "_element"), o(this, "_rect"), o(this, "_computedStyle"), o(this, "_pageRectReader"), o(this, "_scroll"), this._element = t.element, this._pageRectReader = de(t), this._rect = Rt(this._element, this._pageRectReader), this._computedStyle = getComputedStyle(this._element), this._scroll = this._calculateScroll();
+    o(this, "_element"), o(this, "_rect"), o(this, "_computedStyle"), o(this, "_pageRectReader"), o(this, "_scroll"), this._element = t.element, this._pageRectReader = we(t), this._rect = Mt(this._element, this._pageRectReader), this._computedStyle = getComputedStyle(this._element), this._scroll = this._calculateScroll();
   }
   invalidatePageRect() {
     this._pageRectReader.invalidate();
   }
   update(t = !1) {
-    this._rect = Rt(this._element, this._pageRectReader), this._computedStyle = getComputedStyle(this._element), t && (this._scroll = this._calculateScroll());
+    this._rect = Mt(this._element, this._pageRectReader), this._computedStyle = getComputedStyle(this._element), t && (this._scroll = this._calculateScroll());
   }
   get rect() {
     return this._rect;
   }
   get opacity() {
-    return oe(this._computedStyle.opacity);
+    return pe(this._computedStyle.opacity);
   }
   get borderRadius() {
-    return at(this._computedStyle.borderRadius);
+    return _t(this._computedStyle.borderRadius);
   }
   get origin() {
-    return he(
+    return me(
       this._computedStyle.transformOrigin,
       this._rect.size
     );
@@ -771,20 +771,20 @@ class pe {
     return this._scroll;
   }
 }
-function At(r) {
-  return new pe(r);
+function Ft(r) {
+  return new ye(r);
 }
-function ot(r, t) {
+function mt(r, t) {
   const e = {
-    set: (i, s, n) => (typeof i[s] == "object" && i[s] !== null ? i[s] = ot(n, t) : (t(), i[s] = n), !0),
-    get: (i, s) => typeof i[s] == "object" && i[s] !== null ? ot(i[s], t) : i[s]
+    set: (i, s, n) => (typeof i[s] == "object" && i[s] !== null ? i[s] = mt(n, t) : (t(), i[s] = n), !0),
+    get: (i, s) => typeof i[s] == "object" && i[s] !== null ? mt(i[s], t) : i[s]
   };
   return new Proxy(r, e);
 }
-const Q = 0.01, dt = {
+const st = 0.01, wt = {
   speed: 15
 };
-class pt {
+class yt {
   constructor(t) {
     o(this, "name", "dynamic"), o(this, "_config"), this._config = t;
   }
@@ -792,7 +792,7 @@ class pt {
     return this._config;
   }
 }
-class ge extends pt {
+class Ve extends yt {
   update({ animatorProp: t, current: e, target: i, dt: s }) {
     const n = u.sub(i, e), a = u.scale(n, this._config.speed);
     let l = u.add(e, u.scale(a, s));
@@ -801,10 +801,10 @@ class ge extends pt {
     })), t.callUpdateCallback(), l;
   }
   _shouldFinish(t, e, i) {
-    return u.sub(t, e).magnitude < Q && i.magnitude < Q;
+    return u.sub(t, e).magnitude < st && i.magnitude < st;
   }
 }
-class _e extends pt {
+class be extends yt {
   update({ animatorProp: t, current: e, target: i, dt: s }) {
     const n = (i - e) * this._config.speed;
     let a = e + n * s;
@@ -813,21 +813,21 @@ class _e extends pt {
     })), t.callUpdateCallback(), a;
   }
 }
-class me extends pt {
+class Pe extends yt {
   update({ animatorProp: t, current: e, target: i, dt: s }) {
     return i.map((n, a) => {
-      const l = e[a], h = n.value === 0 ? l.unit : n.unit, p = (n.value - l.value) * this._config.speed, c = l.value + p * s;
-      let g = b(`${c}${h}`);
-      return this._shouldFinish(n.value, l.value, p) && (g = n, requestAnimationFrame(() => {
+      const l = e[a], h = n.value === 0 ? l.unit : n.unit, g = (n.value - l.value) * this._config.speed, d = l.value + g * s;
+      let p = x(`${d}${h}`);
+      return this._shouldFinish(n.value, l.value, g) && (p = n, requestAnimationFrame(() => {
         t.callCompleteCallback();
-      })), t.callUpdateCallback(), g;
+      })), t.callUpdateCallback(), p;
     });
   }
   _shouldFinish(t, e, i) {
-    return Math.abs(t - e) < Q && Math.abs(i) < Q;
+    return Math.abs(t - e) < st && Math.abs(i) < st;
   }
 }
-class gt {
+class Vt {
   constructor() {
     o(this, "name", "instant"), o(this, "_config", {});
   }
@@ -840,12 +840,12 @@ class gt {
     }), t.target;
   }
 }
-const _t = {
+const bt = {
   stiffness: 0.5,
   damping: 0.75,
   speed: 10
-}, tt = 0.01;
-class mt {
+}, nt = 0.01;
+class Pt {
   constructor(t) {
     o(this, "name", "spring"), o(this, "_config"), this._config = t;
   }
@@ -853,7 +853,7 @@ class mt {
     return this._config;
   }
 }
-class ve extends mt {
+class Ee extends Pt {
   constructor() {
     super(...arguments), o(this, "_velocity", new u(0, 0));
   }
@@ -872,10 +872,10 @@ class ve extends mt {
     })), a;
   }
   _shouldFinish(t, e) {
-    return u.sub(t, e).magnitude < tt && this._velocity.magnitude < tt;
+    return u.sub(t, e).magnitude < nt && this._velocity.magnitude < nt;
   }
 }
-class fe extends mt {
+class Re extends Pt {
   constructor() {
     super(...arguments), o(this, "_velocity", 0);
   }
@@ -888,33 +888,33 @@ class fe extends mt {
     })), a;
   }
 }
-class we extends mt {
+class xe extends Pt {
   constructor() {
     super(...arguments), o(this, "_velocity", 0);
   }
   update({ animatorProp: t, current: e, target: i, dt: s }) {
     return i.map((n, a) => {
-      const l = e[a], h = n.value === 0 ? l.unit : n.unit, p = -(l.value - n.value) * this._config.stiffness;
-      this._velocity += p, this._velocity *= this._config.damping;
-      const c = l.value + this._velocity * s * this._config.speed;
-      let g = b(`${c}${h}`);
-      return this._shouldFinish(n.value, l.value) && (g = n, requestAnimationFrame(() => {
+      const l = e[a], h = n.value === 0 ? l.unit : n.unit, g = -(l.value - n.value) * this._config.stiffness;
+      this._velocity += g, this._velocity *= this._config.damping;
+      const d = l.value + this._velocity * s * this._config.speed;
+      let p = x(`${d}${h}`);
+      return this._shouldFinish(n.value, l.value) && (p = n, requestAnimationFrame(() => {
         t.callCompleteCallback();
-      })), g;
+      })), p;
     });
   }
   _shouldFinish(t, e) {
-    return Math.abs(t - e) < tt && Math.abs(this._velocity) < tt;
+    return Math.abs(t - e) < nt && Math.abs(this._velocity) < nt;
   }
 }
-function ye(r) {
+function Ae(r) {
   return r;
 }
-const vt = {
+const Et = {
   duration: 350,
-  ease: ye
+  ease: Ae
 };
-class ft {
+class Rt {
   constructor(t) {
     o(this, "name", "tween"), o(this, "_config"), o(this, "_startTime"), this._config = t;
   }
@@ -925,7 +925,7 @@ class ft {
     this._startTime = void 0;
   }
 }
-class Ve extends ft {
+class Te extends Rt {
   update({ animatorProp: t, initial: e, target: i, ts: s }) {
     this._startTime || (this._startTime = s);
     const n = Math.min(1, (s - this._startTime) / this._config.duration);
@@ -937,19 +937,19 @@ class Ve extends ft {
     );
   }
 }
-class be extends ft {
+class Se extends Rt {
   update({ animatorProp: t, initial: e, target: i, ts: s }) {
     this._startTime || (this._startTime = s);
     const n = Math.min(1, (s - this._startTime) / this._config.duration);
     return _(n, 1) ? (requestAnimationFrame(() => {
       t.callCompleteCallback();
     }), i) : e.map((a, l) => {
-      const h = i[l], p = h.value === 0 ? a.unit : h.unit, c = a.value + this._config.ease(n) * (i[l].value - a.value);
-      return b(`${c}${p}`);
+      const h = i[l], g = h.value === 0 ? a.unit : h.unit, d = a.value + this._config.ease(n) * (i[l].value - a.value);
+      return x(`${d}${g}`);
     });
   }
 }
-class Pe extends ft {
+class Ce extends Rt {
   update({ animatorProp: t, initial: e, target: i, ts: s }) {
     this._startTime || (this._startTime = s);
     const n = Math.min(1, (s - this._startTime) / this._config.duration);
@@ -958,7 +958,7 @@ class Pe extends ft {
     }), i) : e + (i - e) * this._config.ease(n);
   }
 }
-class wt {
+class xt {
   createAnimatorByName(t, e) {
     switch (t) {
       case "instant":
@@ -973,55 +973,55 @@ class wt {
     return this.createInstantAnimator();
   }
 }
-class G extends wt {
+class tt extends xt {
   createInstantAnimator() {
-    return new gt();
+    return new Vt();
   }
   createTweenAnimator(t) {
-    return new Ve({ ...vt, ...t });
+    return new Te({ ...Et, ...t });
   }
   createDynamicAnimator(t) {
-    return new ge({ ...dt, ...t });
+    return new Ve({ ...wt, ...t });
   }
   createSpringAnimator(t) {
-    return new ve({ ..._t, ...t });
+    return new Ee({ ...bt, ...t });
   }
 }
-class Ee extends wt {
+class Le extends xt {
   createInstantAnimator() {
-    return new gt();
+    return new Vt();
   }
   createTweenAnimator(t) {
-    return new be({ ...vt, ...t });
+    return new Se({ ...Et, ...t });
   }
   createDynamicAnimator(t) {
-    return new me({
-      ...dt,
+    return new Pe({
+      ...wt,
       ...t
     });
   }
   createSpringAnimator(t) {
-    return new we({ ..._t, ...t });
+    return new xe({ ...bt, ...t });
   }
 }
-class Tt extends wt {
+class kt extends xt {
   createInstantAnimator() {
-    return new gt();
+    return new Vt();
   }
   createDynamicAnimator(t) {
-    return new _e({ ...dt, ...t });
+    return new be({ ...wt, ...t });
   }
   createTweenAnimator(t) {
-    return new Pe({ ...vt, ...t });
+    return new Ce({ ...Et, ...t });
   }
   createSpringAnimator(t) {
-    return new fe({ ..._t, ...t });
+    return new Re({ ...bt, ...t });
   }
 }
-function Y(r) {
+function Z(r) {
   return structuredClone(r);
 }
-class Re {
+class Ie {
   constructor(t) {
     o(this, "_viewProp"), o(this, "_completeCallback"), o(this, "_updateCallback"), o(this, "_isAnimating"), this._viewProp = t, this._isAnimating = !1;
   }
@@ -1052,9 +1052,9 @@ class Re {
     (t = this._updateCallback) == null || t.call(this);
   }
 }
-class $ {
+class k {
   constructor(t, e, i) {
-    o(this, "_animatorProp"), o(this, "_animator"), o(this, "_initialValue"), o(this, "_previousValue"), o(this, "_targetValue"), o(this, "_currentValue"), o(this, "_hasChanged"), o(this, "_view"), o(this, "_animatorFactory"), o(this, "_previousRenderValue"), this._animatorProp = new Re(this), this._animatorFactory = t, this._initialValue = Y(e), this._previousValue = Y(e), this._targetValue = Y(e), this._currentValue = Y(e), this._hasChanged = !1, this._previousRenderValue = void 0, this._view = i, this._animator = this._animatorFactory.createInstantAnimator();
+    o(this, "_animatorProp"), o(this, "_animator"), o(this, "_initialValue"), o(this, "_previousValue"), o(this, "_targetValue"), o(this, "_currentValue"), o(this, "_hasChanged"), o(this, "_view"), o(this, "_animatorFactory"), o(this, "_previousRenderValue"), this._animatorProp = new Ie(this), this._animatorFactory = t, this._initialValue = Z(e), this._previousValue = Z(e), this._targetValue = Z(e), this._currentValue = Z(e), this._hasChanged = !1, this._previousRenderValue = void 0, this._view = i, this._animator = this._animatorFactory.createInstantAnimator();
   }
   get shouldRender() {
     return !0;
@@ -1082,7 +1082,7 @@ class $ {
   }
   _setTarget(t, e = !0) {
     var i, s;
-    this._previousValue = Y(this._currentValue), this._targetValue = t, e ? ((s = (i = this._animator).reset) == null || s.call(i), this.animator.markAsAnimating()) : this._currentValue = t, this._hasChanged = !0;
+    this._previousValue = Z(this._currentValue), this._targetValue = t, e ? ((s = (i = this._animator).reset) == null || s.call(i), this.animator.markAsAnimating()) : this._currentValue = t, this._hasChanged = !0;
   }
   hasChanged() {
     return this._hasChanged;
@@ -1094,7 +1094,7 @@ class $ {
   update(t, e) {
   }
 }
-class xe extends $ {
+class Ne extends k {
   constructor() {
     super(...arguments), o(this, "_invertedBorderRadius"), o(this, "_forceStyleUpdateThisFrame", !1), o(this, "_updateWithScale", !1);
   }
@@ -1129,7 +1129,7 @@ class xe extends $ {
   set(t, e = !0) {
     let i;
     if (typeof t == "string") {
-      const h = at(t.trim());
+      const h = _t(t.trim());
       i = {
         topLeft: h.value.topLeft.valueWithUnit,
         topRight: h.value.topRight.valueWithUnit,
@@ -1138,7 +1138,7 @@ class xe extends $ {
       };
     } else
       i = t;
-    const s = i.topLeft ? b(i.topLeft) : this._currentValue[0], n = i.topRight ? b(i.topRight) : this._currentValue[1], a = i.bottomRight ? b(i.bottomRight) : this._currentValue[2], l = i.bottomLeft ? b(i.bottomLeft) : this._currentValue[3];
+    const s = i.topLeft ? x(i.topLeft) : this._currentValue[0], n = i.topRight ? x(i.topRight) : this._currentValue[1], a = i.bottomRight ? x(i.bottomRight) : this._currentValue[2], l = i.bottomLeft ? x(i.bottomLeft) : this._currentValue[3];
     this._setTarget([s, n, a, l], e);
   }
   reset(t = !0) {
@@ -1149,8 +1149,8 @@ class xe extends $ {
       this._hasChanged = !0, this._forceStyleUpdateThisFrame = !1;
     else if (this._view.scale.isAnimating && this._updateWithScale)
       this._hasChanged = !0;
-    else if (Pt(this._targetValue, this._currentValue)) {
-      this._hasChanged = !Pt(
+    else if (It(this._targetValue, this._currentValue)) {
+      this._hasChanged = !It(
         this._targetValue,
         this._initialValue
       );
@@ -1172,8 +1172,8 @@ class xe extends $ {
     if (_(this._view.scale.x, 1) && _(this._view.scale.y, 1))
       return;
     const t = this._rect.size.width * this._view.scale.x, e = this._rect.size.height * this._view.scale.y;
-    this._invertedBorderRadius = re(
-      at(
+    this._invertedBorderRadius = de(
+      _t(
         `${this._currentValue[0].valueWithUnit} ${this._currentValue[1].valueWithUnit} ${this._currentValue[2].valueWithUnit} ${this._currentValue[3].valueWithUnit}`
       ).value,
       {
@@ -1183,10 +1183,10 @@ class xe extends $ {
     );
   }
   get shouldRender() {
-    return this._hasChanged ? this._previousRenderValue ? !(Et(
+    return this._hasChanged ? this._previousRenderValue ? !(Nt(
       this.renderValue.v,
       this._previousRenderValue.v
-    ) && Et(this.renderValue.h, this._previousRenderValue.h)) : !0 : !1;
+    ) && Nt(this.renderValue.h, this._previousRenderValue.h)) : !0 : !1;
   }
   get renderValue() {
     return this.invertedBorderRadius ? {
@@ -1225,7 +1225,7 @@ class xe extends $ {
     return !1;
   }
 }
-class Ae extends $ {
+class Me extends k {
   setFromElementPropValue(t) {
     this._setTarget(t.value, !0);
   }
@@ -1266,7 +1266,7 @@ class Ae extends $ {
     return !1;
   }
 }
-class Te extends $ {
+class Be extends k {
   get x() {
     return this._currentValue.x;
   }
@@ -1313,7 +1313,7 @@ class Te extends $ {
     return !1;
   }
 }
-class Ce extends $ {
+class Fe extends k {
   constructor() {
     super(...arguments), o(this, "_animateLayoutUpdateNextFrame", !1), o(this, "_parentScaleInverse", new u(1, 1));
   }
@@ -1359,8 +1359,8 @@ class Ce extends $ {
   }
   update(t, e) {
     if ((this._view.isInverseEffectEnabled || this._view.isLayoutTransitionEnabled) && !this._view.isTemporaryView && this._runLayoutTransition(), this._view.isInverseEffectEnabled) {
-      const h = this._view._parent, p = h ? h.scale.x : 1, c = h ? h.scale.y : 1;
-      this._parentScaleInverse = new u(1 / p, 1 / c), this._parentScaleInverse.equals(new u(1, 1)) || (this._hasChanged = !0);
+      const h = this._view._parent, g = h ? h.scale.x : 1, d = h ? h.scale.y : 1;
+      this._parentScaleInverse = new u(1 / g, 1 / d), this._parentScaleInverse.equals(new u(1, 1)) || (this._hasChanged = !0);
     }
     if (this._targetValue.x === this._currentValue.x && this._targetValue.y === this._currentValue.y)
       return;
@@ -1387,54 +1387,54 @@ class Ce extends $ {
     const t = !(this._targetValue.x === this._currentValue.x && this._targetValue.y === this._currentValue.y), e = !(this._view.scale._targetValue.x === this._view.scale._currentValue.x && this._view.scale._targetValue.y === this._view.scale._currentValue.y), i = t || e, s = this._rect.pageOffset.left - this._previousRect.pageOffset.left, n = this._rect.pageOffset.top - this._previousRect.pageOffset.top, a = this._previousRect.size.width / this._rect.size.width, l = this._previousRect.size.height / this._rect.size.height;
     let h = !1;
     if (s !== 0 || n !== 0 || !Number.isNaN(a) && a !== 1 || !Number.isNaN(l) && l !== 1 ? h = !0 : h = (() => {
-      const p = this._view._parents;
-      for (let c = 0; c < p.length; c++) {
-        const g = p[c], f = g.previousRect.size.width / g.rect.size.width, y = g.previousRect.size.height / g.rect.size.height;
-        if (f !== 1 || y !== 1)
+      const g = this._view._parents;
+      for (let d = 0; d < g.length; d++) {
+        const p = g[d], w = p.previousRect.size.width / p.rect.size.width, V = p.previousRect.size.height / p.rect.size.height;
+        if (w !== 1 || V !== 1)
           return !0;
       }
       return !1;
     })(), h) {
       if (this._currentValue.x !== 0 || this._currentValue.y !== 0 || this._view.scale._currentValue.x !== 1 || this._view.scale._currentValue.y !== 1) {
         if (!i) {
-          const B = this._rect.pageOffset.left - this._previousRect.pageOffset.left, F = this._rect.pageOffset.top - this._previousRect.pageOffset.top;
+          const C = this._rect.pageOffset.left - this._previousRect.pageOffset.left, $ = this._rect.pageOffset.top - this._previousRect.pageOffset.top;
           this._setTarget(
-            new u(this._currentValue.x - B, this._currentValue.y - F),
+            new u(this._currentValue.x - C, this._currentValue.y - $),
             !1
           );
           return;
         }
-        const R = this._view._parent, j = this._rect.pageOffset, W = this._view.getScroll(), M = {
-          left: this._previousRect.viewportOffset.left + W.x,
-          top: this._previousRect.viewportOffset.top + W.y
-        }, it = M.left - j.left, d = M.top - j.top;
-        let m = 0, P = 0, D = 0, v = 0;
-        if (R) {
-          const B = R.rect.pageOffset, F = R.getScroll(), C = {
-            left: R.previousRect.viewportOffset.left + F.x,
-            top: R.previousRect.viewportOffset.top + F.y
+        const E = this._view._parent, X = this._rect.pageOffset, H = this._view.getScroll(), N = {
+          left: this._previousRect.viewportOffset.left + H.x,
+          top: this._previousRect.viewportOffset.top + H.y
+        }, ht = N.left - X.left, Q = N.top - X.top;
+        let D = 0, M = 0, P = 0, B = 0;
+        if (E) {
+          const C = E.rect.pageOffset, $ = E.getScroll(), c = {
+            left: E.previousRect.viewportOffset.left + $.x,
+            top: E.previousRect.viewportOffset.top + $.y
           };
-          m = C.left - B.left, P = C.top - B.top;
-          const q = M.top - C.top, A = M.left - C.left, K = R.scale.y * q;
-          D = (q - K) / R.scale.y;
-          const Dt = R.scale.x * A;
-          v = (A - Dt) / R.scale.x;
+          D = c.left - C.left, M = c.top - C.top;
+          const m = N.top - c.top, v = N.left - c.left, j = E.scale.y * m;
+          P = (m - j) / E.scale.y;
+          const f = E.scale.x * v;
+          B = (v - f) / E.scale.x;
         }
         this._setTarget(
-          new u(it - m + v, d - P + D),
+          new u(ht - D + B, Q - M + P),
           !1
         ), i && (this._animateLayoutUpdateNextFrame = !0);
         return;
       }
       this._animateLayoutUpdateNextFrame = !0;
-      const p = this._previousRect, c = this._rect, g = this._view._parent;
-      let f = 0, y = 0;
-      g && (f = g.previousRect.viewportOffset.left - g.rect.viewportOffset.left), g && (y = g.previousRect.viewportOffset.top - g.rect.viewportOffset.top);
-      let V = 1, w = 1;
-      g && (V = g.previousRect.size.width / g.rect.size.width, w = g.previousRect.size.height / g.rect.size.height);
-      const T = g ? g.previousRect.viewportOffset.left : 0, X = g ? g.previousRect.viewportOffset.top : 0, x = p.viewportOffset.left - T, O = p.viewportOffset.top - X, I = x / V - x, z = O / w - O;
-      let L = p.viewportOffset.left - c.viewportOffset.left - f + I, N = p.viewportOffset.top - c.viewportOffset.top - y + z;
-      L = Number.isFinite(L) ? L : 0, N = Number.isFinite(N) ? N : 0, this._setTarget(new u(L, N), !1);
+      const g = this._previousRect, d = this._rect, p = this._view._parent;
+      let w = 0, V = 0;
+      p && (w = p.previousRect.viewportOffset.left - p.rect.viewportOffset.left), p && (V = p.previousRect.viewportOffset.top - p.rect.viewportOffset.top);
+      let y = 1, A = 1;
+      p && (y = p.previousRect.size.width / p.rect.size.width, A = p.previousRect.size.height / p.rect.size.height);
+      const b = p ? p.previousRect.viewportOffset.left : 0, O = p ? p.previousRect.viewportOffset.top : 0, q = g.viewportOffset.left - b, T = g.viewportOffset.top - O, U = q / y - q, Y = T / A - T;
+      let S = g.viewportOffset.left - d.viewportOffset.left - w + U, L = g.viewportOffset.top - d.viewportOffset.top - V + Y;
+      S = Number.isFinite(S) ? S : 0, L = Number.isFinite(L) ? L : 0, this._setTarget(new u(S, L), !1);
     } else this._animateLayoutUpdateNextFrame && (this._setTarget(this._initialValue, !0), this._animateLayoutUpdateNextFrame = !1);
   }
   get shouldRender() {
@@ -1460,7 +1460,7 @@ class Ce extends $ {
     return !0;
   }
 }
-class Se extends $ {
+class ke extends k {
   constructor() {
     super(...arguments), o(this, "_unit", "deg");
   }
@@ -1510,7 +1510,7 @@ class Se extends $ {
     return !0;
   }
 }
-class Ie extends $ {
+class Oe extends k {
   constructor() {
     super(...arguments), o(this, "_animateLayoutUpdateNextFrame", !1);
   }
@@ -1554,9 +1554,9 @@ class Ie extends $ {
     let s = !1;
     if ((!Number.isNaN(e) && e !== 1 || !Number.isNaN(i) && i !== 1) && (s = !0), s) {
       if (this._currentValue.x !== 1 || this._currentValue.y !== 1) {
-        const p = this._view.previousRect.size.width / this._view.rect.size.width, c = this._view.previousRect.size.height / this._view.rect.size.height;
+        const g = this._view.previousRect.size.width / this._view.rect.size.width, d = this._view.previousRect.size.height / this._view.rect.size.height;
         this._setTarget(
-          new u(this._currentValue.x * p, this._currentValue.y * c),
+          new u(this._currentValue.x * g, this._currentValue.y * d),
           !1
         ), t && (this._animateLayoutUpdateNextFrame = !0);
         return;
@@ -1585,7 +1585,7 @@ class Ie extends $ {
     return !0;
   }
 }
-class Le extends $ {
+class De extends k {
   get width() {
     return this._view.rect.size.width;
   }
@@ -1659,35 +1659,35 @@ class Le extends $ {
     return !1;
   }
 }
-class Ne {
+class $e {
   constructor(t) {
     o(this, "_props", /* @__PURE__ */ new Map()), this._props.set(
       "position",
-      new Ce(new G(), new u(0, 0), t)
+      new Fe(new tt(), new u(0, 0), t)
     ), this._props.set(
       "scale",
-      new Ie(new G(), new u(1, 1), t)
+      new Oe(new tt(), new u(1, 1), t)
     ), this._props.set(
       "rotation",
-      new Se(new Tt(), 0, t)
+      new ke(new kt(), 0, t)
     ), this._props.set(
       "size",
-      new Le(
-        new G(),
+      new De(
+        new tt(),
         new u(t.rect.size.width, t.rect.size.height),
         t
       )
     ), this._props.set(
       "opacity",
-      new Ae(
-        new Tt(),
+      new Me(
+        new kt(),
         t.elementReader.opacity.value,
         t
       )
     ), this._props.set(
       "borderRadius",
-      new xe(
-        new Ee(),
+      new Ne(
+        new Le(),
         [
           t.elementReader.borderRadius.value.topLeft,
           t.elementReader.borderRadius.value.topRight,
@@ -1698,8 +1698,8 @@ class Ne {
       )
     ), this._props.set(
       "origin",
-      new Te(
-        new G(),
+      new Be(
+        new tt(),
         t.elementReader.origin.value,
         t
       )
@@ -1736,11 +1736,11 @@ class Ne {
     return this._props.get("origin");
   }
 }
-class Me {
+class ze {
   constructor(t, e, i, s) {
-    o(this, "id"), o(this, "name"), o(this, "element"), o(this, "styles", {}), o(this, "_viewProps"), o(this, "_previousRect"), o(this, "_onAddCallbacks"), o(this, "_onRemoveCallback"), o(this, "_skipFirstRenderFrame"), o(this, "_layoutTransition"), o(this, "_registry"), o(this, "_layoutId"), o(this, "_elementReader"), o(this, "_viewParents"), o(this, "_temporaryView"), o(this, "_inverseEffect"), o(this, "_renderNextTick"), o(this, "_layoutOption"), o(this, "_elementObserver"), o(this, "_hasReadElement"), o(this, "_shouldReadRect"), o(this, "_readWithScroll"), o(this, "_externalUserStyles"), this._registry = i, this.id = Mt(), this.name = e, this.element = t, this.element.dataset.velViewId = this.id, this._elementReader = At(this), this._viewParents = this._getParents(), this._previousRect = this._elementReader.rect, this._viewProps = new Ne(this), this._skipFirstRenderFrame = !0, this._layoutId = s, this._layoutTransition = !1, this._temporaryView = !1, this.styles = ot(this.styles, () => {
+    o(this, "id"), o(this, "name"), o(this, "element"), o(this, "styles", {}), o(this, "_viewProps"), o(this, "_previousRect"), o(this, "_onAddCallbacks"), o(this, "_onRemoveCallback"), o(this, "_skipFirstRenderFrame"), o(this, "_layoutTransition"), o(this, "_registry"), o(this, "_layoutId"), o(this, "_elementReader"), o(this, "_viewParents"), o(this, "_temporaryView"), o(this, "_inverseEffect"), o(this, "_renderNextTick"), o(this, "_layoutOption"), o(this, "_elementObserver"), o(this, "_hasReadElement"), o(this, "_shouldReadRect"), o(this, "_readWithScroll"), o(this, "_externalUserStyles"), this._registry = i, this.id = zt(), this.name = e, this.element = t, this.element.dataset.velViewId = this.id, this._elementReader = Ft(this), this._viewParents = this._getParents(), this._previousRect = this._elementReader.rect, this._viewProps = new $e(this), this._skipFirstRenderFrame = !0, this._layoutId = s, this._layoutTransition = !1, this._temporaryView = !1, this.styles = mt(this.styles, () => {
       this._renderNextTick = !0;
-    }), this._externalUserStyles = this._getExternalUserStyles(), this._renderNextTick = !1, this._layoutOption = this._getLayoutOption(), this._hasReadElement = !1, this._shouldReadRect = !1, this._readWithScroll = !1, this._elementObserver = ie(t), this._elementObserver.onChange((n) => {
+    }), this._externalUserStyles = this._getExternalUserStyles(), this._renderNextTick = !1, this._layoutOption = this._getLayoutOption(), this._hasReadElement = !1, this._shouldReadRect = !1, this._readWithScroll = !1, this._elementObserver = he(t), this._elementObserver.onChange((n) => {
       if (this._hasReadElement) {
         this._shouldReadRect = !1;
         return;
@@ -1761,7 +1761,7 @@ class Me {
     return this.element.closest("[data-vel-layout-position]") ? "position" : this.element.closest("[data-vel-layout-size]") ? "size" : "all";
   }
   setElement(t) {
-    this.element = t, this._elementReader = At(this), this.element.dataset.velViewId = this.id, this._elementObserver.setElement(t), this._viewParents = this._getParents();
+    this.element = t, this._elementReader = Ft(this), this.element.dataset.velViewId = this.id, this._elementObserver.setElement(t), this._viewParents = this._getParents();
   }
   get layoutId() {
     return this._layoutId;
@@ -1984,7 +1984,7 @@ class Me {
       "border-radius"
     ], s = {};
     for (const n in e)
-      e.hasOwnProperty(n) && (s[Vt(n)] = e[n]);
+      e.hasOwnProperty(n) && (s[Ct(n)] = e[n]);
     return t.split(";").map((n) => n.trim()).filter(Boolean).filter((n) => {
       const a = n.indexOf(":");
       if (a === -1) return !1;
@@ -1995,7 +1995,7 @@ class Me {
   _getUserStyles() {
     return Object.keys(this.styles).reduce((t, e) => {
       if (!e) return t;
-      const i = Vt(e).replace("webkit", "-webkit").replace("moz", "-moz");
+      const i = Ct(e).replace("webkit", "-webkit").replace("moz", "-moz");
       return t + `${i}: ${this.styles[e]}; `;
     }, this._externalUserStyles);
   }
@@ -2041,7 +2041,7 @@ class Me {
       return this._registry.getViewById(i);
   }
 }
-class Be {
+class We {
   constructor(t, e) {
     o(this, "_appEventBus"), o(this, "_eventBus"), o(this, "_plugins", []), o(this, "_views", []), o(this, "_viewsPerPlugin", /* @__PURE__ */ new Map()), o(this, "_viewsToBeCreated", []), o(this, "_viewsToBeRemoved", []), o(this, "_viewsCreatedInPreviousFrame", []), o(this, "_layoutIdToViewMap", /* @__PURE__ */ new Map()), o(this, "_eventPluginsPerPlugin", /* @__PURE__ */ new Map()), o(this, "_pluginNameToPluginFactoryMap", /* @__PURE__ */ new Map()), o(this, "_pluginNameToPluginConfigMap", /* @__PURE__ */ new Map()), this._appEventBus = t, this._eventBus = e;
   }
@@ -2112,17 +2112,17 @@ class Be {
       (n) => !this._isScopedElement(n) && !this._isElementIgnored(n)
     );
     this._viewsToBeCreated = [], e.forEach((n) => {
-      const a = this._getPluginNameForElement(n), l = this._pluginNameToPluginFactoryMap.get(a), h = this._pluginNameToPluginConfigMap.get(a), p = n.dataset.velPluginKey, c = st(
+      const a = this._getPluginNameForElement(n), l = this._pluginNameToPluginFactoryMap.get(a), h = this._pluginNameToPluginConfigMap.get(a), g = n.dataset.velPluginKey, d = ct(
         l,
         this,
         this._eventBus,
         this._appEventBus,
         h,
-        p
+        g
       );
-      this._plugins.push(c);
-      const g = n.dataset.velView, f = this._createNewView(n, g, c);
-      f.isInverseEffectEnabled && f.setAnimatorsFromParent(), c.notifyAboutViewAdded(f);
+      this._plugins.push(d);
+      const p = n.dataset.velView, w = this._createNewView(n, p, d);
+      w.isInverseEffectEnabled && w.setAnimatorsFromParent(), d.notifyAboutViewAdded(w);
     });
     const s = i.filter((n) => !!this._getPluginIdForElement(n));
     s.length !== 0 && s.forEach((n) => {
@@ -2131,9 +2131,9 @@ class Be {
       const h = this._getPluginById(a);
       if (!h)
         return;
-      const p = this._getLayoutIdForElement(n, h);
-      let c;
-      p && this._layoutIdToViewMap.has(p) ? (c = this._layoutIdToViewMap.get(p), c.setElement(n), c.setPluginId(h.id), this._createChildrenForView(c, h)) : c = this._createNewView(n, l, h), c.isInverseEffectEnabled && c.setAnimatorsFromParent(), h.notifyAboutViewAdded(c);
+      const g = this._getLayoutIdForElement(n, h);
+      let d;
+      g && this._layoutIdToViewMap.has(g) ? (d = this._layoutIdToViewMap.get(g), d.setElement(n), d.setPluginId(h.id), this._createChildrenForView(d, h)) : d = this._createNewView(n, l, h), d.isInverseEffectEnabled && d.setAnimatorsFromParent(), h.notifyAboutViewAdded(d);
     });
   }
   _getLayoutIdForElement(t, e) {
@@ -2303,47 +2303,47 @@ class Be {
       );
     let n = [];
     if (t.scope) {
-      const h = s ? `[data-vel-plugin=${t.pluginName}][data-vel-view=${t.scope}]:not([data-vel-plugin-id])` : `[data-vel-plugin=${t.pluginName}][data-vel-view=${t.scope}]`, p = document.querySelectorAll(h);
+      const h = s ? `[data-vel-plugin=${t.pluginName}][data-vel-view=${t.scope}]:not([data-vel-plugin-id])` : `[data-vel-plugin=${t.pluginName}][data-vel-view=${t.scope}]`, g = document.querySelectorAll(h);
       this._pluginNameToPluginFactoryMap.has(t.pluginName) || this._pluginNameToPluginFactoryMap.set(
         t.pluginName,
         t
-      ), this._pluginNameToPluginConfigMap.has(t.pluginName) || this._pluginNameToPluginConfigMap.set(t.pluginName, i), p ? n = Array.from(p) : n = [document.documentElement];
+      ), this._pluginNameToPluginConfigMap.has(t.pluginName) || this._pluginNameToPluginConfigMap.set(t.pluginName, i), g ? n = Array.from(g) : n = [document.documentElement];
     } else
       n = [document.documentElement];
     const a = n.map((h) => {
-      const p = h.dataset.velPluginKey, c = st(
+      const g = h.dataset.velPluginKey, d = ct(
         t,
         this,
         e,
         this._appEventBus,
         i,
-        p
+        g
       );
-      this._plugins.push(c);
-      let g = [];
-      h !== document.documentElement && g.push(h);
-      const f = h.querySelectorAll(
-        `[data-vel-plugin=${c.pluginName}]`
+      this._plugins.push(d);
+      let p = [];
+      h !== document.documentElement && p.push(h);
+      const w = h.querySelectorAll(
+        `[data-vel-plugin=${d.pluginName}]`
       );
-      g = [...g, ...f];
-      const y = g.filter((V) => {
-        if (this._isElementIgnored(V))
+      p = [...p, ...w];
+      const V = p.filter((y) => {
+        if (this._isElementIgnored(y))
           return !1;
-        if (!V.parentElement)
+        if (!y.parentElement)
           return !0;
-        const w = this._getPluginNameForElement(V.parentElement);
-        return !(w && w.length > 0);
+        const A = this._getPluginNameForElement(y.parentElement);
+        return !(A && A.length > 0);
       });
-      return y.length && y.forEach((V) => {
-        const w = V.dataset.velView;
-        if (!w) return;
-        const T = this._createNewView(V, w, c);
-        c.notifyAboutViewAdded(T);
-      }), c;
+      return V.length && V.forEach((y) => {
+        const A = y.dataset.velView;
+        if (!A) return;
+        const b = this._createNewView(y, A, d);
+        d.notifyAboutViewAdded(b);
+      }), d;
     });
     if (a && a.length > 0)
       return a[0];
-    const l = st(
+    const l = ct(
       t,
       this,
       e,
@@ -2362,7 +2362,7 @@ class Be {
     return this._views;
   }
   createView(t, e, i) {
-    const s = new Me(t, e, this, i);
+    const s = new ze(t, e, this, i);
     return this._views.push(s), this._viewsCreatedInPreviousFrame.push(s), s;
   }
   _isElementIgnored(t) {
@@ -2383,22 +2383,22 @@ class Be {
     );
   }
 }
-class Ct {
+class Ot {
   constructor(t) {
     o(this, "pluginApi"), this.pluginApi = t.pluginApi;
   }
 }
-class St {
+class Dt {
   constructor(t) {
     o(this, "pluginApi"), this.pluginApi = t.pluginApi;
   }
 }
-class yt {
+class At {
   constructor() {
-    o(this, "previousTime", 0), o(this, "registry"), o(this, "eventBus"), o(this, "appEventBus"), this.eventBus = new rt(), this.appEventBus = new rt(), this.registry = new Be(this.appEventBus, this.eventBus), new Kt(this.eventBus);
+    o(this, "previousTime", 0), o(this, "registry"), o(this, "eventBus"), o(this, "appEventBus"), this.eventBus = new pt(), this.appEventBus = new pt(), this.registry = new We(this.appEventBus, this.eventBus), new ie(this.eventBus);
   }
   static create() {
-    return new yt();
+    return new At();
   }
   addPlugin(t, e = {}) {
     this.registry.hasPlugin(t) || this.registry.createPlugin(t, this.eventBus, e);
@@ -2454,25 +2454,25 @@ class yt {
   }
   listenToNativeEvents() {
     document.addEventListener("click", (t) => {
-      this.eventBus.emitEvent(Lt, {
+      this.eventBus.emitEvent(vt, {
         x: t.clientX,
         y: t.clientY,
         target: t.target
       });
     }), document.addEventListener("pointermove", (t) => {
-      this.eventBus.emitEvent(lt, {
+      this.eventBus.emitEvent(at, {
         x: t.clientX,
         y: t.clientY,
         target: t.target
       });
     }), document.addEventListener("pointerdown", (t) => {
-      this.eventBus.emitEvent(ht, {
+      this.eventBus.emitEvent(ot, {
         x: t.clientX,
         y: t.clientY,
         target: t.target
       });
     }), document.addEventListener("pointerup", (t) => {
-      this.eventBus.emitEvent(ut, {
+      this.eventBus.emitEvent(lt, {
         x: t.clientX,
         y: t.clientY,
         target: t.target
@@ -2484,11 +2484,11 @@ class yt {
     e > 0.016 && (e = 1 / 60), this.previousTime = t, this.eventBus.reset(), this.subscribeToEvents(), this.read(), this.update(t, e), this.render(), requestAnimationFrame(this.tick.bind(this));
   }
   subscribeToEvents() {
-    this.eventBus.subscribeToEvent(Z, this.onNodeAdded.bind(this)), this.eventBus.subscribeToEvent(
-      nt,
+    this.eventBus.subscribeToEvent(et, this.onNodeAdded.bind(this)), this.eventBus.subscribeToEvent(
+      gt,
       this.onNodeRemoved.bind(this)
     ), this.eventBus.subscribeToEvent(
-      Nt,
+      $t,
       this.onDataChanged.bind(this)
     ), this.registry.getPlugins().forEach((t) => {
       t.subscribeToEvents(this.eventBus);
@@ -2527,15 +2527,15 @@ class yt {
     });
   }
 }
-function Fe() {
-  return yt.create();
+function qe() {
+  return At.create();
 }
-class Ft {
+class qt {
   constructor(t) {
-    o(this, "view"), o(this, "previousX"), o(this, "previousY"), o(this, "x"), o(this, "y"), o(this, "pointerX"), o(this, "pointerY"), o(this, "isDragging"), o(this, "target"), o(this, "directions", []), o(this, "width"), o(this, "height"), o(this, "distance"), o(this, "stopped"), this.props = t, this.previousX = t.previousX, this.previousY = t.previousY, this.x = t.x, this.y = t.y, this.pointerX = t.pointerX, this.pointerY = t.pointerY, this.width = t.width, this.height = t.height, this.distance = t.distance, this.view = t.view, this.isDragging = t.isDragging, this.stopped = t.stopped, this.target = t.target, this.directions = t.directions;
+    o(this, "view"), o(this, "previousX"), o(this, "previousY"), o(this, "x"), o(this, "y"), o(this, "pointerX"), o(this, "pointerY"), o(this, "isDragging"), o(this, "target"), o(this, "directions", []), o(this, "width"), o(this, "height"), o(this, "distance"), o(this, "stopped"), o(this, "hasMoved"), this.props = t, this.previousX = t.previousX, this.previousY = t.previousY, this.x = t.x, this.y = t.y, this.pointerX = t.pointerX, this.pointerY = t.pointerY, this.width = t.width, this.height = t.height, this.distance = t.distance, this.view = t.view, this.isDragging = t.isDragging, this.stopped = t.stopped, this.target = t.target, this.directions = t.directions, this.hasMoved = t.hasMoved;
   }
 }
-class kt extends ct {
+class Ut extends ft {
   constructor() {
     super(...arguments), o(this, "_pointerX", 0), o(this, "_pointerY", 0), o(this, "_initialPointer", new u(0, 0)), o(this, "_initialPointerPerView", /* @__PURE__ */ new Map()), o(this, "_pointerDownPerView", /* @__PURE__ */ new Map()), o(this, "_viewPointerPositionLog", /* @__PURE__ */ new Map()), o(this, "_stopTimer", 0);
   }
@@ -2551,17 +2551,17 @@ class kt extends ct {
     );
   }
   subscribeToEvents(t) {
-    t.subscribeToEvent(ht, ({ x: e, y: i }) => {
+    t.subscribeToEvent(ot, ({ x: e, y: i }) => {
       this._initialPointer = new u(e, i), this.getViews().forEach((s) => {
         this._pointerDownPerView.set(s.id, s.intersects(e, i));
         const n = s.isLayoutTransitionEnabled ? s.position.initialX : s.position.x, a = s.isLayoutTransitionEnabled ? s.position.initialY : s.position.y, l = new u(e - n, i - a);
         this._pointerX = e, this._pointerY = i, this._initialPointerPerView.set(s.id, l);
       });
-    }), t.subscribeToEvent(ut, () => {
+    }), t.subscribeToEvent(lt, () => {
       this.getViews().forEach((e) => {
         this._pointerDownPerView.get(e.id) && this._initialPointerPerView.get(e.id) && (this._pointerDownPerView.set(e.id, !1), this._emitEvent(e, []));
       });
-    }), t.subscribeToEvent(lt, ({ x: e, y: i }) => {
+    }), t.subscribeToEvent(at, ({ x: e, y: i }) => {
       this._pointerX = e, this._pointerY = i, this.getViews().forEach((s) => {
         if (this._pointerDownPerView.get(s.id) && this._initialPointerPerView.get(s.id)) {
           this._viewPointerPositionLog.has(s.id) || this._viewPointerPositionLog.set(s.id, []);
@@ -2579,28 +2579,29 @@ class kt extends ct {
     });
   }
   _emitEvent(t, e, i = !1) {
-    const s = this._viewPointerPositionLog.get(t.id), n = s && s.length >= 2 ? s[s.length - 2] : null, a = this._pointerX - this._initialPointerPerView.get(t.id).x, l = this._pointerY - this._initialPointerPerView.get(t.id).y, h = this._pointerX, p = this._pointerY, c = n ? n.x - this._initialPointerPerView.get(t.id).x : a, g = n ? n.y - this._initialPointerPerView.get(t.id).y : l, f = this._pointerY - this._initialPointer.y, y = this._pointerX - this._initialPointer.x, V = se(this._initialPointer, {
+    const s = this._viewPointerPositionLog.get(t.id), n = !(typeof s > "u" || s.length <= 1), a = s && s.length >= 2 ? s[s.length - 2] : null, l = this._pointerX - this._initialPointerPerView.get(t.id).x, h = this._pointerY - this._initialPointerPerView.get(t.id).y, g = this._pointerX, d = this._pointerY, p = a ? a.x - this._initialPointerPerView.get(t.id).x : l, w = a ? a.y - this._initialPointerPerView.get(t.id).y : h, V = this._pointerY - this._initialPointer.y, y = this._pointerX - this._initialPointer.x, A = ue(this._initialPointer, {
       x: this._pointerX,
       y: this._pointerY
-    }), w = this._pointerDownPerView.get(t.id) === !0;
-    w || this._viewPointerPositionLog.clear();
-    const T = {
+    }), b = this._pointerDownPerView.get(t.id) === !0;
+    b || this._viewPointerPositionLog.clear();
+    const O = {
       view: t,
       target: t.element,
-      previousX: c,
-      previousY: g,
-      x: a,
-      y: l,
-      pointerX: h,
-      pointerY: p,
-      distance: V,
+      previousX: p,
+      previousY: w,
+      x: l,
+      y: h,
+      pointerX: g,
+      pointerY: d,
+      distance: A,
       width: y,
-      height: f,
-      isDragging: w,
+      height: V,
+      isDragging: b,
       directions: e,
-      stopped: i
+      stopped: i,
+      hasMoved: n
     };
-    this.emit(Ft, T);
+    this.emit(qt, O);
   }
   _calculateDirections(t, e) {
     const i = {
@@ -2630,33 +2631,33 @@ class kt extends ct {
     );
   }
 }
-o(kt, "pluginName", "DragEventPlugin");
-class ke {
+o(Ut, "pluginName", "DragEventPlugin");
+class Ue {
   constructor(t) {
     o(this, "view"), o(this, "direction"), this.props = t, this.view = t.view, this.direction = t.direction;
   }
 }
-class $e extends ct {
+class Ye extends ft {
   constructor() {
     super(...arguments), o(this, "_viewIsPointerDownMap", /* @__PURE__ */ new Map()), o(this, "_viewPointerPositionLog", /* @__PURE__ */ new Map()), o(this, "_targetPerView", /* @__PURE__ */ new Map());
   }
   subscribeToEvents(t) {
-    t.subscribeToEvent(ht, ({ x: e, y: i, target: s }) => {
+    t.subscribeToEvent(ot, ({ x: e, y: i, target: s }) => {
       this.getViews().forEach((n) => {
         this._targetPerView.set(n.id, s), n.intersects(e, i) && this._viewIsPointerDownMap.set(n.id, !0);
       });
-    }), t.subscribeToEvent(lt, ({ x: e, y: i }) => {
+    }), t.subscribeToEvent(at, ({ x: e, y: i }) => {
       this.getViews().forEach((s) => {
         this._viewIsPointerDownMap.get(s.id) && (this._viewPointerPositionLog.has(s.id) || this._viewPointerPositionLog.set(s.id, []), this._viewPointerPositionLog.get(s.id).push(new u(e, i)));
       });
-    }), t.subscribeToEvent(ut, ({ x: e, y: i }) => {
+    }), t.subscribeToEvent(lt, ({ x: e, y: i }) => {
       this.getViews().forEach((n) => {
         if (!this._viewIsPointerDownMap.get(n.id) || !this._viewPointerPositionLog.has(n.id))
           return;
-        const a = new u(e, i), l = this._viewPointerPositionLog.get(n.id), h = l[l.length - 2] || a.clone(), p = this._targetPerView.get(n.id), c = s(h, a);
-        p && n.hasElement(p) && c.hasSwiped && this.emit(ke, {
+        const a = new u(e, i), l = this._viewPointerPositionLog.get(n.id), h = l[l.length - 2] || a.clone(), g = this._targetPerView.get(n.id), d = s(h, a);
+        g && n.hasElement(g) && d.hasSwiped && this.emit(Ue, {
           view: n,
-          direction: c.direction
+          direction: d.direction
         }), this._viewPointerPositionLog.set(n.id, []), this._viewIsPointerDownMap.set(n.id, !1);
       });
       function s(n, a) {
@@ -2665,65 +2666,110 @@ class $e extends ct {
           down: u.sub(new u(n.x, n.y + 1), n),
           left: u.sub(new u(n.x - 1, n.y), n),
           right: u.sub(new u(n.x + 1, n.y), n)
-        }, h = u.sub(a, n).unitVector, p = [
+        }, h = u.sub(a, n).unitVector, g = [
           "up",
           "down",
           "left",
           "right"
-        ], c = [
+        ], d = [
           h.dot(l.up),
           h.dot(l.down),
           h.dot(l.left),
           h.dot(l.right)
-        ], g = Math.max(...c), f = c.indexOf(g), y = p[f], V = u.sub(a, n).magnitude;
+        ], p = Math.max(...d), w = d.indexOf(p), V = g[w], y = u.sub(a, n).magnitude;
         return {
-          hasSwiped: h.dot(l[y]) * V > 30,
-          direction: y
+          hasSwiped: h.dot(l[V]) * y > 30,
+          direction: V
         };
       }
     });
   }
 }
-o($e, "pluginName", "SwipeEventPlugin");
-class Oe {
+o(Ye, "pluginName", "SwipeEventPlugin");
+class Xe {
   constructor(t) {
     o(this, "view"), this.props = t, this.view = t.view;
   }
 }
-class ze extends ct {
+class He extends ft {
   subscribeToEvents(t) {
-    t.subscribeToEvent(Lt, ({ x: e, y: i, target: s }) => {
+    t.subscribeToEvent(vt, ({ x: e, y: i, target: s }) => {
       this.getViews().forEach((n) => {
         const a = s, l = n.element === a || n.element.contains(a);
-        n.intersects(e, i) && l && this.emit(Oe, {
+        n.intersects(e, i) && l && this.emit(Xe, {
           view: n
         });
       });
     });
   }
 }
-o(ze, "pluginName", "ClickEventPlugin");
-class J {
+o(He, "pluginName", "ClickEventPlugin");
+const je = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  PointerClickEvent: vt,
+  PointerDownEvent: ot,
+  PointerMoveEvent: at,
+  PointerUpEvent: lt
+}, Symbol.toStringTag, { value: "Module" }));
+function Ke(r) {
+  let t = Yt(r) || window;
+  t === document.body && (t = window);
+  let e = 0, i = 0, s = !1, n = () => {
+  };
+  return t.addEventListener("scroll", () => {
+    s && n();
+  }), {
+    container: t,
+    onScroll(a) {
+      n = a;
+    },
+    startScrollTracking() {
+      s || (e = t instanceof Element ? t.scrollTop : t.scrollY, i = t instanceof Element ? t.scrollLeft : t.scrollX, s = !0);
+    },
+    getScrollOffset() {
+      const a = t instanceof Element ? t.scrollTop : t.scrollY;
+      return {
+        x: (t instanceof Element ? t.scrollLeft : t.scrollX) - i,
+        y: a - e
+      };
+    },
+    endScrollTracking() {
+      e = 0, i = 0, s = !1;
+    },
+    width: t instanceof Element ? t.clientWidth : t.innerWidth,
+    height: t instanceof Element ? t.clientHeight : t.innerHeight
+  };
+}
+function Yt(r) {
+  const e = r instanceof HTMLElement && window.getComputedStyle(r).overflowY, i = e !== "visible" && e !== "hidden";
+  if (r) {
+    if (i && r.scrollHeight >= r.clientHeight)
+      return r;
+  } else return null;
+  return Yt(r.parentNode) || document.body;
+}
+class it {
   constructor(t) {
-    E(this, "data");
+    R(this, "data");
     this.data = t.data;
   }
 }
-class $t {
+class Xt {
   constructor(t) {
-    E(this, "data");
+    R(this, "data");
+    R(this, "hasChanged");
+    this.data = t.data, this.hasChanged = t.hasChanged;
+  }
+}
+class Ht {
+}
+class jt {
+  constructor(t) {
+    R(this, "data");
     this.data = t.data;
   }
 }
-class Ot {
-}
-class zt {
-  constructor(t) {
-    E(this, "data");
-    this.data = t.data;
-  }
-}
-function H(r) {
+function J(r) {
   return {
     map: new Map(r),
     array: Array.from(r).map(([e, i]) => ({ slotId: e, itemId: i })),
@@ -2733,7 +2779,7 @@ function H(r) {
     )
   };
 }
-function De(r) {
+function Ge(r) {
   if (r.map)
     return {
       map: new Map(r.map),
@@ -2765,40 +2811,44 @@ function De(r) {
     };
   }
 }
-const S = (r) => {
-  const t = r.useEventPlugin(kt);
-  t.on(Ft, it);
-  let e, i, s, n, a = /* @__PURE__ */ new Map(), l = /* @__PURE__ */ new Map(), h, p, c = null, g = null, f, y, V = !0, w, T, X, x, O = !1, I = () => {
-  };
+const I = (r) => {
+  const t = r.useEventPlugin(Ut);
+  t.on(qt, $);
+  let e, i, s, n, a, l = /* @__PURE__ */ new Map(), h = /* @__PURE__ */ new Map(), g, d, p = null, w = null, V, y, A = !0, b, O, q, T, U = !1, Y = !1, S = () => {
+  }, L = !1;
   r.api({
-    setEnabled(d) {
-      V = d;
+    setEnabled(c) {
+      A = c;
     },
-    setData(d) {
-      const m = De(d);
-      a = new Map(m.map), l = new Map(a);
+    setData(c) {
+      const m = Ge(c);
+      l = new Map(m.map), h = new Map(l);
+    },
+    setAutoScrollOnDrag(c) {
+      L = c;
     }
   });
-  function z() {
+  function E() {
     return {
       animation: e.data.configAnimation,
       continuousMode: typeof e.data.configContinuousMode < "u",
       manualSwap: typeof e.data.configManualSwap < "u",
-      swapMode: e.data.configSwapMode
+      swapMode: e.data.configSwapMode,
+      autoScrollOnDrag: L
     };
   }
-  function L() {
-    const d = z().animation;
-    return d === "dynamic" ? {
+  function X() {
+    const c = E().animation;
+    return c === "dynamic" ? {
       animator: "dynamic",
       config: {}
-    } : d === "spring" ? {
+    } : c === "spring" ? {
       animator: "spring",
       config: {
         damping: 0.7,
         stiffness: 0.62
       }
-    } : d === "none" ? {
+    } : c === "none" ? {
       animator: "instant",
       config: {}
     } : {
@@ -2806,105 +2856,135 @@ const S = (r) => {
       config: {}
     };
   }
-  function N(d) {
+  function H(c) {
     return () => {
-      a = d, l = new Map(a);
+      Y = !dt(c, h), l = c, h = new Map(l);
     };
   }
   r.setup(() => {
-    e = r.getView("root"), i = r.getViews("slot"), s = r.getViews("item"), T = z().continuousMode, X = z().manualSwap, i.forEach((d) => {
-      R(d);
-    }), W(), l = new Map(a), requestAnimationFrame(() => {
-      r.emit(zt, { data: H(a) });
+    e = r.getView("root"), s = r.getViews("slot"), n = r.getViews("item"), i = Ke(n[0].element), i.onScroll(() => {
+      D();
+    }), O = E().continuousMode, q = E().manualSwap, s.forEach((c) => {
+      N(c);
+    }), Q(), h = new Map(l), requestAnimationFrame(() => {
+      r.emit(jt, { data: J(l) });
     });
   });
-  function R(d) {
-    const m = d.getChild("item");
-    m && j(m), a.set(
-      d.element.dataset.swapySlot,
+  function N(c) {
+    const m = c.getChild("item");
+    m && ht(m), l.set(
+      c.element.dataset.swapySlot,
       m ? m.element.dataset.swapyItem : null
     );
   }
-  function j(d) {
-    const m = L();
-    d.styles.position = "relative", d.styles.userSelect = "none", d.styles.webkitUserSelect = "none", d.position.setAnimator(m.animator, m.config), d.scale.setAnimator(m.animator, m.config), d.layoutTransition(!0), requestAnimationFrame(() => {
-      const P = d.getChild("handle");
-      P ? (t.addView(P), P.styles.touchAction = "none") : (t.addView(d), d.styles.touchAction = "none");
+  function ht(c) {
+    const m = X();
+    c.styles.position = "relative", c.styles.userSelect = "none", c.styles.webkitUserSelect = "none", c.position.setAnimator(m.animator, m.config), c.scale.setAnimator(m.animator, m.config), c.layoutTransition(!0), requestAnimationFrame(() => {
+      const v = c.getChild("handle");
+      v ? (t.addView(v), v.styles.touchAction = "none") : (t.addView(c), c.styles.touchAction = "none");
     });
   }
-  r.onViewAdded((d) => {
+  r.onViewAdded((c) => {
     if (r.initialized)
-      if (d.name === "item") {
-        s = r.getViews("item");
-        const m = d.getParent("slot");
-        R(m), W(), l = new Map(a), r.emit(J, { data: H(a) });
-      } else d.name === "slot" && (i = r.getViews("slot"));
+      if (c.name === "item") {
+        n = r.getViews("item");
+        const m = c.getParent("slot");
+        N(m), Q(), h = new Map(l), r.emit(it, { data: J(l) });
+      } else c.name === "slot" && (s = r.getViews("slot"));
   });
-  function W() {
-    const d = L();
-    r.getViews("root-child").forEach((P) => {
-      P.position.setAnimator(d.animator, d.config), P.scale.setAnimator(d.animator, d.config), P.layoutTransition(!0);
+  function Q() {
+    const c = X();
+    r.getViews("root-child").forEach((v) => {
+      v.position.setAnimator(c.animator, c.config), v.scale.setAnimator(c.animator, c.config), v.layoutTransition(!0);
     });
   }
-  function M() {
-    if (!w) return;
-    if (!h || !p) {
-      const v = n.getScroll();
-      h = w.pointerX - n.position.x + v.x, p = w.pointerY - n.position.y + v.y;
+  function D() {
+    if (!b) return;
+    if (!g || !d) {
+      const K = a.getScroll();
+      g = b.pointerX - a.position.x + K.x, d = b.pointerY - a.position.y + K.y;
     }
-    (!f || !y) && (f = n.size.width, y = n.size.height);
-    const d = n.size.width / f, m = n.size.height / y, P = h * (d - 1), D = p * (m - 1);
-    n.position.set(
+    (!V || !y) && (V = a.size.width, y = a.size.height);
+    const c = a.size.width / V, m = a.size.height / y, v = g * (c - 1), j = d * (m - 1), { x: f, y: z } = i.getScrollOffset();
+    a.position.set(
       {
-        x: w.x - P - (c || 0),
-        y: w.y - D - (g || 0)
+        x: b.x - v - (p || 0) + f,
+        y: b.y - j - (w || 0) + z
       },
-      n.scale.x !== 1 || n.scale.y !== 1
+      a.scale.x !== 1 || a.scale.y !== 1
     );
   }
-  function it(d) {
-    if (!V) return;
-    const m = z().swapMode;
-    n = d.view.name === "handle" ? d.view.getParent("item") : d.view, x || (x = n.getParent("slot")), c === null && g === null && (c = d.view.position.x - n.position.x, g = d.view.position.y - n.position.y);
-    const D = i.some(
-      (v) => v.intersects(d.pointerX, d.pointerY)
+  const M = 20, P = 100;
+  let B = 0, C = 0;
+  r.subscribeToEvents((c) => {
+    c.subscribeToEvent(je.PointerMoveEvent, ({ x: m, y: v }) => {
+      i && (i.height - v <= P ? B = Math.max(
+        0,
+        M * (1 - Math.min(i.height - v, P) / P)
+      ) : v <= P ? B = -1 * Math.max(
+        0,
+        M * (1 - Math.min(v, P) / P)
+      ) : B = 0, i.width - m <= P ? C = Math.max(
+        0,
+        M * (1 - Math.min(i.width - m, P) / P)
+      ) : m <= P ? C = -1 * Math.max(
+        0,
+        M * (1 - Math.min(m, P) / P)
+      ) : C = 0);
+    });
+  }), r.update(() => {
+    b != null && b.isDragging && L && i.container.scrollBy({ top: B, left: C });
+  });
+  function $(c) {
+    if (!A || !c.hasMoved) return;
+    const m = E().swapMode, v = c.view.name === "handle";
+    if (a = v ? c.view.getParent("item") : c.view, T || (T = a.getParent("slot")), p === null && w === null) {
+      const f = v ? c.view.position.initialX - c.view.position.x : 0, z = v ? c.view.position.initialY - c.view.position.y : 0;
+      p = c.view.position.x - a.position.x - f, w = c.view.position.y - a.position.y - z;
+    }
+    const j = s.some(
+      (f) => f.intersects(c.pointerX, c.pointerY)
     );
-    d.isDragging ? (O || (O = !0, r.emit(Ot, {})), w = d, M(), i.forEach((v) => {
-      var K;
-      if (!v.intersects(d.pointerX, d.pointerY)) {
-        v !== x && v.element.removeAttribute("data-swapy-highlighted");
+    c.isDragging ? (i.startScrollTracking(), U || (U = !0, r.emit(Ht, {})), b = c, D(), s.forEach((f) => {
+      var St;
+      if (!f.intersects(c.pointerX, c.pointerY)) {
+        f !== T && f.element.removeAttribute("data-swapy-highlighted");
         return;
       }
-      if (typeof v.element.dataset.swapyHighlighted > "u" && (v.element.dataset.swapyHighlighted = ""), !x || (m === "stop" || m !== "drop" && !T) && !d.stopped)
+      if (typeof f.element.dataset.swapyHighlighted > "u" && (f.element.dataset.swapyHighlighted = ""), !T || (m === "stop" || m !== "drop" && !O) && !c.stopped)
         return;
-      const B = v.element.dataset.swapySlot, F = (K = v.getChild("item")) == null ? void 0 : K.element.dataset.swapyItem, C = x.element.dataset.swapySlot, q = n.element.dataset.swapyItem;
-      if (!B || !C || !q)
+      const z = f.element.dataset.swapySlot, K = (St = f.getChild("item")) == null ? void 0 : St.element.dataset.swapyItem, ut = T.element.dataset.swapySlot, Tt = a.element.dataset.swapyItem;
+      if (!z || !ut || !Tt)
         return;
-      const A = new Map(a);
-      A.set(B, q), F ? A.set(C, F) : A.set(C, null), It(A, l) || (I = N(new Map(A)), !X && m !== "drop" && I(), x = null, m !== "drop" && r.emit(J, { data: H(A) }));
-    }), s.forEach((v) => {
-      v.styles.zIndex = v === n ? "2" : "";
-    })) : (i.forEach((v) => {
-      v.element.removeAttribute("data-swapy-highlighted");
-    }), n.position.reset(), x = null, h = null, p = null, f = null, y = null, w = null, c = null, g = null, O = !1, m === "drop" && (D || (I = N(new Map(a))), I(), r.emit(J, { data: H(a) })), I = () => {
-    }, r.emit($t, { data: H(a) })), requestAnimationFrame(() => {
-      M();
+      const W = new Map(l);
+      W.set(z, Tt), K ? W.set(ut, K) : W.set(ut, null), S = H(new Map(W)), dt(W, h) || (!q && m !== "drop" && S(), T = null, m !== "drop" && r.emit(it, { data: J(W) }));
+    }), n.forEach((f) => {
+      f.styles.zIndex = f === a ? "2" : "";
+    })) : (s.forEach((f) => {
+      f.element.removeAttribute("data-swapy-highlighted");
+    }), a.position.reset(), T = null, g = null, d = null, V = null, y = null, b = null, p = null, w = null, U = !1, m === "drop" && (j || (S = H(new Map(l))), S(), r.emit(it, { data: J(l) })), S = () => {
+    }, r.emit(Xt, {
+      data: J(l),
+      hasChanged: Y
+    }), Y = !1, i.endScrollTracking()), requestAnimationFrame(() => {
+      D();
     });
   }
 };
-S.pluginName = "Swapy";
-S.scope = "root";
-let k;
-function We() {
-  return k ? (k.updatePlugin(S), k) : (k = Fe(), k.addPlugin(S), k.run(), k);
+I.pluginName = "Swapy";
+I.scope = "root";
+let F;
+function Ze() {
+  return F ? (F.updatePlugin(I), F) : (F = qe(), F.addPlugin(I), F.run(), F);
 }
-const qe = {
+const Je = {
   animation: "dynamic",
   continuousMode: !0,
   manualSwap: !1,
-  swapMode: "hover"
+  swapMode: "hover",
+  autoScrollOnDrag: !1
 };
-function Ue(r) {
+function Qe(r) {
   let t = !0;
   const e = r.querySelectorAll("[data-swapy-slot]");
   return e.length === 0 && (console.error("There are no slots defined in your root element:", r), t = !1), e.forEach((i) => {
@@ -2924,8 +3004,8 @@ function Ue(r) {
     ), t = !1);
   }), t;
 }
-function Ye(r, t = {}) {
-  const e = Yt();
+function ti(r, t = {}) {
+  const e = Jt();
   return r.dataset.velPluginKey = e, r.dataset.velPlugin = "Swapy", r.dataset.velView = "root", r.dataset.velDataConfigAnimation = t.animation, r.dataset.velDataConfigSwapMode = t.swapMode, t.continuousMode && (r.dataset.velDataConfigContinuousMode = "true"), t.manualSwap && (r.dataset.velDataConfigManualSwap = "true"), Array.from(
     r.querySelectorAll("[data-swapy-slot]")
   ).forEach((l) => {
@@ -2946,7 +3026,7 @@ function Ye(r, t = {}) {
     l.dataset.velIgnore = "";
   }), e;
 }
-function He(r) {
+function ei(r) {
   const t = Array.from(
     r.querySelectorAll("[data-swapy-slot]:not([data-vel-view])")
   );
@@ -2954,7 +3034,7 @@ function He(r) {
     i.dataset.velView = "slot";
   });
   const e = Array.from(
-    r.querySelectorAll("[data-swapy-item]:not([data-vel-view]")
+    r.querySelectorAll("[data-swapy-item]:not([data-vel-view])")
   );
   return e.forEach((i) => {
     i.dataset.velView = "item", i.dataset.velLayoutId = i.dataset.swapyItem;
@@ -2970,17 +3050,17 @@ function He(r) {
     });
   }), e.length > 0 || t.length > 0;
 }
-function Ke(r, t = {}) {
+function ni(r, t = {}) {
   if (!r)
     throw new Error(
       "Cannot create a Swapy instance because the element you provided does not exist on the page!"
     );
-  const e = { ...qe, ...t }, i = r;
-  if (!Ue(i))
+  const e = { ...Je, ...t }, i = r;
+  if (!Qe(i))
     throw new Error(
       "Cannot create a Swapy instance because your HTML structure is invalid. Fix all above errors and then try!"
     );
-  const s = Ye(i, e), n = new Xe(i, s, e);
+  const s = ti(i, e), n = new ii(i, s, e);
   return {
     onSwap(a) {
       n.setSwapCallback(a);
@@ -3002,43 +3082,43 @@ function Ke(r, t = {}) {
     }
   };
 }
-class Xe {
+class ii {
   constructor(t, e, i) {
-    E(this, "_rootEl");
-    E(this, "_veloxiApp");
-    E(this, "_slotElMap");
-    E(this, "_itemElMap");
-    E(this, "_swapCallback");
-    E(this, "_swapEndCallback");
-    E(this, "_swapStartCallback");
-    E(this, "_previousMap");
-    E(this, "_pluginKey");
-    this._rootEl = t, this._veloxiApp = We(), this._slotElMap = this._createSlotElMap(), this._itemElMap = this._createItemElMap(), this._pluginKey = e, this._veloxiApp.onPluginEvent(
-      S,
-      zt,
+    R(this, "_rootEl");
+    R(this, "_veloxiApp");
+    R(this, "_slotElMap");
+    R(this, "_itemElMap");
+    R(this, "_swapCallback");
+    R(this, "_swapEndCallback");
+    R(this, "_swapStartCallback");
+    R(this, "_previousMap");
+    R(this, "_pluginKey");
+    this._rootEl = t, this._veloxiApp = Ze(), this._slotElMap = this._createSlotElMap(), this._itemElMap = this._createItemElMap(), this.setAutoScrollOnDrag(i.autoScrollOnDrag), this._pluginKey = e, this._veloxiApp.onPluginEvent(
+      I,
+      jt,
       ({ data: s }) => {
         this._previousMap = s.map;
       },
       e
     ), this._veloxiApp.onPluginEvent(
-      S,
-      J,
+      I,
+      it,
       (s) => {
         var n;
-        this._previousMap && It(this._previousMap, s.data.map) || (i.manualSwap || this._applyOrder(s.data.map), this._previousMap = s.data.map, (n = this._swapCallback) == null || n.call(this, s));
+        this._previousMap && dt(this._previousMap, s.data.map) || (i.manualSwap || this._applyOrder(s.data.map), this._previousMap = s.data.map, (n = this._swapCallback) == null || n.call(this, s));
       },
       e
     ), this._veloxiApp.onPluginEvent(
-      S,
-      $t,
+      I,
+      Xt,
       (s) => {
         var n;
         (n = this._swapEndCallback) == null || n.call(this, s);
       },
       e
     ), this._veloxiApp.onPluginEvent(
-      S,
-      Ot,
+      I,
+      Ht,
       () => {
         var s;
         (s = this._swapStartCallback) == null || s.call(this);
@@ -3048,7 +3128,7 @@ class Xe {
   }
   setupMutationObserver() {
     new MutationObserver((e) => {
-      e.some((i) => i.type === "childList") && He(this._rootEl) && (this._slotElMap = this._createSlotElMap(), this._itemElMap = this._createItemElMap());
+      e.some((i) => i.type === "childList") && ei(this._rootEl) && (this._slotElMap = this._createSlotElMap(), this._itemElMap = this._createItemElMap());
     }).observe(this._rootEl, {
       childList: !0,
       subtree: !0
@@ -3067,13 +3147,26 @@ class Xe {
     this._veloxiApp.destroy("Swapy");
   }
   setEnabled(t) {
-    try {
-      this._veloxiApp.getPlugin(
-        "Swapy",
-        this._pluginKey
-      ).setEnabled(t);
-    } catch {
-    }
+    requestAnimationFrame(() => {
+      try {
+        this._veloxiApp.getPlugin(
+          "Swapy",
+          this._pluginKey
+        ).setEnabled(t);
+      } catch {
+      }
+    });
+  }
+  setAutoScrollOnDrag(t) {
+    requestAnimationFrame(() => {
+      try {
+        this._veloxiApp.getPlugin(
+          "Swapy",
+          this._pluginKey
+        ).setAutoScrollOnDrag(t);
+      } catch {
+      }
+    });
   }
   setSwapCallback(t) {
     this._swapCallback = t;
@@ -3107,5 +3200,5 @@ class Xe {
   }
 }
 export {
-  Ke as createSwapy
+  ni as createSwapy
 };
