@@ -315,8 +315,16 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       draggingSlot = draggingItem.getParent('slot')!
     }
     if (handleOffsetX === null && handleOffsetY === null) {
-      handleOffsetX = event.view.position.x - draggingItem.position.x
-      handleOffsetY = event.view.position.y - draggingItem.position.y
+      const resetHandleX = withHandle
+        ? event.view.position.initialX - event.view.position.x
+        : 0
+      const resetHandleY = withHandle
+        ? event.view.position.initialY - event.view.position.y
+        : 0
+      handleOffsetX =
+        event.view.position.x - draggingItem.position.x - resetHandleX
+      handleOffsetY =
+        event.view.position.y - draggingItem.position.y - resetHandleY
     }
     const hoveringOverASlot = slots.some((slot) =>
       slot.intersects(event.pointerX, event.pointerY)
