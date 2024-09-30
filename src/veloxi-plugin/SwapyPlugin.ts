@@ -1,6 +1,14 @@
-import { DragEvent, DragEventPlugin, PluginFactory, View } from 'veloxi'
+import {
+  DragEvent,
+  DragEventPlugin,
+  EventBus,
+  Events,
+  PluginFactory,
+  View
+} from 'veloxi'
 import { AnimationType, Config, SwapMode } from '../instance'
 import { mapsAreEqual } from '../utils'
+import { getScrollContainer, ScrollContainer } from '../ScrollContainer'
 
 export type SwapEventArray = Array<{ slotId: string; itemId: string | null }>
 export type SwapEventMap = Map<string, string | null>
@@ -33,6 +41,7 @@ export interface SwapyConfig {
 export interface SwapyPluginApi {
   setEnabled(isEnabled: boolean): void
   setData(data: SwapData): void
+  setAutoScrollOnDrag(autoScrollOnDrag: boolean): void
 }
 
 export class SwapEvent {
@@ -122,6 +131,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   dragEventPlugin.on(DragEvent, onDrag)
 
   let root: View
+  let scrollContainer: ScrollContainer
   let slots: View[]
   let items: View[]
   let draggingItem: View
@@ -141,6 +151,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let startedDragging: boolean = false
   let hasSwapped: boolean = false
   let triggerSwap = () => {}
+  let shouldAutoScrollOnDrag = false
 
   context.api({
     setEnabled(isEnabled) {
@@ -150,6 +161,9 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       const eventData = createEventDataFromAny(data)
       slotItemMap = new Map(eventData.map)
       previousSlotItemMap = new Map(slotItemMap)
+    },
+    setAutoScrollOnDrag(autoScrollOnDrag) {
+      shouldAutoScrollOnDrag = autoScrollOnDrag
     }
   })
 
@@ -158,7 +172,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       animation: root.data.configAnimation as AnimationType,
       continuousMode: typeof root.data.configContinuousMode !== 'undefined',
       manualSwap: typeof root.data.configManualSwap !== 'undefined',
-      swapMode: root.data.configSwapMode as SwapMode
+      swapMode: root.data.configSwapMode as SwapMode,
+      autoScrollOnDrag: shouldAutoScrollOnDrag
     }
   }
 
@@ -204,6 +219,10 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     root = context.getView('root')!
     slots = context.getViews('slot')
     items = context.getViews('item')
+    scrollContainer = getScrollContainer(items[0].element)
+    scrollContainer.onScroll(() => {
+      updateDraggingPosition()
+    })
     isContinuousMode = getConfig().continuousMode
     isManualSwap = getConfig().manualSwap
 
@@ -297,14 +316,73 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     const scaleY = draggingItem.size.height / initialHeight
     const newOffsetX = offsetX * (scaleX - 1)
     const newOffsetY = offsetY * (scaleY - 1)
+    const { x: scrollOffsetX, y: scrollOffsetY } =
+      scrollContainer.getScrollOffset()
     draggingItem.position.set(
       {
-        x: draggingEvent.x - newOffsetX - (handleOffsetX || 0),
-        y: draggingEvent.y - newOffsetY - (handleOffsetY || 0)
+        x: draggingEvent.x - newOffsetX - (handleOffsetX || 0) + scrollOffsetX,
+        y: draggingEvent.y - newOffsetY - (handleOffsetY || 0) + scrollOffsetY
       },
       draggingItem.scale.x !== 1 || draggingItem.scale.y !== 1
     )
   }
+  const MAX_SCROLL_SPEED = 20
+  const MAX_SCROLL_THRESHOLD = 100
+  let scrollDY = 0
+  let scrollDX = 0
+
+  context.subscribeToEvents((eventBus: EventBus) => {
+    eventBus.subscribeToEvent(Events.PointerMoveEvent, ({ x, y }) => {
+      if (!scrollContainer) {
+        return
+      }
+      if (scrollContainer.height - y <= MAX_SCROLL_THRESHOLD) {
+        scrollDY = Math.max(
+          0,
+          MAX_SCROLL_SPEED *
+            (1 -
+              Math.min(scrollContainer.height - y, MAX_SCROLL_THRESHOLD) /
+                MAX_SCROLL_THRESHOLD)
+        )
+      } else if (y <= MAX_SCROLL_THRESHOLD) {
+        scrollDY =
+          -1 *
+          Math.max(
+            0,
+            MAX_SCROLL_SPEED *
+              (1 - Math.min(y, MAX_SCROLL_THRESHOLD) / MAX_SCROLL_THRESHOLD)
+          )
+      } else {
+        scrollDY = 0
+      }
+
+      if (scrollContainer.width - x <= MAX_SCROLL_THRESHOLD) {
+        scrollDX = Math.max(
+          0,
+          MAX_SCROLL_SPEED *
+            (1 -
+              Math.min(scrollContainer.width - x, MAX_SCROLL_THRESHOLD) /
+                MAX_SCROLL_THRESHOLD)
+        )
+      } else if (x <= MAX_SCROLL_THRESHOLD) {
+        scrollDX =
+          -1 *
+          Math.max(
+            0,
+            MAX_SCROLL_SPEED *
+              (1 - Math.min(x, MAX_SCROLL_THRESHOLD) / MAX_SCROLL_THRESHOLD)
+          )
+      } else {
+        scrollDX = 0
+      }
+    })
+  })
+
+  context.update(() => {
+    if (draggingEvent?.isDragging && shouldAutoScrollOnDrag) {
+      scrollContainer.container.scrollBy({ top: scrollDY, left: scrollDX })
+    }
+  })
 
   function onDrag(event: DragEvent) {
     if (!enabled || !event.hasMoved) return
@@ -330,6 +408,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       slot.intersects(event.pointerX, event.pointerY)
     )
     if (event.isDragging) {
+      scrollContainer.startScrollTracking()
       if (!startedDragging) {
         startedDragging = true
         context.emit(SwapStartEvent, {})
@@ -418,6 +497,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       })
 
       hasSwapped = false
+      scrollContainer.endScrollTracking()
     }
     requestAnimationFrame(() => {
       updateDraggingPosition()

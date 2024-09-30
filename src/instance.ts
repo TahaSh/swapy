@@ -36,13 +36,15 @@ export type Config = {
   continuousMode: boolean
   manualSwap: boolean
   swapMode: SwapMode
+  autoScrollOnDrag: boolean
 }
 
 const DEFAULT_CONFIG: Config = {
   animation: 'dynamic',
   continuousMode: true,
   manualSwap: false,
-  swapMode: 'hover'
+  swapMode: 'hover',
+  autoScrollOnDrag: false
 }
 
 function validate(root: HTMLElement): boolean {
@@ -227,6 +229,7 @@ class SwapyInstance {
     this._veloxiApp = installPlugin()
     this._slotElMap = this._createSlotElMap()
     this._itemElMap = this._createItemElMap()
+    this.setAutoScrollOnDrag(config.autoScrollOnDrag!)
     this._pluginKey = pluginKey
     this._veloxiApp.onPluginEvent(
       SwapyPlugin,
@@ -314,6 +317,18 @@ class SwapyInstance {
           this._pluginKey
         )
         plugin.setEnabled(enabledValue)
+      } catch (e) {}
+    })
+  }
+
+  private setAutoScrollOnDrag(autoScrollOnDrag: boolean) {
+    requestAnimationFrame(() => {
+      try {
+        const plugin = this._veloxiApp.getPlugin<SwapyPluginApi>(
+          'Swapy',
+          this._pluginKey
+        )
+        plugin.setAutoScrollOnDrag(autoScrollOnDrag)
       } catch (e) {}
     })
   }

@@ -60,7 +60,9 @@ function App() {
   useEffect(() => {
     const container = document.querySelector('.container')!
     swapyRef.current = createSwapy(container, {
-      manualSwap: true
+      manualSwap: true,
+      swapMode: 'hover',
+      autoScrollOnDrag: true
     })
 
     swapyRef.current.onSwap(({ data }) => {
