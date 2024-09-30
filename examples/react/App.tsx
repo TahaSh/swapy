@@ -60,7 +60,8 @@ function App() {
       localStorage.setItem('slotItem', JSON.stringify(data.object))
     })
 
-    swapy.onSwapEnd(({ data }) => {
+    swapy.onSwapEnd(({ data, hasChanged }) => {
+      console.log(hasChanged);
       console.log('end', data);
     })
 

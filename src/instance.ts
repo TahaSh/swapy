@@ -4,6 +4,7 @@ import {
   InitEvent,
   SwapData,
   SwapEndEvent,
+  SwapEndEventData,
   SwapEvent,
   SwapEventArray,
   SwapEventData,
@@ -13,7 +14,7 @@ import {
 } from './veloxi-plugin/SwapyPlugin'
 
 type SwapCallback = (event: SwapEventData) => void
-type SwapEndCallback = (event: SwapEventData) => void
+type SwapEndCallback = (event: SwapEndEventData) => void
 type SwapStartCallback = () => void
 
 export interface Swapy {

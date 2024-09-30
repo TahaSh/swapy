@@ -24,6 +24,8 @@ export interface SwapEventData {
   data: SwapEventDataData
 }
 
+export type SwapEndEventData = SwapEventData & { hasChanged: boolean }
+
 export interface SwapyConfig {
   animation: 'dynamic' | 'spring' | 'none'
 }
@@ -42,8 +44,10 @@ export class SwapEvent {
 
 export class SwapEndEvent {
   data: SwapEventDataData
-  constructor(props: SwapEventData) {
+  hasChanged: boolean
+  constructor(props: SwapEndEventData) {
     this.data = props.data
+    this.hasChanged = props.hasChanged
   }
 }
 
@@ -135,6 +139,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
   let isManualSwap: boolean
   let draggingSlot: View | null
   let startedDragging: boolean = false
+  let hasSwapped: boolean = false
   let triggerSwap = () => {}
 
   context.api({
@@ -189,6 +194,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
   function prepareSwap(newSlotItemMap: SwapEventMap) {
     return () => {
+      hasSwapped = !mapsAreEqual(newSlotItemMap, previousSlotItemMap)
       slotItemMap = newSlotItemMap
       previousSlotItemMap = new Map(slotItemMap)
     }
@@ -359,8 +365,8 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
         } else {
           newSlotItemMap.set(draggingSlotName, null)
         }
+        triggerSwap = prepareSwap(new Map(newSlotItemMap))
         if (!mapsAreEqual(newSlotItemMap, previousSlotItemMap)) {
-          triggerSwap = prepareSwap(new Map(newSlotItemMap))
           if (!isManualSwap && swapMode !== 'drop') {
             triggerSwap()
           }
@@ -398,7 +404,12 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       }
       triggerSwap = () => {}
 
-      context.emit(SwapEndEvent, { data: createEventData(slotItemMap) })
+      context.emit(SwapEndEvent, {
+        data: createEventData(slotItemMap),
+        hasChanged: hasSwapped
+      })
+
+      hasSwapped = false
     }
     requestAnimationFrame(() => {
       updateDraggingPosition()
