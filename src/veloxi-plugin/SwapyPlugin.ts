@@ -265,7 +265,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
 
     requestAnimationFrame(() => {
       const handle = item.getChild('handle')
-      if (handle) {
+      if (handle || !enabled) {
         dragEventPlugin.addView(handle)
         handle.styles.touchAction = 'none'
       } else {
