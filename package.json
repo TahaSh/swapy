@@ -25,7 +25,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@tsconfig/svelte": "^5.0.4",
-    "@types/react": "^18.3.10",
+    "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
     "@vitejs/plugin-vue": "^5.1.4",
@@ -34,10 +34,10 @@
     "svelte": "^4.2.19",
     "svelte-check": "^4.0.4",
     "typescript": "^5.6.2",
-    "veloxi": "^0.15.0",
+    "veloxi": "^0.15.3",
     "vite": "^5.4.8",
     "vite-plugin-dts": "4.2.3",
-    "vue": "^3.5.10",
+    "vue": "^3.5.11",
     "vue-tsc": "^2.1.6"
   },
   "keywords": [
