@@ -419,6 +419,17 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       }
       draggingEvent = event
       updateDraggingPosition()
+      
+      slots.forEach((slot) => {
+        slot.element.removeAttribute('data-swapy-highlighted')
+  
+        if (typeof slot.element.dataset.swapyHighlighted === 'undefined') {
+          slot.element.dataset.swapyNonHighlighted = '';
+        } else {
+          slot.element.removeAttribute('data-swapy-non-highlighted');
+        }
+      });
+  
       slots.forEach((slot) => {
         if (!slot.intersects(event.pointerX, event.pointerY)) {
           if (slot !== draggingSlot) {
@@ -474,6 +485,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
     } else {
       slots.forEach((slot) => {
         slot.element.removeAttribute('data-swapy-highlighted')
+        slot.element.removeAttribute('data-swapy-non-highlighted');
       })
       draggingItem.position.reset()
       draggingSlot = null
