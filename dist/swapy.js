@@ -2933,7 +2933,7 @@ const M = (r) => {
   }
   r.subscribeToEvents((d) => {
     d.subscribeToEvent(Ze.PointerMoveEvent, ({ x: m, y: v }) => {
-      n && (n.height - v <= i ? S = Math.max(
+      n && (console.log("x - ", m), console.log("y - ", v), n.height - v <= i ? S = Math.max(
         0,
         e * (1 - Math.min(n.height - v, i) / i)
       ) : v <= i ? S = -1 * Math.max(
@@ -2983,7 +2983,7 @@ const M = (r) => {
     }, A = !gt(c, g), r.emit(Kt, {
       data: G(c),
       hasChanged: A
-    }), A = !1, g = null, n == null || n.endScrollTracking()), requestAnimationFrame(() => {
+    }), A = !1, g = null, n == null || n.endScrollTracking(), n = null), requestAnimationFrame(() => {
       B();
     });
   }

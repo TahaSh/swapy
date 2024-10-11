@@ -506,6 +506,7 @@ export const SwapyPlugin: PluginFactory<SwapyConfig, SwapyPluginApi> = (
       hasSwapped = false
       slotItemMapOnDragStart = null
       activeScrollContainer?.endScrollTracking()
+      activeScrollContainer = null
     }
     requestAnimationFrame(() => {
       updateDraggingPosition()
