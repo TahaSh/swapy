@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import './style.css'
 import { createSwapy } from '../../src/index'
 
@@ -48,13 +48,18 @@ function getItemById(itemId: 'a' | 'c' | 'd' | null) {
 
 
 function App() {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+
   const slotItems: Record<string, 'a' | 'c' | 'd' | null> = localStorage.getItem('slotItem') ? JSON.parse(localStorage.getItem('slotItem')!) : DEFAULT
 
   useEffect(() => {
-    const container = document.querySelector('.container')!
+    const container = containerRef.current 
+    if ( !container) return
+
     const swapy = createSwapy(container, {
       swapMode: 'hover'
     })
+
     swapy.onSwap(({ data }) => {
       console.log('swap', data);
       localStorage.setItem('slotItem', JSON.stringify(data.object))
@@ -75,7 +80,7 @@ function App() {
   }, [])
 
   return (
-    <div className="container">
+    <div ref={containerRef}>
       <div className="slot a" data-swapy-slot="1">
         {getItemById(slotItems['1'])}
       </div>
