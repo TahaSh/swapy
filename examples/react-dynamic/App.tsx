@@ -1,113 +1,71 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './style.css'
-import { createSwapy, SlotItemMap, Swapy } from '../../src/index'
-import { useState } from 'react'
-import { useMemo } from 'react'
-import { useRef } from 'react'
+import { SlotItemMapArray, Swapy, utils } from '../../src'
+import { createSwapy } from '../../src'
+
+type Item = {
+  id: string
+  title: string
+}
+
+const initialItems: Item[] = [
+  { id: '1', title: '1' },
+  { id: '2', title: '2' },
+  { id: '3', title: '3' },
+]
+
+let id = 4
 
 function App() {
+  const [items, setItems] = useState<Item[]>(initialItems)
+  const [slotItemMap, setSlotItemMap] = useState<SlotItemMapArray>(utils.initSlotItemMap(items, 'id'))
+  const slottedItems = useMemo(() => utils.toSlottedItems(items, 'id', slotItemMap), [items, slotItemMap])
   const swapyRef = useRef<Swapy | null>(null)
 
-  // Your items.
-  const [items, setItems] = useState([
-    { id: '1', title: 'A' },
-    { id: '2', title: 'B' },
-    { id: '3', title: 'C' },
-  ])
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Define a state for maintain the mapping between slots and items.
-  const [slotItemsMap, setSlotItemsMap] = useState<SlotItemMap>([...items.map(item => ({
-    slotId: item.id,
-    itemId: item.id
-  })),
-  // Defining an empty slot by setting itemId to null.
-  { slotId: `${Math.round(Math.random() * 99999)}`, itemId: null }
-  ])
-
-  // This is what you'll use to display your items.
-  const slottedItems = useMemo(() => slotItemsMap.map(({ slotId, itemId }) => ({
-    slotId,
-    itemId,
-    item: items.find(item => item.id === itemId)
-  })), [items, slotItemsMap])
+  useEffect(() => utils.dynamicSwapy(swapyRef.current, items, 'id', slotItemMap, setSlotItemMap), [items])
 
   useEffect(() => {
-    // Get the newly added items and convert them to slotItem objects
-    const newItems = items.filter(item => !slotItemsMap.some(slotItem => slotItem.itemId === item.id)).map(item => ({
-      slotId: item.id,
-      itemId: item.id
-    }))
-
-    // Remove items from slotItemsMap if they no longer exist in items
-    const withoutRemovedItems = slotItemsMap.filter(slotItem =>
-      items.some(item => item.id === slotItem.itemId) || !slotItem.itemId
-    )
-
-    /******* Below is how you would remove items and keep their slots empty ******/
-    // const withoutRemovedItems = slotItemsMap.map(slotItem => {
-    //   if (!items.some(item => item.id === slotItem.itemId)) {
-    //     return { slotId: slotItem.slotId, itemId: null }
-    //   }
-    //   return slotItem
-    // })
-
-    const updatedSlotItemsMap = [...withoutRemovedItems, ...newItems]
-
-    setSlotItemsMap(updatedSlotItemsMap)
-    swapyRef.current?.setData({ array: updatedSlotItemsMap })
-  }, [items])
-
-  useEffect(() => {
-    const container = document.querySelector('.container')!
-    swapyRef.current = createSwapy(container, {
+    swapyRef.current = createSwapy(containerRef.current!, {
       manualSwap: true,
-      swapMode: 'hover',
-      autoScrollOnDrag: true
+      // animation: 'dynamic'
+      // autoScrollOnDrag: true,
+      // swapMode: 'drop',
+      // enabled: true,
+      // dragAxis: 'x',
+      // dragOnHold: true
     })
 
-    swapyRef.current.onSwap(({ data }) => {
-      // You need to call setData because it's a manualSwap instance
-      swapyRef.current?.setData({ array: data.array })
-      setSlotItemsMap(data.array)
+    swapyRef.current.onSwap((event) => {
+      setSlotItemMap(event.newSlotItemMap.asArray)
     })
 
     return () => {
       swapyRef.current?.destroy()
     }
   }, [])
-
   return (
-    <div className='app'>
-
-      {/* ADD BUTTON */}
-      <button className='add' onClick={() => {
-        const id = `${Math.round(Math.random() * 99999)}`
-        const updatedItems = [...items, { id, title: id }]
-        setItems(updatedItems)
-      }}>Add</button>
-
-      <div className="container">
-        {slottedItems.map(({ itemId, slotId, item }) => (
-          <div className="slot" data-swapy-slot={slotId} key={slotId}>
-
-            {/* ITEM */}
-            {item ?
+    <div className="container" ref={containerRef}>
+      <div className="items">
+        {slottedItems.map(({ slotId, itemId, item }) => (
+          <div className="slot" key={slotId} data-swapy-slot={slotId}>
+            {item &&
               <div className="item" data-swapy-item={itemId} key={itemId}>
-                <div className="handle" data-swapy-handle></div>
-                <div>{item.title}</div>
-
-                {/* DELETE ITEM BUTTON */}
-                <button className='delete'
-                  onClick={() => {
-                    const updatedItems = items.filter(i => i.id !== item.id)
-                    setItems(updatedItems)
-                  }}>x</button>
-
+                <span>{item.title}</span>
+                <span className="delete" data-swapy-no-drag onClick={() => {
+                  setItems(items.filter(i => i.id !== item.id))
+                }}></span>
               </div>
-              : null}
+            }
           </div>
         ))}
       </div>
+      <div className="item item--add" onClick={() => {
+        const newItem: Item = { id: `${id}`, title: `${id}` }
+        setItems([...items, newItem])
+        id++
+      }}>+</div>
     </div>
   )
 }

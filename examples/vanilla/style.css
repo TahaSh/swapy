@@ -21,10 +21,6 @@ body {
   font-size: 50px;
 }
 
-#app {
-  width: 100%;
-}
-
 .container {
   max-width: 800px;
   width: 100%;
@@ -77,6 +73,19 @@ body {
   border-radius: 10px;
   width: 100%;
   height: 100%;
+}
+
+.item-a {
+  background: rgba(255, 0, 0, 0.5);
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .item-a {

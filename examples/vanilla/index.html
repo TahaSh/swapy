@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla JS</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="slot top" data-swapy-slot="a">
+        <div class="item item-a" data-swapy-item="a">
+          <div>A</div>
+        </div>
+      </div>
+      <div class="middle">
+        <div class="slot middle-left" data-swapy-slot="b">
+          <div class="item item-b" data-swapy-item="b">
+            <div class="handle" data-swapy-handle></div>
+            <div>B</div>
+          </div>
+        </div>
+        <div class="slot middle-right" data-swapy-slot="c"></div>
+      </div>
+      <div class="slot bottom" data-swapy-slot="d">
+        <div class="item item-d" data-swapy-item="d">
+          <div>D</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,57 +1,69 @@
-<script>
+<script lang="ts">
+  import { createSwapy, type Swapy } from '../../src'
+  import { onDestroy, onMount } from 'svelte'
   import './style.css'
-  import A from './A.svelte'
-  import C from './C.svelte'
-  import D from './D.svelte'
-  import { createSwapy } from '../../src/index'
-  import { onMount } from 'svelte'
-
-  const DEFAULT = {
-    '1': 'a',
-    '3': 'c',
-    '4': 'd',
-    '2': null
-  }
-  const slotItems = localStorage.getItem('slotItem')
-    ? JSON.parse(localStorage.getItem('slotItem'))
-    : DEFAULT
-
-  let container
+  let container: HTMLElement
+  let swapy: Swapy | null = null
 
   onMount(() => {
     if (container) {
-      const swapy = createSwapy(container)
-      swapy.onSwap(({ data }) => {
-        localStorage.setItem('slotItem', JSON.stringify(data.object))
+      swapy = createSwapy(container, {
+        // animation: 'dynamic'
+        // autoScrollOnDrag: true,
+        // swapMode: 'drop',
+        // enabled: true,
+        // dragAxis: 'x',
+        // dragOnHold: true
+      })
+
+      // swapy.enable(false)
+      // swapy.destroy()
+      // console.log(swapy.slotItemMap())
+
+      swapy.onBeforeSwap((event) => {
+        console.log('beforeSwap', event)
+        // This is for dynamically enabling and disabling swapping.
+        // Return true to allow swapping, and return false to prevent swapping.
+        return true
+      })
+
+      swapy.onSwapStart((event) => {
+        console.log('start', event)
+      })
+
+      swapy.onSwap((event) => {
+        console.log('swap', event)
+      })
+
+      swapy.onSwapEnd((event) => {
+        console.log('end', event)
       })
     }
   })
 
-  function getItemById(itemId) {
-    switch (itemId) {
-      case 'a':
-        return A
-      case 'c':
-        return C
-      case 'd':
-        return D
-    }
-  }
+  onDestroy(() => {
+    swapy?.destroy()
+  })
 </script>
 
 <div class="container" bind:this={container}>
-  <div class="slot a" data-swapy-slot="1">
-    <svelte:component this={getItemById(slotItems['1'])} />
-  </div>
-  <div class="second-row">
-    <div class="slot b" data-swapy-slot="2">
-      <svelte:component this={getItemById(slotItems['2'])} />
-    </div>
-    <div class="slot c" data-swapy-slot="3">
-      <svelte:component this={getItemById(slotItems['3'])} />
+  <div class="slot top" data-swapy-slot="a">
+    <div class="item item-a" data-swapy-item="a">
+      <div data-swapy-no-drag>A</div>
     </div>
   </div>
-  <div class="slot d" data-swapy-slot="4">
-    <svelte:component this={getItemById(slotItems['4'])} />
+  <div class="middle">
+    <div class="slot middle-left" data-swapy-slot="b">
+      <div class="item item-b" data-swapy-item="b">
+        <div class="handle" data-swapy-handle></div>
+        <div>B</div>
+      </div>
+    </div>
+    <div class="slot middle-right" data-swapy-slot="c"></div>
+  </div>
+  <div class="slot bottom" data-swapy-slot="d">
+    <div class="item item-d" data-swapy-item="d">
+      <div>D</div>
+    </div>
   </div>
 </div>
