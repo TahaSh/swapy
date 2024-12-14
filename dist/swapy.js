@@ -152,7 +152,7 @@ function Dt(t, e) {
       B();
     }, n.startDelay)) : B();
     function B() {
-      E = y.target, y.preventDefault();
+      E = y.target;
       const L = t.boundingRect(), q = t.layoutRect();
       m = q.x, v = q.y, c = L.x - m, f = L.y - v, h = y.clientX - c, s = y.clientY - f, g = y.clientX, T = y.clientY, r = (y.clientX - L.x) / L.width, I = (y.clientY - L.y) / L.height, l = !0, X(y);
     }
@@ -187,7 +187,6 @@ function Dt(t, e) {
       return;
     }
     if (!y.isPrimary) return;
-    y.preventDefault();
     const B = y.clientX - g, L = y.clientY - T, q = c = y.clientX - h, U = f = y.clientY - s;
     i == null || i({
       width: B,
