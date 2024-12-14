@@ -6,6 +6,7 @@ import {
 } from './borderRadius'
 import {
   createRectFromBoundingRect,
+  getCorrectedBoundingRect,
   getLayoutRect,
   getScrollOffset,
   Rect
@@ -68,7 +69,7 @@ export function flipView(view: View): Flip {
 
   function readInitial() {
     current = view.currentTransform()
-    parentInitialRect = view.boundingRect()
+    parentInitialRect = getCorrectedBoundingRect(view.el())
     scrollOffset = getScrollOffset(view.el())
 
     const tree = getParentChildTree(view.el())
