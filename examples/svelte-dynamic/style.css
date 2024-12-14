@@ -35,7 +35,6 @@ body {
 }
 
 .slot {
-  transition: background 0.2s ease-out;
   border-radius: 10px;
   height: 100px;
 }

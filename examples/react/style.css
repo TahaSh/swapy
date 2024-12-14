@@ -59,9 +59,9 @@ body {
 }
 
 .slot {
-  transition: background 0.2s ease-out;
   border-radius: 10px;
 }
+
 .slot[data-swapy-highlighted] {
   background: rgba(255, 255, 255, 0.2);
 }
