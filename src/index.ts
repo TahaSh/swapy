@@ -667,9 +667,11 @@ function createItem(itemEl: HTMLElement, store: Store): Item {
     slot().highlight()
     cancelAnimation.drop?.()
 
-    store.slots().forEach((slot) => {
-      const rect = slot.view().boundingRect()
+    const slotRects = store.slots().map((slot) => slot.view().boundingRect())
+    store.slots().forEach((slot, i) => {
+      const rect = slotRects[i]
       slot.view().el().style.width = `${rect.width}px`
+      slot.view().el().style.maxWidth = `${rect.width}px`
       slot.view().el().style.flexShrink = '0'
       slot.view().el().style.height = `${rect.height}px`
     })
@@ -823,6 +825,7 @@ function createItem(itemEl: HTMLElement, store: Store): Item {
     store.onScroll(null)
     store.slots().forEach((slot) => {
       slot.view().el().style.width = ''
+      slot.view().el().style.maxWidth = ''
       slot.view().el().style.flexShrink = ''
       slot.view().el().style.height = ''
     })
