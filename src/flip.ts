@@ -78,17 +78,21 @@ export function flipView(view: View): Flip {
         el: parent,
         initialRect: createRectFromBoundingRect(parent.getBoundingClientRect())
       },
-      children: children.map((child) => {
-        const childEl = child as ChildElement
-        if (!childEl.originalBorderRadius) {
-          childEl.originalBorderRadius = getComputedStyle(child).borderRadius
-        }
-        return {
-          el: child,
-          borderRadius: parseBorderRadius(childEl.originalBorderRadius),
-          initialRect: createRectFromBoundingRect(child.getBoundingClientRect())
-        }
-      })
+      children: children
+        .filter((child) => child instanceof HTMLElement)
+        .map((child) => {
+          const childEl = child as ChildElement
+          if (!childEl.originalBorderRadius) {
+            childEl.originalBorderRadius = getComputedStyle(child).borderRadius
+          }
+          return {
+            el: child,
+            borderRadius: parseBorderRadius(childEl.originalBorderRadius),
+            initialRect: createRectFromBoundingRect(
+              child.getBoundingClientRect()
+            )
+          }
+        })
     }))
 
     state = 'readInitial'
@@ -261,7 +265,9 @@ function getParentChildTree(
   const result: { parent: HTMLElement; children: HTMLElement[] }[] = []
 
   function traverse(parent: HTMLElement) {
-    const children = Array.from(parent.children) as HTMLElement[]
+    const children = Array.from(parent.children).filter(
+      (el) => el instanceof HTMLElement
+    ) as HTMLElement[]
     if (children.length > 0) {
       result.push({
         parent: parent,
