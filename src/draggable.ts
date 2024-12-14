@@ -80,7 +80,6 @@ export function makeDraggable(
 
     function start() {
       draggingEl = e.target as HTMLElement
-      e.preventDefault()
       const rect = view.boundingRect()
       const layout = view.layoutRect()
       layoutLeft = layout.x
@@ -144,7 +143,6 @@ export function makeDraggable(
     }
     if (!e.isPrimary) return
 
-    e.preventDefault()
     const width = e.clientX - initialClientX
     const height = e.clientY - initialClientY
     const dx = (lastX = e.clientX - initialX)
