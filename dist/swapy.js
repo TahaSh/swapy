@@ -11,8 +11,8 @@ function gt(t) {
       unit: "px"
     };
   const n = e.map((s) => {
-    const [c, f, m] = s.match(/(\d+(?:\.\d+)?)(px|%)/) ?? [];
-    return { value: parseFloat(f), unit: m };
+    const [c, f, y] = s.match(/(\d+(?:\.\d+)?)(px|%)/) ?? [];
+    return { value: parseFloat(f), unit: y };
   }), o = ((h = n[0]) == null ? void 0 : h.unit) || "px";
   if (n.some((s) => s.unit !== o))
     throw new Error("Inconsistent units in border-radius string.");
@@ -46,7 +46,7 @@ function ht({ x: t, y: e, unit: n }, o, l) {
     return { x: t, y: e, unit: "%" };
   return { x: t, y: e, unit: n };
 }
-function z(t) {
+function G(t) {
   return `
     ${t.x.topLeft}${t.unit} ${t.x.topRight}${t.unit} ${t.x.bottomRight}${t.unit} ${t.x.bottomLeft}${t.unit}
     /
@@ -68,14 +68,14 @@ function xt(t, e) {
 function vt(t, e) {
   return R(t.x - e.x, t.y - e.y);
 }
-function It(t, e) {
+function At(t, e) {
   return R(t.x * e, t.y * e);
 }
 function C(t, e, n) {
   return t + (e - t) * n;
 }
-function At(t, e, n) {
-  return xt(t, It(vt(e, t), n));
+function It(t, e, n) {
+  return xt(t, At(vt(e, t), n));
 }
 function pt(t, e, n) {
   return {
@@ -95,19 +95,19 @@ function pt(t, e, n) {
   };
 }
 function Et(t, e, n) {
-  return W((n - t) / (e - t), 0, 1);
+  return V((n - t) / (e - t), 0, 1);
 }
-function V(t, e, n, o, l) {
+function U(t, e, n, o, l) {
   return C(n, o, Et(t, e, l));
 }
-function W(t, e, n) {
+function V(t, e, n) {
   return Math.min(Math.max(t, e), n);
 }
 const Xt = {
   duration: 350,
   easing: (t) => t
 };
-function yt(t, e, n, o) {
+function mt(t, e, n, o) {
   let l = !1;
   const i = () => {
     l = !0;
@@ -115,8 +115,8 @@ function yt(t, e, n, o) {
   let u;
   function a(h) {
     u === void 0 && (u = h);
-    const s = h - u, c = W(s / d.duration, 0, 1), f = Object.keys(t), m = Object.keys(e);
-    if (!f.every((g) => m.includes(g))) {
+    const s = h - u, c = V(s / d.duration, 0, 1), f = Object.keys(t), y = Object.keys(e);
+    if (!f.every((g) => y.includes(g))) {
       console.error("animate Error: `from` keys are different than `to`");
       return;
     }
@@ -130,7 +130,7 @@ function yt(t, e, n, o) {
         t[g],
         e[g],
         d.easing(c)
-      ) : at(t[g]) && at(e[g]) && (v[g] = At(
+      ) : at(t[g]) && at(e[g]) && (v[g] = It(
         t[g],
         e[g],
         d.easing(c)
@@ -142,103 +142,103 @@ function yt(t, e, n, o) {
 const Tt = {
   startDelay: 0
 };
-function Dt(t, e) {
+function Mt(t, e) {
   const n = { ...Tt, ...e };
-  let o = t.el(), l = !1, i = null, d = null, u = null, a = null, h = 0, s = 0, c = 0, f = 0, m = 0, v = 0, g = 0, T = 0, r = 0, I = 0, E = null, p;
-  o.addEventListener("pointerdown", w), document.body.addEventListener("pointerup", x), document.body.addEventListener("pointermove", X), document.body.addEventListener("touchmove", D, { passive: !1 });
-  function w(y) {
-    if (l || !y.isPrimary) return;
-    n.startDelay > 0 ? (u == null || u({ el: y.target }), p = setTimeout(() => {
+  let o = t.el(), l = !1, i = null, d = null, u = null, a = null, h = 0, s = 0, c = 0, f = 0, y = 0, v = 0, g = 0, T = 0, r = 0, A = 0, E = null, p;
+  o.addEventListener("pointerdown", w), document.body.addEventListener("pointerup", x), document.body.addEventListener("pointermove", X), document.body.addEventListener("touchmove", M, { passive: !1 });
+  function w(m) {
+    if (l || !m.isPrimary) return;
+    n.startDelay > 0 ? (u == null || u({ el: m.target }), p = setTimeout(() => {
       B();
     }, n.startDelay)) : B();
     function B() {
-      E = y.target;
-      const L = t.boundingRect(), q = t.layoutRect();
-      m = q.x, v = q.y, c = L.x - m, f = L.y - v, h = y.clientX - c, s = y.clientY - f, g = y.clientX, T = y.clientY, r = (y.clientX - L.x) / L.width, I = (y.clientY - L.y) / L.height, l = !0, X(y);
+      E = m.target;
+      const L = t.boundingRect(), F = t.layoutRect();
+      y = F.x, v = F.y, c = L.x - y, f = L.y - v, h = m.clientX - c, s = m.clientY - f, g = m.clientX, T = m.clientY, r = (m.clientX - L.x) / L.width, A = (m.clientY - L.y) / L.height, l = !0, X(m);
     }
   }
-  function A() {
-    const y = t.layoutRect();
-    h -= m - y.x, s -= v - y.y, m = y.x, v = y.y;
+  function I() {
+    const m = t.layoutRect();
+    h -= y - m.x, s -= v - m.y, y = m.x, v = m.y;
   }
-  function x(y) {
+  function x(m) {
     if (!l) {
-      p && (clearTimeout(p), p = null, a == null || a({ el: y.target }));
+      p && (clearTimeout(p), p = null, a == null || a({ el: m.target }));
       return;
     }
-    if (!y.isPrimary) return;
+    if (!m.isPrimary) return;
     l = !1;
-    const B = y.clientX - g, L = y.clientY - T;
+    const B = m.clientX - g, L = m.clientY - T;
     d == null || d({
       x: c,
       y: f,
-      pointerX: y.clientX,
-      pointerY: y.clientY,
+      pointerX: m.clientX,
+      pointerY: m.clientY,
       width: B,
       height: L,
       relativeX: r,
-      relativeY: I,
+      relativeY: A,
       el: E
     }), E = null;
   }
-  function X(y) {
+  function X(m) {
     if (!l) {
-      p && (clearTimeout(p), p = null, a == null || a({ el: y.target }));
+      p && (clearTimeout(p), p = null, a == null || a({ el: m.target }));
       return;
     }
-    if (!y.isPrimary) return;
-    const B = y.clientX - g, L = y.clientY - T, q = c = y.clientX - h, U = f = y.clientY - s;
+    if (!m.isPrimary) return;
+    const B = m.clientX - g, L = m.clientY - T, F = c = m.clientX - h, Z = f = m.clientY - s;
     i == null || i({
       width: B,
       height: L,
-      x: q,
-      y: U,
-      pointerX: y.clientX,
-      pointerY: y.clientY,
+      x: F,
+      y: Z,
+      pointerX: m.clientX,
+      pointerY: m.clientY,
       relativeX: r,
-      relativeY: I,
+      relativeY: A,
       el: E
     });
   }
-  function D(y) {
+  function M(m) {
     if (!l) return !0;
-    y.preventDefault();
+    m.preventDefault();
   }
-  function M(y) {
-    i = y;
+  function D(m) {
+    i = m;
   }
-  function H(y) {
-    d = y;
+  function H(m) {
+    d = m;
   }
-  function _(y) {
-    u = y;
+  function _(m) {
+    u = m;
   }
-  function P(y) {
-    a = y;
+  function P(m) {
+    a = m;
   }
   function $() {
     o.removeEventListener("pointerdown", w), o = t.el(), o.addEventListener("pointerdown", w);
   }
   function N() {
-    t.el().removeEventListener("pointerdown", w), document.body.removeEventListener("pointerup", x), document.body.removeEventListener("pointermove", X), document.body.removeEventListener("touchmove", D), i = null, d = null, u = null, a = null;
+    t.el().removeEventListener("pointerdown", w), document.body.removeEventListener("pointerup", x), document.body.removeEventListener("pointermove", X), document.body.removeEventListener("touchmove", M), i = null, d = null, u = null, a = null;
   }
   return {
-    onDrag: M,
+    onDrag: D,
     onDrop: H,
     onHold: _,
     onRelease: P,
     onElementUpdate: $,
     destroy: N,
-    readjust: A
+    readjust: I
   };
 }
-function Mt(t) {
+function Dt(t) {
   return 1 + 2.70158 * Math.pow(t - 1, 3) + 1.70158 * Math.pow(t - 1, 2);
 }
 function bt(t) {
   return 1 - Math.pow(1 - t, 3);
 }
-function k(t) {
+function z(t) {
   return {
     x: t.x,
     y: t.y,
@@ -246,7 +246,28 @@ function k(t) {
     height: t.height
   };
 }
-function Z(t) {
+function Lt(t) {
+  const e = t.getBoundingClientRect();
+  let n = 0, o = 0, l = t.parentElement;
+  for (; l; ) {
+    const d = getComputedStyle(l).transform;
+    if (d && d !== "none") {
+      const u = d.match(/matrix.*\((.+)\)/);
+      if (u) {
+        const a = u[1].split(", ").map(Number);
+        n += a[4] || 0, o += a[5] || 0;
+      }
+    }
+    l = l.parentElement;
+  }
+  return {
+    y: e.top - o,
+    x: e.left - n,
+    width: e.width,
+    height: e.height
+  };
+}
+function J(t) {
   let e = t, n = 0, o = 0;
   for (; e; )
     n += e.offsetTop, o += e.offsetLeft, e = e.offsetParent;
@@ -260,7 +281,7 @@ function Z(t) {
 function st(t, e) {
   return t.x >= e.x && t.x <= e.x + e.width && t.y >= e.y && t.y <= e.y + e.height;
 }
-function Lt(t) {
+function Yt(t) {
   let e = t, n = 0, o = 0;
   for (; e; ) {
     const l = (i) => {
@@ -277,20 +298,22 @@ function Lt(t) {
   }
   return { x: o, y: n };
 }
-function K(t) {
+function Q(t) {
   let e = "unread", n, o, l, i, d, u, a, h, s, c, f;
-  function m() {
-    n = t.currentTransform(), o = t.boundingRect(), l = Lt(t.el()), f = ct(t.el()).map(({ parent: I, children: E }) => ({
+  function y() {
+    n = t.currentTransform(), o = Lt(t.el()), l = Yt(t.el()), f = ct(t.el()).map(({ parent: A, children: E }) => ({
       parent: {
-        el: I,
-        initialRect: k(I.getBoundingClientRect())
+        el: A,
+        initialRect: z(A.getBoundingClientRect())
       },
-      children: E.map((p) => {
+      children: E.filter((p) => p instanceof HTMLElement).map((p) => {
         const w = p;
         return w.originalBorderRadius || (w.originalBorderRadius = getComputedStyle(p).borderRadius), {
           el: p,
           borderRadius: gt(w.originalBorderRadius),
-          initialRect: k(p.getBoundingClientRect())
+          initialRect: z(
+            p.getBoundingClientRect()
+          )
         };
       })
     })), e = "readInitial";
@@ -308,44 +331,44 @@ function K(t) {
     const r = ct(t.el());
     f = f.map(
       ({ parent: E, children: p }, w) => {
-        const A = r[w].parent;
+        const I = r[w].parent;
         return {
           parent: {
             ...E,
-            el: A,
-            finalRect: Z(A)
+            el: I,
+            finalRect: J(I)
           },
           children: p.map((x, X) => {
-            const D = r[w].children[X];
-            let M = Z(D);
-            return D.hasAttribute("data-swapy-text") && (M = {
-              ...M,
+            const M = r[w].children[X];
+            let D = J(M);
+            return M.hasAttribute("data-swapy-text") && (D = {
+              ...D,
               width: x.initialRect.width,
               height: x.initialRect.height
             }), {
               ...x,
-              el: D,
-              finalRect: M
+              el: M,
+              finalRect: D
             };
           })
         };
       }
     );
-    const I = {
+    const A = {
       translateX: i,
       translateY: d,
       scaleX: u,
       scaleY: a
     };
-    t.el().style.transformOrigin = "0 0", t.el().style.borderRadius = z(
+    t.el().style.transformOrigin = "0 0", t.el().style.borderRadius = G(
       h
-    ), t.setTransform(I), c = [], f.forEach(({ parent: E, children: p }) => {
+    ), t.setTransform(A), c = [], f.forEach(({ parent: E, children: p }) => {
       const w = p.map(
-        ({ el: A, initialRect: x, finalRect: X, borderRadius: D }) => Yt(
-          A,
+        ({ el: I, initialRect: x, finalRect: X, borderRadius: M }) => Ct(
+          I,
           x,
           X,
-          D,
+          M,
           E.initialRect,
           E.finalRect
         )
@@ -381,20 +404,20 @@ function K(t) {
     return c;
   }
   return {
-    readInitial: m,
+    readInitial: y,
     readFinalAndReverse: v,
     transitionValues: g,
     childrenTransitionData: T
   };
 }
-function Yt(t, e, n, o, l, i) {
+function Ct(t, e, n, o, l, i) {
   t.style.transformOrigin = "0 0";
   const d = l.width / i.width, u = l.height / i.height, a = e.width / n.width, h = e.height / n.height, s = ht(
     o,
     a,
     h
-  ), c = e.x - l.x, f = n.x - i.x, m = e.y - l.y, v = n.y - i.y, g = (c - f * d) / d, T = (m - v * u) / u;
-  return t.style.transform = `translate(${g}px, ${T}px) scale(${a / d}, ${h / u})`, t.style.borderRadius = z(s), {
+  ), c = e.x - l.x, f = n.x - i.x, y = e.y - l.y, v = n.y - i.y, g = (c - f * d) / d, T = (y - v * u) / u;
+  return t.style.transform = `translate(${g}px, ${T}px) scale(${a / d}, ${h / u})`, t.style.borderRadius = G(s), {
     el: t,
     fromTranslate: R(g, T),
     fromScale: R(a, h),
@@ -406,7 +429,9 @@ function Yt(t, e, n, o, l, i) {
 function ct(t) {
   const e = [];
   function n(o) {
-    const l = Array.from(o.children);
+    const l = Array.from(o.children).filter(
+      (i) => i instanceof HTMLElement
+    );
     l.length > 0 && (e.push({
       parent: o,
       children: l
@@ -414,7 +439,7 @@ function ct(t) {
   }
   return n(t), e;
 }
-function mt(t) {
+function yt(t) {
   const e = [];
   let n = t, o = {
     dragX: 0,
@@ -432,8 +457,8 @@ function mt(t) {
     clearTransform: u,
     currentTransform: () => o,
     borderRadius: () => l,
-    layoutRect: () => Z(n),
-    boundingRect: () => k(n.getBoundingClientRect()),
+    layoutRect: () => J(n),
+    boundingRect: () => z(n.getBoundingClientRect()),
     usePlugin: h,
     destroy: s,
     updateElement: c
@@ -452,11 +477,11 @@ function mt(t) {
     }, a();
   }
   function a() {
-    const { dragX: f, dragY: m, translateX: v, translateY: g, scaleX: T, scaleY: r } = o;
-    f === 0 && m === 0 && v === 0 && g === 0 && T === 1 && r === 1 ? n.style.transform = "" : n.style.transform = `translate(${f + v}px, ${m + g}px) scale(${T}, ${r})`;
+    const { dragX: f, dragY: y, translateX: v, translateY: g, scaleX: T, scaleY: r } = o;
+    f === 0 && y === 0 && v === 0 && g === 0 && T === 1 && r === 1 ? n.style.transform = "" : n.style.transform = `translate(${f + v}px, ${y + g}px) scale(${T}, ${r})`;
   }
-  function h(f, m) {
-    const v = f(i, m);
+  function h(f, y) {
+    const v = f(i, y);
     return e.push(v), v;
   }
   function s() {
@@ -464,25 +489,25 @@ function mt(t) {
   }
   function c(f) {
     if (!f) return;
-    const m = n.style.cssText;
-    n = f, n.style.cssText = m, e.forEach((v) => v.onElementUpdate());
+    const y = n.hasAttribute("data-swapy-dragging"), v = n.style.cssText;
+    n = f, y && n.setAttribute("data-swapy-dragging", ""), n.style.cssText = v, e.forEach((g) => g.onElementUpdate());
   }
   return i;
 }
-function Ct(t, e, n) {
+function Rt(t, e, n) {
   return n.map((o) => ({
     slotId: o.slot,
     itemId: o.item,
     item: o.item === "" ? null : t.find((l) => o.item === l[e])
   }));
 }
-function Rt(t, e) {
+function Ht(t, e) {
   return t.map((n) => ({
     item: n[e],
     slot: n[e]
   }));
 }
-function Ht(t, e, n, o, l, i = !1) {
+function $t(t, e, n, o, l, i = !1) {
   const d = e.filter(
     (h) => !o.some((s) => s.item === h[n])
   ).map((h) => ({
@@ -503,10 +528,10 @@ function Ht(t, e, n, o, l, i = !1) {
 }
 const jt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  dynamicSwapy: Ht,
-  initSlotItemMap: Rt,
-  toSlottedItems: Ct
-}, Symbol.toStringTag, { value: "Module" })), $t = {
+  dynamicSwapy: $t,
+  initSlotItemMap: Ht,
+  toSlottedItems: Rt
+}, Symbol.toStringTag, { value: "Module" })), Bt = {
   animation: "dynamic",
   enabled: !0,
   swapMode: "hover",
@@ -520,34 +545,34 @@ function wt(t) {
     case "dynamic":
       return { easing: bt, duration: 300 };
     case "spring":
-      return { easing: Mt, duration: 350 };
+      return { easing: Dt, duration: 350 };
     case "none":
       return { easing: (e) => e, duration: 1 };
   }
 }
-function Wt(t, e) {
-  const n = { ...$t, ...e }, o = Bt({ slots: [], items: [], config: n });
+function kt(t, e) {
+  const n = { ...Bt, ...e }, o = Ot({ slots: [], items: [], config: n });
   let l = [], i = [];
   d();
   function d() {
-    if (!Nt(t))
+    if (!qt(t))
       throw new Error(
         "Cannot create a Swapy instance because your HTML structure is invalid. Fix all above errors and then try!"
       );
     l = Array.from(t.querySelectorAll("[data-swapy-slot]")).map(
-      (r) => Ot(r, o)
-    ), o.setSlots(l), i = Array.from(t.querySelectorAll("[data-swapy-item]")).map(
       (r) => _t(r, o)
+    ), o.setSlots(l), i = Array.from(t.querySelectorAll("[data-swapy-item]")).map(
+      (r) => Pt(r, o)
     ), o.setItems(i), o.syncSlotItemMap(), i.forEach((r) => {
-      r.onDrag(({ pointerX: I, pointerY: E }) => {
+      r.onDrag(({ pointerX: A, pointerY: E }) => {
         a();
         let p = !1;
         l.forEach((w) => {
-          const A = w.rect();
-          st({ x: I, y: E }, A) && (p = !0, w.isHighlighted() || w.highlight());
-        }), !p && o.config().swapMode === "drop" && r.slot().highlight(), n.swapMode === "hover" && u(r, { pointerX: I, pointerY: E });
-      }), r.onDrop(({ pointerX: I, pointerY: E }) => {
-        h(), n.swapMode === "drop" && u(r, { pointerX: I, pointerY: E });
+          const I = w.rect();
+          st({ x: A, y: E }, I) && (p = !0, w.isHighlighted() || w.highlight());
+        }), !p && o.config().swapMode === "drop" && r.slot().highlight(), n.swapMode === "hover" && u(r, { pointerX: A, pointerY: E });
+      }), r.onDrop(({ pointerX: A, pointerY: E }) => {
+        h(), n.swapMode === "drop" && u(r, { pointerX: A, pointerY: E });
       }), r.onHold(() => {
         a();
       }), r.onRelease(() => {
@@ -555,15 +580,15 @@ function Wt(t, e) {
       });
     });
   }
-  function u(r, { pointerX: I, pointerY: E }) {
+  function u(r, { pointerX: A, pointerY: E }) {
     l.forEach((p) => {
       const w = p.rect();
-      if (st({ x: I, y: E }, w)) {
+      if (st({ x: A, y: E }, w)) {
         if (r.id() === p.itemId()) return;
         o.config().swapMode === "hover" && r.setContinuousDrag(!0);
-        const A = r.slot(), x = p.item();
+        const I = r.slot(), x = p.item();
         if (!o.eventHandlers().onBeforeSwap({
-          fromSlot: A.id(),
+          fromSlot: I.id(),
           toSlot: p.id(),
           draggingItem: r.id(),
           swapWithItem: (x == null ? void 0 : x.id()) || ""
@@ -572,40 +597,40 @@ function Wt(t, e) {
         if (o.config().manualSwap) {
           const X = structuredClone(o.slotItemMap());
           o.swapItems(r, p);
-          const D = o.slotItemMap(), M = K(r.view());
-          M.readInitial();
-          const H = x ? K(x.view()) : null;
+          const M = o.slotItemMap(), D = Q(r.view());
+          D.readInitial();
+          const H = x ? Q(x.view()) : null;
           H == null || H.readInitial();
           let _ = 0, P = 0;
-          const $ = Q(
+          const $ = et(
             r.view().el()
           );
           $ instanceof Window ? (_ = $.scrollY, P = $.scrollX) : (_ = $.scrollTop, P = $.scrollLeft), o.eventHandlers().onSwap({
             oldSlotItemMap: X,
-            newSlotItemMap: D,
-            fromSlot: A.id(),
+            newSlotItemMap: M,
+            fromSlot: I.id(),
             toSlot: p.id(),
             draggingItem: r.id(),
             swappedWithItem: (x == null ? void 0 : x.id()) || ""
           }), requestAnimationFrame(() => {
             const N = t.querySelectorAll("[data-swapy-item]");
-            o.items().forEach((y) => {
+            o.items().forEach((m) => {
               const B = Array.from(N).find(
-                (L) => L.dataset.swapyItem === y.id()
+                (L) => L.dataset.swapyItem === m.id()
               );
-              y.view().updateElement(B);
-            }), o.syncSlotItemMap(), M.readFinalAndReverse(), H == null || H.readFinalAndReverse(), J(r, M), x && H && J(x, H), $.scrollTo({
+              m.view().updateElement(B);
+            }), o.syncSlotItemMap(), D.readFinalAndReverse(), H == null || H.readFinalAndReverse(), tt(r, D), x && H && tt(x, H), $.scrollTo({
               left: P,
               top: _
             });
           });
         } else {
-          let X = 0, D = 0;
-          const M = Q(
+          let X = 0, M = 0;
+          const D = et(
             r.view().el()
           );
-          M instanceof Window ? (X = M.scrollY, D = M.scrollX) : (X = M.scrollTop, D = M.scrollLeft), ft(r, p, !0), x && ft(x, A), M.scrollTo({
-            left: D,
+          D instanceof Window ? (X = D.scrollY, M = D.scrollX) : (X = D.scrollTop, M = D.scrollLeft), ft(r, p, !0), x && ft(x, I), D.scrollTo({
+            left: M,
             top: X
           });
           const H = o.slotItemMap();
@@ -614,7 +639,7 @@ function Wt(t, e) {
           o.eventHandlers().onSwap({
             oldSlotItemMap: H,
             newSlotItemMap: _,
-            fromSlot: A.id(),
+            fromSlot: I.id(),
             toSlot: p.id(),
             draggingItem: r.id(),
             swappedWithItem: (x == null ? void 0 : x.id()) || ""
@@ -642,7 +667,7 @@ function Wt(t, e) {
   function f(r) {
     o.eventHandlers().onSwap = r;
   }
-  function m(r) {
+  function y(r) {
     o.eventHandlers().onSwapEnd = r;
   }
   function v(r) {
@@ -661,13 +686,13 @@ function Wt(t, e) {
     slotItemMap: () => o.slotItemMap(),
     onSwapStart: c,
     onSwap: f,
-    onSwapEnd: m,
+    onSwapEnd: y,
     onBeforeSwap: v,
     update: g,
     destroy: T
   };
 }
-function Bt({
+function Ot({
   slots: t,
   items: e,
   config: n
@@ -705,23 +730,23 @@ function Bt({
     return l.items.find((f) => f.id() === c);
   }
   function a() {
-    const c = {}, f = /* @__PURE__ */ new Map(), m = [];
+    const c = {}, f = /* @__PURE__ */ new Map(), y = [];
     l.slots.forEach((v) => {
       var r;
       const g = v.id(), T = ((r = v.item()) == null ? void 0 : r.id()) || "";
-      c[g] = T, f.set(g, T), m.push({ slot: g, item: T });
-    }), l.slotItemMap = { asObject: c, asMap: f, asArray: m };
+      c[g] = T, f.set(g, T), y.push({ slot: g, item: T });
+    }), l.slotItemMap = { asObject: c, asMap: f, asArray: y };
   }
   function h(c, f) {
     var p;
-    const m = l.slotItemMap, v = c.id(), g = ((p = f.item()) == null ? void 0 : p.id()) || "", T = f.id(), r = c.slot().id();
-    m.asObject[T] = v, m.asObject[r] = g, m.asMap.set(T, v), m.asMap.set(r, g);
-    const I = m.asArray.findIndex(
+    const y = l.slotItemMap, v = c.id(), g = ((p = f.item()) == null ? void 0 : p.id()) || "", T = f.id(), r = c.slot().id();
+    y.asObject[T] = v, y.asObject[r] = g, y.asMap.set(T, v), y.asMap.set(r, g);
+    const A = y.asArray.findIndex(
       (w) => w.slot === T
-    ), E = m.asArray.findIndex(
+    ), E = y.asArray.findIndex(
       (w) => w.slot === r
     );
-    m.asArray[I].item = v, m.asArray[E].item = g;
+    y.asArray[A].item = v, y.asArray[E].item = g;
   }
   function s() {
     window.removeEventListener("scroll", i), l = { ...o };
@@ -748,8 +773,8 @@ function Bt({
     destroy: s
   };
 }
-function Ot(t, e) {
-  const n = mt(t);
+function _t(t, e) {
+  const n = yt(t);
   function o() {
     return n.el().dataset.swapySlot;
   }
@@ -758,7 +783,7 @@ function Ot(t, e) {
     return (s == null ? void 0 : s.dataset.swapyItem) || null;
   }
   function i() {
-    return k(n.el().getBoundingClientRect());
+    return z(n.el().getBoundingClientRect());
   }
   function d() {
     const s = n.el().children[0];
@@ -787,57 +812,59 @@ function Ot(t, e) {
     destroy: h
   };
 }
-function _t(t, e) {
-  const n = mt(t), o = {};
+function Pt(t, e) {
+  const n = yt(t), o = {};
   let l = null, i = null, d = !1, u = !0, a;
-  const h = Pt();
+  const h = Nt();
   let s = () => {
   }, c = () => {
   }, f = () => {
-  }, m = () => {
+  }, y = () => {
   };
-  const { onDrag: v, onDrop: g, onHold: T, onRelease: r } = n.usePlugin(Dt, {
+  const { onDrag: v, onDrop: g, onHold: T, onRelease: r } = n.usePlugin(Mt, {
     startDelay: e.config().dragOnHold ? 400 : 0
-  }), I = R(0, 0), E = R(0, 0), p = R(0, 0), w = R(0, 0);
-  let A = null, x = null;
+  }), A = R(0, 0), E = R(0, 0), p = R(0, 0), w = R(0, 0);
+  let I = null, x = null;
   T((S) => {
     e.config().enabled && (N() && !$(S.el) || L() && B(S.el) || f == null || f(S));
   }), r((S) => {
-    e.config().enabled && (N() && !$(S.el) || L() && B(S.el) || m == null || m(S));
+    e.config().enabled && (N() && !$(S.el) || L() && B(S.el) || y == null || y(S));
   });
   function X(S) {
-    var Y;
-    q(), G().highlight(), (Y = o.drop) == null || Y.call(o), e.slots().forEach((O) => {
-      const F = O.view().boundingRect();
-      O.view().el().style.width = `${F.width}px`, O.view().el().style.flexShrink = "0", O.view().el().style.height = `${F.height}px`;
+    var q;
+    F(), K().highlight(), (q = o.drop) == null || q.call(o);
+    const Y = e.slots().map((O) => O.view().boundingRect());
+    e.slots().forEach((O, W) => {
+      const j = Y[W];
+      O.view().el().style.width = `${j.width}px`, O.view().el().style.maxWidth = `${j.width}px`, O.view().el().style.flexShrink = "0", O.view().el().style.height = `${j.height}px`;
     });
     const b = e.slotItemMap();
     e.eventHandlers().onSwapStart({
-      draggingItem: tt(),
-      fromSlot: et(),
+      draggingItem: nt(),
+      fromSlot: ot(),
       slotItemMap: b
-    }), i = b, n.el().style.position = "relative", n.el().style.zIndex = `${e.zIndex(!0)}`, A = Q(S.el), e.config().autoScrollOnDrag && (l = Ft(
-      A,
+    }), i = b, n.el().style.position = "relative", n.el().style.zIndex = `${e.zIndex(!0)}`, I = et(S.el), e.config().autoScrollOnDrag && (l = Wt(
+      I,
       e.config().dragAxis
     ), l.updatePointer({
       x: S.pointerX,
       y: S.pointerY
-    })), I.x = window.scrollX, I.y = window.scrollY, p.x = 0, p.y = 0, A instanceof HTMLElement && (E.x = A.scrollLeft, E.y = A.scrollTop, x = () => {
-      w.x = A.scrollLeft - E.x, w.y = A.scrollTop - E.y, n.setTransform({
+    })), A.x = window.scrollX, A.y = window.scrollY, p.x = 0, p.y = 0, I instanceof HTMLElement && (E.x = I.scrollLeft, E.y = I.scrollTop, x = () => {
+      w.x = I.scrollLeft - E.x, w.y = I.scrollTop - E.y, n.setTransform({
         dragX: ((a == null ? void 0 : a.width) || 0) + p.x + w.x,
         dragY: ((a == null ? void 0 : a.height) || 0) + p.y + w.y
       });
-    }, A.addEventListener("scroll", x)), e.onScroll(() => {
-      p.x = window.scrollX - I.x, p.y = window.scrollY - I.y;
-      const O = w.x || 0, F = w.y || 0;
+    }, I.addEventListener("scroll", x)), e.onScroll(() => {
+      p.x = window.scrollX - A.x, p.y = window.scrollY - A.y;
+      const O = w.x || 0, W = w.y || 0;
       n.setTransform({
         dragX: ((a == null ? void 0 : a.width) || 0) + p.x + O,
-        dragY: ((a == null ? void 0 : a.height) || 0) + p.y + F
+        dragY: ((a == null ? void 0 : a.height) || 0) + p.y + W
       });
     });
   }
   v((S) => {
-    var b;
+    var Y;
     if (e.config().enabled) {
       if (!d) {
         if (N() && !$(S.el) || L() && B(S.el))
@@ -847,42 +874,42 @@ function _t(t, e) {
       d = !0, l && l.updatePointer({
         x: S.pointerX,
         y: S.pointerY
-      }), a = S, (b = o.drop) == null || b.call(o), h(() => {
+      }), a = S, (Y = o.drop) == null || Y.call(o), h(() => {
         n.el().style.position = "relative";
-        const Y = S.width + p.x + w.x, O = S.height + p.y + w.y;
+        const b = S.width + p.x + w.x, q = S.height + p.y + w.y;
         e.config().dragAxis === "y" ? n.setTransform({
-          dragY: O
+          dragY: q
         }) : e.config().dragAxis === "x" ? n.setTransform({
-          dragX: Y
+          dragX: b
         }) : n.setTransform({
-          dragX: Y,
-          dragY: O
+          dragX: b,
+          dragY: q
         }), s == null || s(S);
       });
     }
   }), g((S) => {
     if (!d) return;
-    U(), d = !1, u = !1, a = null, A && (A.removeEventListener("scroll", x), x = null), A = null, w.x = 0, w.y = 0, p.x = 0, p.y = 0, l && (l.destroy(), l = null), G().unhighlightAllSlots(), c == null || c(S), e.eventHandlers().onSwapEnd({
+    Z(), d = !1, u = !1, a = null, I && (I.removeEventListener("scroll", x), x = null), I = null, w.x = 0, w.y = 0, p.x = 0, p.y = 0, l && (l.destroy(), l = null), K().unhighlightAllSlots(), c == null || c(S), e.eventHandlers().onSwapEnd({
       slotItemMap: e.slotItemMap(),
-      hasChanged: i != null && i.asMap ? !qt(
+      hasChanged: i != null && i.asMap ? !Ft(
         i == null ? void 0 : i.asMap,
         e.slotItemMap().asMap
       ) : !1
-    }), i = null, e.onScroll(null), e.slots().forEach((Y) => {
-      Y.view().el().style.width = "", Y.view().el().style.flexShrink = "", Y.view().el().style.height = "";
-    }), e.config().manualSwap && e.config().swapMode === "drop" ? requestAnimationFrame(b) : b();
-    function b() {
-      const Y = n.currentTransform(), O = Y.dragX + Y.translateX, F = Y.dragY + Y.translateY;
-      o.drop = yt(
-        { translate: R(O, F) },
+    }), i = null, e.onScroll(null), e.slots().forEach((b) => {
+      b.view().el().style.width = "", b.view().el().style.maxWidth = "", b.view().el().style.flexShrink = "", b.view().el().style.height = "";
+    }), e.config().manualSwap && e.config().swapMode === "drop" ? requestAnimationFrame(Y) : Y();
+    function Y() {
+      const b = n.currentTransform(), q = b.dragX + b.translateX, O = b.dragY + b.translateY;
+      o.drop = mt(
+        { translate: R(q, O) },
         { translate: R(0, 0) },
-        ({ translate: nt }, ot) => {
-          ot ? d || (n.clearTransform(), n.el().style.transformOrigin = "") : n.setTransform({
+        ({ translate: W }, j) => {
+          j ? d || (n.clearTransform(), n.el().style.transformOrigin = "") : n.setTransform({
             dragX: 0,
             dragY: 0,
-            translateX: nt.x,
-            translateY: nt.y
-          }), ot && (e.items().forEach((lt) => {
+            translateX: W.x,
+            translateY: W.y
+          }), j && (e.items().forEach((lt) => {
             lt.isDragging() || (lt.view().el().style.zIndex = "");
           }), e.resetZIndex(), n.el().style.position = "", u = !0);
         },
@@ -890,63 +917,63 @@ function _t(t, e) {
       );
     }
   });
-  function D(S) {
+  function M(S) {
     s = S;
   }
-  function M(S) {
+  function D(S) {
     c = S;
   }
   function H(S) {
     f = S;
   }
   function _(S) {
-    m = S;
+    y = S;
   }
   function P() {
     return n.el().querySelector("[data-swapy-handle]");
   }
   function $(S) {
-    const b = P();
-    return b ? b === S || b.contains(S) : !1;
+    const Y = P();
+    return Y ? Y === S || Y.contains(S) : !1;
   }
   function N() {
     return P() !== null;
   }
-  function y() {
+  function m() {
     return Array.from(n.el().querySelectorAll("[data-swapy-no-drag]"));
   }
   function B(S) {
-    const b = y();
-    return !b || b.length === 0 ? !1 : b.includes(S) || b.some((Y) => Y.contains(S));
+    const Y = m();
+    return !Y || Y.length === 0 ? !1 : Y.includes(S) || Y.some((b) => b.contains(S));
   }
   function L() {
-    return y().length > 0;
+    return m().length > 0;
   }
-  function q() {
+  function F() {
     n.el().setAttribute("data-swapy-dragging", "");
   }
-  function U() {
+  function Z() {
     n.el().removeAttribute("data-swapy-dragging");
   }
   function St() {
-    s = null, c = null, f = null, m = null, a = null, i = null, l && (l.destroy(), l = null), A && x && A.removeEventListener("scroll", x), n.destroy();
+    s = null, c = null, f = null, y = null, a = null, i = null, l && (l.destroy(), l = null), I && x && I.removeEventListener("scroll", x), n.destroy();
   }
-  function tt() {
+  function nt() {
     return n.el().dataset.swapyItem;
   }
-  function G() {
+  function K() {
     return e.slotById(n.el().parentElement.dataset.swapySlot);
   }
-  function et() {
+  function ot() {
     return n.el().parentElement.dataset.swapySlot;
   }
   return {
-    id: tt,
+    id: nt,
     view: () => n,
-    slot: G,
-    slotId: et,
-    onDrag: D,
-    onDrop: M,
+    slot: K,
+    slotId: ot,
+    onDrag: M,
+    onDrop: D,
     onHold: H,
     onRelease: _,
     destroy: St,
@@ -968,10 +995,10 @@ function ft(t, e, n = !1) {
   }
   if (!t)
     return;
-  const o = K(t.view());
-  o.readInitial(), e.view().el().appendChild(t.view().el()), o.readFinalAndReverse(), J(t, o);
+  const o = Q(t.view());
+  o.readInitial(), e.view().el().appendChild(t.view().el()), o.readFinalAndReverse(), tt(t, o);
 }
-function Pt() {
+function Nt() {
   let t = !1;
   return (e) => {
     t || (t = !0, requestAnimationFrame(() => {
@@ -979,12 +1006,12 @@ function Pt() {
     }));
   };
 }
-function J(t, e) {
+function tt(t, e) {
   var u, a, h, s;
   (a = (u = t.cancelAnimation()).moveToSlot) == null || a.call(u), (s = (h = t.cancelAnimation()).drop) == null || s.call(h);
   const n = wt(t.store().config().animation), o = e.transitionValues();
   let l = t.view().currentTransform(), i = 0, d = !1;
-  t.cancelAnimation().moveToSlot = yt(
+  t.cancelAnimation().moveToSlot = mt(
     {
       translate: o.from.translate,
       scale: o.from.scale,
@@ -995,10 +1022,10 @@ function J(t, e) {
       scale: o.to.scale,
       borderRadius: o.to.borderRadius
     },
-    ({ translate: c, scale: f, borderRadius: m }, v, g) => {
+    ({ translate: c, scale: f, borderRadius: y }, v, g) => {
       if (t.isDragging()) {
         i !== 0 && (d = !0);
-        const r = t.dragEvent().relativeX, I = t.dragEvent().relativeY;
+        const r = t.dragEvent().relativeX, A = t.dragEvent().relativeY;
         t.continuousDrag() ? t.view().setTransform({
           translateX: C(
             l.translateX,
@@ -1007,7 +1034,7 @@ function J(t, e) {
           ),
           translateY: C(
             l.translateY,
-            l.translateY + (o.from.height - o.to.height) * I,
+            l.translateY + (o.from.height - o.to.height) * A,
             n.easing(g - i)
           ),
           scaleX: f.x,
@@ -1029,22 +1056,22 @@ function J(t, e) {
       T.forEach(
         ({
           el: r,
-          fromTranslate: I,
+          fromTranslate: A,
           fromScale: E,
           fromBorderRadius: p,
           toBorderRadius: w,
-          parentScale: A
+          parentScale: I
         }) => {
           const x = C(
-            A.x,
+            I.x,
             1,
             n.easing(g)
           ), X = C(
-            A.y,
+            I.y,
             1,
             n.easing(g)
           );
-          r.style.transform = `translate(${I.x + (0 - I.x / x) * n.easing(g)}px, ${I.y + (0 - I.y / X) * n.easing(g)}px) scale(${C(
+          r.style.transform = `translate(${A.x + (0 - A.x / x) * n.easing(g)}px, ${A.y + (0 - A.y / X) * n.easing(g)}px) scale(${C(
             E.x / x,
             1 / x,
             n.easing(g)
@@ -1052,7 +1079,7 @@ function J(t, e) {
             E.y / X,
             1 / X,
             n.easing(g)
-          )})`, it(p) || (r.style.borderRadius = z(
+          )})`, it(p) || (r.style.borderRadius = G(
             pt(
               p,
               w,
@@ -1060,23 +1087,23 @@ function J(t, e) {
             )
           ));
         }
-      ), it(m) || (t.view().el().style.borderRadius = z(m)), v && (t.isDragging() || (t.view().el().style.transformOrigin = "", t.view().clearTransform()), t.view().el().style.borderRadius = "", T.forEach(({ el: r }) => {
+      ), it(y) || (t.view().el().style.borderRadius = G(y)), v && (t.isDragging() || (t.view().el().style.transformOrigin = "", t.view().clearTransform()), t.view().el().style.borderRadius = "", T.forEach(({ el: r }) => {
         r.style.transform = "", r.style.transformOrigin = "", r.style.borderRadius = "";
       }));
     },
     n
   );
 }
-function j(...t) {
+function k(...t) {
   console.error("Swapy Error:", ...t);
 }
-function Nt(t) {
+function qt(t) {
   const e = t;
   let n = !0;
   const o = e.querySelectorAll("[data-swapy-slot]");
-  e || (j("container passed to createSwapy() is undefined or null"), n = !1), o.forEach((u) => {
+  e || (k("container passed to createSwapy() is undefined or null"), n = !1), o.forEach((u) => {
     const a = u, h = a.dataset.swapySlot, s = a.children, c = s[0];
-    (!h || h.length === 0) && (j(a, "does not contain a slotId using data-swapy-slot"), n = !1), s.length > 1 && (j("slot:", `"${h}"`, "cannot contain more than one element"), n = !1), c && (!c.dataset.swapyItem || c.dataset.swapyItem.length === 0) && (j(
+    (!h || h.length === 0) && (k(a, "does not contain a slotId using data-swapy-slot"), n = !1), s.length > 1 && (k("slot:", `"${h}"`, "cannot contain more than one element"), n = !1), c && (!c.dataset.swapyItem || c.dataset.swapyItem.length === 0) && (k(
       "slot",
       `"${h}"`,
       "does not contain an element with an item id using data-swapy-item"
@@ -1089,14 +1116,14 @@ function Nt(t) {
   );
   if (ut(l)) {
     const u = dt(l);
-    j(
+    k(
       "your container has duplicate slot ids",
       `(${u.join(", ")})`
     ), n = !1;
   }
   if (ut(d)) {
     const u = dt(d);
-    j(
+    k(
       "your container has duplicate item ids",
       `(${u.join(", ")})`
     ), n = !1;
@@ -1112,13 +1139,13 @@ function dt(t) {
     e.has(o) ? n.add(o) : e.add(o);
   return Array.from(n);
 }
-function qt(t, e) {
+function Ft(t, e) {
   if (t.size !== e.size) return !1;
   for (const [n, o] of t)
     if (e.get(n) !== o) return !1;
   return !0;
 }
-function Q(t) {
+function et(t) {
   let e = t;
   for (; e; ) {
     const n = window.getComputedStyle(e), o = n.overflowY, l = n.overflowX;
@@ -1128,52 +1155,52 @@ function Q(t) {
   }
   return window;
 }
-function Ft(t, e) {
+function Wt(t, e) {
   let l = !1, i, d = 0, u = 0, a = 0, h = 0, s = 0, c = 0, f = null;
-  t instanceof HTMLElement ? (i = k(t.getBoundingClientRect()), d = t.scrollHeight - i.height, u = t.scrollWidth - i.width) : (i = {
+  t instanceof HTMLElement ? (i = z(t.getBoundingClientRect()), d = t.scrollHeight - i.height, u = t.scrollWidth - i.width) : (i = {
     x: 0,
     y: 0,
     width: window.innerWidth,
     height: window.innerHeight
   }, d = document.documentElement.scrollHeight - window.innerHeight, u = document.documentElement.scrollWidth - window.innerWidth);
-  function m() {
+  function y() {
     t instanceof HTMLElement ? (a = t.scrollTop, h = t.scrollLeft) : (a = window.scrollY, h = window.scrollX);
   }
   function v(r) {
     l = !1;
-    const I = i.y, E = i.y + i.height, p = i.x, w = i.x + i.width, A = Math.abs(I - r.y) < Math.abs(E - r.y), x = Math.abs(p - r.x) < Math.abs(w - r.x);
-    if (m(), e !== "x")
-      if (A) {
-        const X = I - r.y;
+    const A = i.y, E = i.y + i.height, p = i.x, w = i.x + i.width, I = Math.abs(A - r.y) < Math.abs(E - r.y), x = Math.abs(p - r.x) < Math.abs(w - r.x);
+    if (y(), e !== "x")
+      if (I) {
+        const X = A - r.y;
         if (X >= -100) {
-          const D = W(X, -100, 0);
-          s = -V(-100, 0, 0, 5, D), l = !0;
+          const M = V(X, -100, 0);
+          s = -U(-100, 0, 0, 5, M), l = !0;
         }
       } else {
         const X = E - r.y;
         if (X <= 100) {
-          const D = W(X, 0, 100);
-          s = V(100, 0, 0, 5, D), l = !0;
+          const M = V(X, 0, 100);
+          s = U(100, 0, 0, 5, M), l = !0;
         }
       }
     if (e !== "y")
       if (x) {
         const X = p - r.x;
         if (X >= -100) {
-          const D = W(X, -100, 0);
-          c = -V(-100, 0, 0, 5, D), l = !0;
+          const M = V(X, -100, 0);
+          c = -U(-100, 0, 0, 5, M), l = !0;
         }
       } else {
         const X = w - r.x;
         if (X <= 100) {
-          const D = W(X, 0, 100);
-          c = V(100, 0, 0, 5, D), l = !0;
+          const M = V(X, 0, 100);
+          c = U(100, 0, 0, 5, M), l = !0;
         }
       }
     l && (f && cancelAnimationFrame(f), g());
   }
   function g() {
-    m(), e !== "x" && (s = a + s >= d ? 0 : s), e !== "y" && (c = h + c >= u ? 0 : c), t.scrollBy({ top: s, left: c }), l && (f = requestAnimationFrame(g));
+    y(), e !== "x" && (s = a + s >= d ? 0 : s), e !== "y" && (c = h + c >= u ? 0 : c), t.scrollBy({ top: s, left: c }), l && (f = requestAnimationFrame(g));
   }
   function T() {
     l = !1;
@@ -1184,7 +1211,7 @@ function Ft(t, e) {
   };
 }
 export {
-  Wt as createSwapy,
-  Q as getClosestScrollableContainer,
+  kt as createSwapy,
+  et as getClosestScrollableContainer,
   jt as utils
 };
