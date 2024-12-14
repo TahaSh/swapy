@@ -110,8 +110,12 @@ export function createView(el: HTMLElement): View {
 
   function updateElement(el: HTMLElement) {
     if (!el) return
+    const hasDraggingAttr = element.hasAttribute('data-swapy-dragging')
     const previousStyles = element.style.cssText
     element = el
+    if (hasDraggingAttr) {
+      element.setAttribute('data-swapy-dragging', '')
+    }
     element.style.cssText = previousStyles
     plugins.forEach((plugin) => plugin.onElementUpdate())
   }
