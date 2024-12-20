@@ -30,10 +30,12 @@ export type OnReleaseListener = ({ el }: { el: HTMLElement }) => void
 
 export type DraggableConfig = {
   startDelay: number
+  targetEl?: HTMLElement | null
 }
 
 const DEFAULT_CONFIG: DraggableConfig = {
-  startDelay: 0
+  startDelay: 0,
+  targetEl: null
 }
 
 export function makeDraggable(
@@ -67,6 +69,7 @@ export function makeDraggable(
   document.body.addEventListener('touchmove', onTouchMove, { passive: false })
 
   function onPointerDown(e: PointerEvent) {
+    if (config.targetEl && e.target !== config.targetEl) return
     if (isPointerDown) return
     if (!e.isPrimary) return
     if (config.startDelay > 0) {

@@ -609,7 +609,8 @@ function createItem(itemEl: HTMLElement, store: Store): Item {
     DraggablePlugin,
     DraggableConfig
   >(makeDraggable, {
-    startDelay: store.config().dragOnHold ? 400 : 0
+    startDelay: store.config().dragOnHold ? 400 : 0,
+    targetEl: handle()
   })
 
   // ------------------------------------------------------------
