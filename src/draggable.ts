@@ -69,7 +69,12 @@ export function makeDraggable(
   document.body.addEventListener('touchmove', onTouchMove, { passive: false })
 
   function onPointerDown(e: PointerEvent) {
-    if (config.targetEl && e.target !== config.targetEl) return
+    if (
+      config.targetEl &&
+      e.target !== config.targetEl &&
+      !config.targetEl.contains(e.target as HTMLElement)
+    )
+      return
     if (isPointerDown) return
     if (!e.isPrimary) return
     if (config.startDelay > 0) {
