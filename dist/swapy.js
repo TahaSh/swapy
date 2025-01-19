@@ -148,7 +148,7 @@ function Mt(t, e) {
   let o = t.el(), l = !1, i = null, d = null, u = null, a = null, h = 0, s = 0, c = 0, f = 0, y = 0, v = 0, g = 0, T = 0, r = 0, A = 0, E = null, p;
   o.addEventListener("pointerdown", w), document.body.addEventListener("pointerup", x), document.body.addEventListener("pointermove", X), document.body.addEventListener("touchmove", M, { passive: !1 });
   function w(m) {
-    if (n.targetEl && m.target !== n.targetEl || l || !m.isPrimary) return;
+    if (n.targetEl && m.target !== n.targetEl && !n.targetEl.contains(m.target) || l || !m.isPrimary) return;
     n.startDelay > 0 ? (u == null || u({ el: m.target }), p = setTimeout(() => {
       B();
     }, n.startDelay)) : B();
