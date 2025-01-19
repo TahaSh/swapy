@@ -119,7 +119,7 @@ interface Store {
     onBeforeSwap: BeforeSwapHandler
   }
   syncSlotItemMap(): void
-  slotItemMap(): SlotItemMap
+  slotItemMap(clone?: boolean): SlotItemMap
   onScroll(handler: ScrollHandler | null): void
   swapItems(item: Item, toSlot: Slot): void
   destroy(): void
@@ -530,7 +530,8 @@ function createStore({
     },
     eventHandlers: () => store.eventHandlers,
     syncSlotItemMap,
-    slotItemMap: () => store.slotItemMap,
+    slotItemMap: (clone: boolean = false) =>
+      clone ? structuredClone(store.slotItemMap) : store.slotItemMap,
     onScroll: (handler: ScrollHandler | null) => {
       store.scrollHandler = handler
     },
@@ -677,7 +678,7 @@ function createItem(itemEl: HTMLElement, store: Store): Item {
       slot.view().el().style.height = `${rect.height}px`
     })
 
-    const slotItemMap = store.slotItemMap()
+    const slotItemMap = store.slotItemMap(true)
     store.eventHandlers().onSwapStart({
       draggingItem: id(),
       fromSlot: slotId(),
