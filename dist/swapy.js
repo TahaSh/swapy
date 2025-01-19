@@ -10,13 +10,13 @@ function gt(t) {
       y: { topLeft: 0, topRight: 0, bottomRight: 0, bottomLeft: 0 },
       unit: "px"
     };
-  const n = e.map((s) => {
-    const [c, f, y] = s.match(/(\d+(?:\.\d+)?)(px|%)/) ?? [];
+  const n = e.map((c) => {
+    const [s, f, y] = c.match(/(\d+(?:\.\d+)?)(px|%)/) ?? [];
     return { value: parseFloat(f), unit: y };
   }), o = ((h = n[0]) == null ? void 0 : h.unit) || "px";
-  if (n.some((s) => s.unit !== o))
+  if (n.some((c) => c.unit !== o))
     throw new Error("Inconsistent units in border-radius string.");
-  const [l, i, d, u] = n.map((s) => s.value), a = {
+  const [l, i, d, u] = n.map((c) => c.value), a = {
     topLeft: l ?? 0,
     topRight: i ?? l ?? 0,
     bottomRight: d ?? l ?? 0,
@@ -68,14 +68,14 @@ function xt(t, e) {
 function vt(t, e) {
   return R(t.x - e.x, t.y - e.y);
 }
-function At(t, e) {
+function It(t, e) {
   return R(t.x * e, t.y * e);
 }
 function C(t, e, n) {
   return t + (e - t) * n;
 }
-function It(t, e, n) {
-  return xt(t, At(vt(e, t), n));
+function At(t, e, n) {
+  return xt(t, It(vt(e, t), n));
 }
 function pt(t, e, n) {
   return {
@@ -115,7 +115,7 @@ function mt(t, e, n, o) {
   let u;
   function a(h) {
     u === void 0 && (u = h);
-    const s = h - u, c = V(s / d.duration, 0, 1), f = Object.keys(t), y = Object.keys(e);
+    const c = h - u, s = V(c / d.duration, 0, 1), f = Object.keys(t), y = Object.keys(e);
     if (!f.every((g) => y.includes(g))) {
       console.error("animate Error: `from` keys are different than `to`");
       return;
@@ -125,17 +125,17 @@ function mt(t, e, n, o) {
       typeof t[g] == "number" && typeof e[g] == "number" ? v[g] = C(
         t[g],
         e[g],
-        d.easing(c)
+        d.easing(s)
       ) : rt(t[g]) && rt(e[g]) ? v[g] = pt(
         t[g],
         e[g],
-        d.easing(c)
-      ) : at(t[g]) && at(e[g]) && (v[g] = It(
+        d.easing(s)
+      ) : at(t[g]) && at(e[g]) && (v[g] = At(
         t[g],
         e[g],
-        d.easing(c)
+        d.easing(s)
       ));
-    }), n(v, c >= 1, c), c < 1 && !l && requestAnimationFrame(a);
+    }), n(v, s >= 1, s), s < 1 && !l && requestAnimationFrame(a);
   }
   return requestAnimationFrame(a), i;
 }
@@ -145,7 +145,7 @@ const Tt = {
 };
 function Mt(t, e) {
   const n = { ...Tt, ...e };
-  let o = t.el(), l = !1, i = null, d = null, u = null, a = null, h = 0, s = 0, c = 0, f = 0, y = 0, v = 0, g = 0, T = 0, r = 0, A = 0, E = null, p;
+  let o = t.el(), l = !1, i = null, d = null, u = null, a = null, h = 0, c = 0, s = 0, f = 0, y = 0, v = 0, g = 0, T = 0, r = 0, I = 0, E = null, p;
   o.addEventListener("pointerdown", w), document.body.addEventListener("pointerup", x), document.body.addEventListener("pointermove", X), document.body.addEventListener("touchmove", M, { passive: !1 });
   function w(m) {
     if (n.targetEl && m.target !== n.targetEl && !n.targetEl.contains(m.target) || l || !m.isPrimary) return;
@@ -155,12 +155,12 @@ function Mt(t, e) {
     function B() {
       E = m.target;
       const L = t.boundingRect(), F = t.layoutRect();
-      y = F.x, v = F.y, c = L.x - y, f = L.y - v, h = m.clientX - c, s = m.clientY - f, g = m.clientX, T = m.clientY, r = (m.clientX - L.x) / L.width, A = (m.clientY - L.y) / L.height, l = !0, X(m);
+      y = F.x, v = F.y, s = L.x - y, f = L.y - v, h = m.clientX - s, c = m.clientY - f, g = m.clientX, T = m.clientY, r = (m.clientX - L.x) / L.width, I = (m.clientY - L.y) / L.height, l = !0, X(m);
     }
   }
-  function I() {
+  function A() {
     const m = t.layoutRect();
-    h -= y - m.x, s -= v - m.y, y = m.x, v = m.y;
+    h -= y - m.x, c -= v - m.y, y = m.x, v = m.y;
   }
   function x(m) {
     if (!l) {
@@ -171,14 +171,14 @@ function Mt(t, e) {
     l = !1;
     const B = m.clientX - g, L = m.clientY - T;
     d == null || d({
-      x: c,
+      x: s,
       y: f,
       pointerX: m.clientX,
       pointerY: m.clientY,
       width: B,
       height: L,
       relativeX: r,
-      relativeY: A,
+      relativeY: I,
       el: E
     }), E = null;
   }
@@ -188,7 +188,7 @@ function Mt(t, e) {
       return;
     }
     if (!m.isPrimary) return;
-    const B = m.clientX - g, L = m.clientY - T, F = c = m.clientX - h, Z = f = m.clientY - s;
+    const B = m.clientX - g, L = m.clientY - T, F = s = m.clientX - h, Z = f = m.clientY - c;
     i == null || i({
       width: B,
       height: L,
@@ -197,7 +197,7 @@ function Mt(t, e) {
       pointerX: m.clientX,
       pointerY: m.clientY,
       relativeX: r,
-      relativeY: A,
+      relativeY: I,
       el: E
     });
   }
@@ -230,7 +230,7 @@ function Mt(t, e) {
     onRelease: P,
     onElementUpdate: $,
     destroy: N,
-    readjust: I
+    readjust: A
   };
 }
 function Dt(t) {
@@ -300,12 +300,12 @@ function Yt(t) {
   return { x: o, y: n };
 }
 function Q(t) {
-  let e = "unread", n, o, l, i, d, u, a, h, s, c, f;
+  let e = "unread", n, o, l, i, d, u, a, h, c, s, f;
   function y() {
-    n = t.currentTransform(), o = Lt(t.el()), l = Yt(t.el()), f = ct(t.el()).map(({ parent: A, children: E }) => ({
+    n = t.currentTransform(), o = Lt(t.el()), l = Yt(t.el()), f = ct(t.el()).map(({ parent: I, children: E }) => ({
       parent: {
-        el: A,
-        initialRect: z(A.getBoundingClientRect())
+        el: I,
+        initialRect: z(I.getBoundingClientRect())
       },
       children: E.filter((p) => p instanceof HTMLElement).map((p) => {
         const w = p;
@@ -324,7 +324,7 @@ function Q(t) {
       throw new Error(
         "FlipView: Cannot read final values before reading initial values"
       );
-    s = t.layoutRect(), u = o.width / s.width, a = o.height / s.height, i = o.x - s.x - n.dragX + l.x, d = o.y - s.y - n.dragY + l.y, h = ht(
+    c = t.layoutRect(), u = o.width / c.width, a = o.height / c.height, i = o.x - c.x - n.dragX + l.x, d = o.y - c.y - n.dragY + l.y, h = ht(
       t.borderRadius(),
       u,
       a
@@ -332,12 +332,12 @@ function Q(t) {
     const r = ct(t.el());
     f = f.map(
       ({ parent: E, children: p }, w) => {
-        const I = r[w].parent;
+        const A = r[w].parent;
         return {
           parent: {
             ...E,
-            el: I,
-            finalRect: J(I)
+            el: A,
+            finalRect: J(A)
           },
           children: p.map((x, X) => {
             const M = r[w].children[X];
@@ -355,7 +355,7 @@ function Q(t) {
         };
       }
     );
-    const A = {
+    const I = {
       translateX: i,
       translateY: d,
       scaleX: u,
@@ -363,10 +363,10 @@ function Q(t) {
     };
     t.el().style.transformOrigin = "0 0", t.el().style.borderRadius = G(
       h
-    ), t.setTransform(A), c = [], f.forEach(({ parent: E, children: p }) => {
+    ), t.setTransform(I), s = [], f.forEach(({ parent: E, children: p }) => {
       const w = p.map(
-        ({ el: I, initialRect: x, finalRect: X, borderRadius: M }) => Ct(
-          I,
+        ({ el: A, initialRect: x, finalRect: X, borderRadius: M }) => Ct(
+          A,
           x,
           X,
           M,
@@ -374,7 +374,7 @@ function Q(t) {
           E.finalRect
         )
       );
-      c.push(...w);
+      s.push(...w);
     }), e = "readFinal";
   }
   function g() {
@@ -389,8 +389,8 @@ function Q(t) {
         borderRadius: h
       },
       to: {
-        width: s.width,
-        height: s.height,
+        width: c.width,
+        height: c.height,
         translate: R(0, 0),
         scale: R(1, 1),
         borderRadius: t.borderRadius()
@@ -402,7 +402,7 @@ function Q(t) {
       throw new Error(
         "FlipView: Cannot get children transition values before reading"
       );
-    return c;
+    return s;
   }
   return {
     readInitial: y,
@@ -413,16 +413,16 @@ function Q(t) {
 }
 function Ct(t, e, n, o, l, i) {
   t.style.transformOrigin = "0 0";
-  const d = l.width / i.width, u = l.height / i.height, a = e.width / n.width, h = e.height / n.height, s = ht(
+  const d = l.width / i.width, u = l.height / i.height, a = e.width / n.width, h = e.height / n.height, c = ht(
     o,
     a,
     h
-  ), c = e.x - l.x, f = n.x - i.x, y = e.y - l.y, v = n.y - i.y, g = (c - f * d) / d, T = (y - v * u) / u;
-  return t.style.transform = `translate(${g}px, ${T}px) scale(${a / d}, ${h / u})`, t.style.borderRadius = G(s), {
+  ), s = e.x - l.x, f = n.x - i.x, y = e.y - l.y, v = n.y - i.y, g = (s - f * d) / d, T = (y - v * u) / u;
+  return t.style.transform = `translate(${g}px, ${T}px) scale(${a / d}, ${h / u})`, t.style.borderRadius = G(c), {
     el: t,
     fromTranslate: R(g, T),
     fromScale: R(a, h),
-    fromBorderRadius: s,
+    fromBorderRadius: c,
     toBorderRadius: o,
     parentScale: { x: d, y: u }
   };
@@ -461,8 +461,8 @@ function yt(t) {
     layoutRect: () => J(n),
     boundingRect: () => z(n.getBoundingClientRect()),
     usePlugin: h,
-    destroy: s,
-    updateElement: c
+    destroy: c,
+    updateElement: s
   };
   function d(f) {
     o = { ...o, ...f }, a();
@@ -485,10 +485,10 @@ function yt(t) {
     const v = f(i, y);
     return e.push(v), v;
   }
-  function s() {
+  function c() {
     e.forEach((f) => f.destroy());
   }
-  function c(f) {
+  function s(f) {
     if (!f) return;
     const y = n.hasAttribute("data-swapy-dragging"), v = n.style.cssText;
     n = f, y && n.setAttribute("data-swapy-dragging", ""), n.style.cssText = v, e.forEach((g) => g.onElementUpdate());
@@ -510,14 +510,14 @@ function Ht(t, e) {
 }
 function $t(t, e, n, o, l, i = !1) {
   const d = e.filter(
-    (h) => !o.some((s) => s.item === h[n])
+    (h) => !o.some((c) => c.item === h[n])
   ).map((h) => ({
     slot: h[n],
     item: h[n]
   }));
   let u;
-  i ? u = o.map((h) => e.some((s) => s[n] === h.item) ? h : { slot: h.slot, item: "" }) : u = o.filter(
-    (h) => e.some((s) => s[n] === h.item) || !h.item
+  i ? u = o.map((h) => e.some((c) => c[n] === h.item) ? h : { slot: h.slot, item: "" }) : u = o.filter(
+    (h) => e.some((c) => c[n] === h.item) || !h.item
   );
   const a = [
     ...u,
@@ -565,15 +565,15 @@ function kt(t, e) {
     ), o.setSlots(l), i = Array.from(t.querySelectorAll("[data-swapy-item]")).map(
       (r) => Pt(r, o)
     ), o.setItems(i), o.syncSlotItemMap(), i.forEach((r) => {
-      r.onDrag(({ pointerX: A, pointerY: E }) => {
+      r.onDrag(({ pointerX: I, pointerY: E }) => {
         a();
         let p = !1;
         l.forEach((w) => {
-          const I = w.rect();
-          st({ x: A, y: E }, I) && (p = !0, w.isHighlighted() || w.highlight());
-        }), !p && o.config().swapMode === "drop" && r.slot().highlight(), n.swapMode === "hover" && u(r, { pointerX: A, pointerY: E });
-      }), r.onDrop(({ pointerX: A, pointerY: E }) => {
-        h(), n.swapMode === "drop" && u(r, { pointerX: A, pointerY: E });
+          const A = w.rect();
+          st({ x: I, y: E }, A) && (p = !0, w.isHighlighted() || w.highlight());
+        }), !p && o.config().swapMode === "drop" && r.slot().highlight(), n.swapMode === "hover" && u(r, { pointerX: I, pointerY: E });
+      }), r.onDrop(({ pointerX: I, pointerY: E }) => {
+        h(), n.swapMode === "drop" && u(r, { pointerX: I, pointerY: E });
       }), r.onHold(() => {
         a();
       }), r.onRelease(() => {
@@ -581,15 +581,15 @@ function kt(t, e) {
       });
     });
   }
-  function u(r, { pointerX: A, pointerY: E }) {
+  function u(r, { pointerX: I, pointerY: E }) {
     l.forEach((p) => {
       const w = p.rect();
-      if (st({ x: A, y: E }, w)) {
+      if (st({ x: I, y: E }, w)) {
         if (r.id() === p.itemId()) return;
         o.config().swapMode === "hover" && r.setContinuousDrag(!0);
-        const I = r.slot(), x = p.item();
+        const A = r.slot(), x = p.item();
         if (!o.eventHandlers().onBeforeSwap({
-          fromSlot: I.id(),
+          fromSlot: A.id(),
           toSlot: p.id(),
           draggingItem: r.id(),
           swapWithItem: (x == null ? void 0 : x.id()) || ""
@@ -609,7 +609,7 @@ function kt(t, e) {
           $ instanceof Window ? (_ = $.scrollY, P = $.scrollX) : (_ = $.scrollTop, P = $.scrollLeft), o.eventHandlers().onSwap({
             oldSlotItemMap: X,
             newSlotItemMap: M,
-            fromSlot: I.id(),
+            fromSlot: A.id(),
             toSlot: p.id(),
             draggingItem: r.id(),
             swappedWithItem: (x == null ? void 0 : x.id()) || ""
@@ -630,7 +630,7 @@ function kt(t, e) {
           const D = et(
             r.view().el()
           );
-          D instanceof Window ? (X = D.scrollY, M = D.scrollX) : (X = D.scrollTop, M = D.scrollLeft), ft(r, p, !0), x && ft(x, I), D.scrollTo({
+          D instanceof Window ? (X = D.scrollY, M = D.scrollX) : (X = D.scrollTop, M = D.scrollLeft), ft(r, p, !0), x && ft(x, A), D.scrollTo({
             left: M,
             top: X
           });
@@ -640,7 +640,7 @@ function kt(t, e) {
           o.eventHandlers().onSwap({
             oldSlotItemMap: H,
             newSlotItemMap: _,
-            fromSlot: I.id(),
+            fromSlot: A.id(),
             toSlot: p.id(),
             draggingItem: r.id(),
             swappedWithItem: (x == null ? void 0 : x.id()) || ""
@@ -659,10 +659,10 @@ function kt(t, e) {
       r.style.pointerEvents = "";
     }), t.style.userSelect = "", t.style.webkitUserSelect = "";
   }
-  function s(r) {
+  function c(r) {
     o.config().enabled = r;
   }
-  function c(r) {
+  function s(r) {
     o.eventHandlers().onSwapStart = r;
   }
   function f(r) {
@@ -683,9 +683,9 @@ function kt(t, e) {
     i.forEach((r) => r.destroy()), l.forEach((r) => r.destroy()), o.destroy(), i = [], l = [];
   }
   return {
-    enable: s,
+    enable: c,
     slotItemMap: () => o.slotItemMap(),
-    onSwapStart: c,
+    onSwapStart: s,
     onSwap: f,
     onSwapEnd: y,
     onBeforeSwap: v,
@@ -719,59 +719,59 @@ function Ot({
   let l = {
     ...o
   };
-  const i = (c) => {
+  const i = (s) => {
     var f;
-    (f = l.scrollHandler) == null || f.call(l, c);
+    (f = l.scrollHandler) == null || f.call(l, s);
   };
   window.addEventListener("scroll", i);
-  function d(c) {
-    return l.slots.find((f) => f.id() === c);
+  function d(s) {
+    return l.slots.find((f) => f.id() === s);
   }
-  function u(c) {
-    return l.items.find((f) => f.id() === c);
+  function u(s) {
+    return l.items.find((f) => f.id() === s);
   }
   function a() {
-    const c = {}, f = /* @__PURE__ */ new Map(), y = [];
+    const s = {}, f = /* @__PURE__ */ new Map(), y = [];
     l.slots.forEach((v) => {
       var r;
       const g = v.id(), T = ((r = v.item()) == null ? void 0 : r.id()) || "";
-      c[g] = T, f.set(g, T), y.push({ slot: g, item: T });
-    }), l.slotItemMap = { asObject: c, asMap: f, asArray: y };
+      s[g] = T, f.set(g, T), y.push({ slot: g, item: T });
+    }), l.slotItemMap = { asObject: s, asMap: f, asArray: y };
   }
-  function h(c, f) {
+  function h(s, f) {
     var p;
-    const y = l.slotItemMap, v = c.id(), g = ((p = f.item()) == null ? void 0 : p.id()) || "", T = f.id(), r = c.slot().id();
+    const y = l.slotItemMap, v = s.id(), g = ((p = f.item()) == null ? void 0 : p.id()) || "", T = f.id(), r = s.slot().id();
     y.asObject[T] = v, y.asObject[r] = g, y.asMap.set(T, v), y.asMap.set(r, g);
-    const A = y.asArray.findIndex(
+    const I = y.asArray.findIndex(
       (w) => w.slot === T
     ), E = y.asArray.findIndex(
       (w) => w.slot === r
     );
-    y.asArray[A].item = v, y.asArray[E].item = g;
+    y.asArray[I].item = v, y.asArray[E].item = g;
   }
-  function s() {
+  function c() {
     window.removeEventListener("scroll", i), l = { ...o };
   }
   return {
     slots: () => l.slots,
     items: () => l.items,
     config: () => n,
-    setItems: (c) => l.items = c,
-    setSlots: (c) => l.slots = c,
+    setItems: (s) => l.items = s,
+    setSlots: (s) => l.slots = s,
     slotById: d,
     itemById: u,
-    zIndex: (c = !1) => c ? ++l.zIndexCount : l.zIndexCount,
+    zIndex: (s = !1) => s ? ++l.zIndexCount : l.zIndexCount,
     resetZIndex: () => {
       l.zIndexCount = 1;
     },
     eventHandlers: () => l.eventHandlers,
     syncSlotItemMap: a,
-    slotItemMap: () => l.slotItemMap,
-    onScroll: (c) => {
-      l.scrollHandler = c;
+    slotItemMap: (s = !1) => s ? structuredClone(l.slotItemMap) : l.slotItemMap,
+    onScroll: (s) => {
+      l.scrollHandler = s;
     },
     swapItems: h,
-    destroy: s
+    destroy: c
   };
 }
 function _t(t, e) {
@@ -780,20 +780,20 @@ function _t(t, e) {
     return n.el().dataset.swapySlot;
   }
   function l() {
-    const s = n.el().children[0];
-    return (s == null ? void 0 : s.dataset.swapyItem) || null;
+    const c = n.el().children[0];
+    return (c == null ? void 0 : c.dataset.swapyItem) || null;
   }
   function i() {
     return z(n.el().getBoundingClientRect());
   }
   function d() {
-    const s = n.el().children[0];
-    if (s)
-      return e.itemById(s.dataset.swapyItem);
+    const c = n.el().children[0];
+    if (c)
+      return e.itemById(c.dataset.swapyItem);
   }
   function u() {
-    e.slots().forEach((s) => {
-      s.view().el().removeAttribute("data-swapy-highlighted");
+    e.slots().forEach((c) => {
+      c.view().el().removeAttribute("data-swapy-highlighted");
     });
   }
   function a() {
@@ -817,16 +817,16 @@ function Pt(t, e) {
   const n = yt(t), o = {};
   let l = null, i = null, d = !1, u = !0, a;
   const h = Nt();
-  let s = () => {
-  }, c = () => {
+  let c = () => {
+  }, s = () => {
   }, f = () => {
   }, y = () => {
   };
   const { onDrag: v, onDrop: g, onHold: T, onRelease: r } = n.usePlugin(Mt, {
     startDelay: e.config().dragOnHold ? 400 : 0,
     targetEl: P()
-  }), A = R(0, 0), E = R(0, 0), p = R(0, 0), w = R(0, 0);
-  let I = null, x = null;
+  }), I = R(0, 0), E = R(0, 0), p = R(0, 0), w = R(0, 0);
+  let A = null, x = null;
   T((S) => {
     e.config().enabled && (N() && !$(S.el) || L() && B(S.el) || f == null || f(S));
   }), r((S) => {
@@ -840,24 +840,24 @@ function Pt(t, e) {
       const j = Y[W];
       O.view().el().style.width = `${j.width}px`, O.view().el().style.maxWidth = `${j.width}px`, O.view().el().style.flexShrink = "0", O.view().el().style.height = `${j.height}px`;
     });
-    const b = e.slotItemMap();
+    const b = e.slotItemMap(!0);
     e.eventHandlers().onSwapStart({
       draggingItem: nt(),
       fromSlot: ot(),
       slotItemMap: b
-    }), i = b, n.el().style.position = "relative", n.el().style.zIndex = `${e.zIndex(!0)}`, I = et(S.el), e.config().autoScrollOnDrag && (l = Wt(
-      I,
+    }), i = b, n.el().style.position = "relative", n.el().style.zIndex = `${e.zIndex(!0)}`, A = et(S.el), e.config().autoScrollOnDrag && (l = Wt(
+      A,
       e.config().dragAxis
     ), l.updatePointer({
       x: S.pointerX,
       y: S.pointerY
-    })), A.x = window.scrollX, A.y = window.scrollY, p.x = 0, p.y = 0, I instanceof HTMLElement && (E.x = I.scrollLeft, E.y = I.scrollTop, x = () => {
-      w.x = I.scrollLeft - E.x, w.y = I.scrollTop - E.y, n.setTransform({
+    })), I.x = window.scrollX, I.y = window.scrollY, p.x = 0, p.y = 0, A instanceof HTMLElement && (E.x = A.scrollLeft, E.y = A.scrollTop, x = () => {
+      w.x = A.scrollLeft - E.x, w.y = A.scrollTop - E.y, n.setTransform({
         dragX: ((a == null ? void 0 : a.width) || 0) + p.x + w.x,
         dragY: ((a == null ? void 0 : a.height) || 0) + p.y + w.y
       });
-    }, I.addEventListener("scroll", x)), e.onScroll(() => {
-      p.x = window.scrollX - A.x, p.y = window.scrollY - A.y;
+    }, A.addEventListener("scroll", x)), e.onScroll(() => {
+      p.x = window.scrollX - I.x, p.y = window.scrollY - I.y;
       const O = w.x || 0, W = w.y || 0;
       n.setTransform({
         dragX: ((a == null ? void 0 : a.width) || 0) + p.x + O,
@@ -886,12 +886,12 @@ function Pt(t, e) {
         }) : n.setTransform({
           dragX: b,
           dragY: q
-        }), s == null || s(S);
+        }), c == null || c(S);
       });
     }
   }), g((S) => {
     if (!d) return;
-    Z(), d = !1, u = !1, a = null, I && (I.removeEventListener("scroll", x), x = null), I = null, w.x = 0, w.y = 0, p.x = 0, p.y = 0, l && (l.destroy(), l = null), K().unhighlightAllSlots(), c == null || c(S), e.eventHandlers().onSwapEnd({
+    Z(), d = !1, u = !1, a = null, A && (A.removeEventListener("scroll", x), x = null), A = null, w.x = 0, w.y = 0, p.x = 0, p.y = 0, l && (l.destroy(), l = null), K().unhighlightAllSlots(), s == null || s(S), e.eventHandlers().onSwapEnd({
       slotItemMap: e.slotItemMap(),
       hasChanged: i != null && i.asMap ? !Ft(
         i == null ? void 0 : i.asMap,
@@ -920,10 +920,10 @@ function Pt(t, e) {
     }
   });
   function M(S) {
-    s = S;
+    c = S;
   }
   function D(S) {
-    c = S;
+    s = S;
   }
   function H(S) {
     f = S;
@@ -958,7 +958,7 @@ function Pt(t, e) {
     n.el().removeAttribute("data-swapy-dragging");
   }
   function St() {
-    s = null, c = null, f = null, y = null, a = null, i = null, l && (l.destroy(), l = null), I && x && I.removeEventListener("scroll", x), n.destroy();
+    c = null, s = null, f = null, y = null, a = null, i = null, l && (l.destroy(), l = null), A && x && A.removeEventListener("scroll", x), n.destroy();
   }
   function nt() {
     return n.el().dataset.swapyItem;
@@ -1009,8 +1009,8 @@ function Nt() {
   };
 }
 function tt(t, e) {
-  var u, a, h, s;
-  (a = (u = t.cancelAnimation()).moveToSlot) == null || a.call(u), (s = (h = t.cancelAnimation()).drop) == null || s.call(h);
+  var u, a, h, c;
+  (a = (u = t.cancelAnimation()).moveToSlot) == null || a.call(u), (c = (h = t.cancelAnimation()).drop) == null || c.call(h);
   const n = wt(t.store().config().animation), o = e.transitionValues();
   let l = t.view().currentTransform(), i = 0, d = !1;
   t.cancelAnimation().moveToSlot = mt(
@@ -1024,10 +1024,10 @@ function tt(t, e) {
       scale: o.to.scale,
       borderRadius: o.to.borderRadius
     },
-    ({ translate: c, scale: f, borderRadius: y }, v, g) => {
+    ({ translate: s, scale: f, borderRadius: y }, v, g) => {
       if (t.isDragging()) {
         i !== 0 && (d = !0);
-        const r = t.dragEvent().relativeX, A = t.dragEvent().relativeY;
+        const r = t.dragEvent().relativeX, I = t.dragEvent().relativeY;
         t.continuousDrag() ? t.view().setTransform({
           translateX: C(
             l.translateX,
@@ -1036,7 +1036,7 @@ function tt(t, e) {
           ),
           translateY: C(
             l.translateY,
-            l.translateY + (o.from.height - o.to.height) * A,
+            l.translateY + (o.from.height - o.to.height) * I,
             n.easing(g - i)
           ),
           scaleX: f.x,
@@ -1049,8 +1049,8 @@ function tt(t, e) {
         }) : t.view().setTransform({
           dragX: 0,
           dragY: 0,
-          translateX: c.x,
-          translateY: c.y,
+          translateX: s.x,
+          translateY: s.y,
           scaleX: f.x,
           scaleY: f.y
         });
@@ -1058,22 +1058,22 @@ function tt(t, e) {
       T.forEach(
         ({
           el: r,
-          fromTranslate: A,
+          fromTranslate: I,
           fromScale: E,
           fromBorderRadius: p,
           toBorderRadius: w,
-          parentScale: I
+          parentScale: A
         }) => {
           const x = C(
-            I.x,
+            A.x,
             1,
             n.easing(g)
           ), X = C(
-            I.y,
+            A.y,
             1,
             n.easing(g)
           );
-          r.style.transform = `translate(${A.x + (0 - A.x / x) * n.easing(g)}px, ${A.y + (0 - A.y / X) * n.easing(g)}px) scale(${C(
+          r.style.transform = `translate(${I.x + (0 - I.x / x) * n.easing(g)}px, ${I.y + (0 - I.y / X) * n.easing(g)}px) scale(${C(
             E.x / x,
             1 / x,
             n.easing(g)
@@ -1104,8 +1104,8 @@ function qt(t) {
   let n = !0;
   const o = e.querySelectorAll("[data-swapy-slot]");
   e || (k("container passed to createSwapy() is undefined or null"), n = !1), o.forEach((u) => {
-    const a = u, h = a.dataset.swapySlot, s = a.children, c = s[0];
-    (!h || h.length === 0) && (k(a, "does not contain a slotId using data-swapy-slot"), n = !1), s.length > 1 && (k("slot:", `"${h}"`, "cannot contain more than one element"), n = !1), c && (!c.dataset.swapyItem || c.dataset.swapyItem.length === 0) && (k(
+    const a = u, h = a.dataset.swapySlot, c = a.children, s = c[0];
+    (!h || h.length === 0) && (k(a, "does not contain a slotId using data-swapy-slot"), n = !1), c.length > 1 && (k("slot:", `"${h}"`, "cannot contain more than one element"), n = !1), s && (!s.dataset.swapyItem || s.dataset.swapyItem.length === 0) && (k(
       "slot",
       `"${h}"`,
       "does not contain an element with an item id using data-swapy-item"
@@ -1158,7 +1158,7 @@ function et(t) {
   return window;
 }
 function Wt(t, e) {
-  let l = !1, i, d = 0, u = 0, a = 0, h = 0, s = 0, c = 0, f = null;
+  let l = !1, i, d = 0, u = 0, a = 0, h = 0, c = 0, s = 0, f = null;
   t instanceof HTMLElement ? (i = z(t.getBoundingClientRect()), d = t.scrollHeight - i.height, u = t.scrollWidth - i.width) : (i = {
     x: 0,
     y: 0,
@@ -1170,19 +1170,19 @@ function Wt(t, e) {
   }
   function v(r) {
     l = !1;
-    const A = i.y, E = i.y + i.height, p = i.x, w = i.x + i.width, I = Math.abs(A - r.y) < Math.abs(E - r.y), x = Math.abs(p - r.x) < Math.abs(w - r.x);
+    const I = i.y, E = i.y + i.height, p = i.x, w = i.x + i.width, A = Math.abs(I - r.y) < Math.abs(E - r.y), x = Math.abs(p - r.x) < Math.abs(w - r.x);
     if (y(), e !== "x")
-      if (I) {
-        const X = A - r.y;
+      if (A) {
+        const X = I - r.y;
         if (X >= -100) {
           const M = V(X, -100, 0);
-          s = -U(-100, 0, 0, 5, M), l = !0;
+          c = -U(-100, 0, 0, 5, M), l = !0;
         }
       } else {
         const X = E - r.y;
         if (X <= 100) {
           const M = V(X, 0, 100);
-          s = U(100, 0, 0, 5, M), l = !0;
+          c = U(100, 0, 0, 5, M), l = !0;
         }
       }
     if (e !== "y")
@@ -1190,19 +1190,19 @@ function Wt(t, e) {
         const X = p - r.x;
         if (X >= -100) {
           const M = V(X, -100, 0);
-          c = -U(-100, 0, 0, 5, M), l = !0;
+          s = -U(-100, 0, 0, 5, M), l = !0;
         }
       } else {
         const X = w - r.x;
         if (X <= 100) {
           const M = V(X, 0, 100);
-          c = U(100, 0, 0, 5, M), l = !0;
+          s = U(100, 0, 0, 5, M), l = !0;
         }
       }
     l && (f && cancelAnimationFrame(f), g());
   }
   function g() {
-    y(), e !== "x" && (s = a + s >= d ? 0 : s), e !== "y" && (c = h + c >= u ? 0 : c), t.scrollBy({ top: s, left: c }), l && (f = requestAnimationFrame(g));
+    y(), e !== "x" && (c = a + c >= d ? 0 : c), e !== "y" && (s = h + s >= u ? 0 : s), t.scrollBy({ top: c, left: s }), l && (f = requestAnimationFrame(g));
   }
   function T() {
     l = !1;
